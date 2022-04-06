@@ -6,8 +6,8 @@ non_terminal {
     def
     if_stmt if_else_stmt while_stmt for_stmt expr func_def break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
-    binary_arith_expr unary_minus_expr
-    arith_op rel_op logical_binary_op
+    binary_arith_expr unary_minus_expr unary_expr unary_back_expr unary_front_expr
+    arith_op rel_op logical_binary_op assign_op unary_op
     binary_logical_expr not_expr
     BOOL_CONST_ ARRAY_CONST
     input_output_call math_call string_method_call array_method_call user_function_call
@@ -22,6 +22,8 @@ non_terminal {
 terminal {
     PLUS MINUS TIMES BY MODULO UMINUS
     GREATER LESS EQUAL_TO NOT_EQUAL_TO GREATER_EQUAL LESS_EQUAL
+    PLUS_PLUS MINUS_MINUS
+    PLUS_EQUALS MINUS_EQUALS TIMES_EQUALS BY_EQUALS MOD_EQUALS
     AND OR NOT
     EQUALS
     true false
@@ -81,19 +83,43 @@ define expr {
 define arith_expr {
     any_of {
         binary_arith_expr       : "An arithmetic expression with two operands"
-        unary_minus_expr             : "Negates the value of its operand"
+        unary_minus_expr        : "Negates the value of its operand"
+        unary_expr              : "An arithmetic expression with one operand"
     }
 }
 
-define binary_arith_expr {
-    expr                    : "The first operand"
-    arith_op                : "An arithmetic operator (e.g. +, -)"
-    expr                    : "The second operand"
+define unary_expr {
+    any_of {
+        unary_back_expr         : "An arithmetic expression with one back-operator "
+        unary_front_expr        : "An arithmetic expression with one front-operator"
+    }
+}
+
+define unary_back_expr {
+    unary_op                   : "An unary operator (e.g. ++, --)"
+    expr                       : "The second operand"
+}
+
+define unary_front_expr {
+    expr                       : "The first operand" 
+    unary_op                   : "An unary operator (e.g. ++, --)"
+}
+
+define unary_op {
+    any_of {
+        PLUS_PLUS("++")                   : "Increment by one"
+        MINUS_MINUS("- -")                : "Decremen by one"
+    }
 }
 
 define unary_minus_expr {
     UMINUS("-")
     expr
+}
+define binary_arith_expr {
+    expr                    : "The first operand"
+    arith_op                : "An arithmetic operator (e.g. +, -)"
+    expr                    : "The second operand"
 }
 
 define arith_op {
@@ -138,14 +164,14 @@ define binary_logical_expr {
 
 define logical_binary_op {
     any_of {
-        AND                         : "Returns true if both operands are true, else returns false"
-        OR                          : "Returns true if either operand is true, else returns false"
+        AND("&&")                        : "Returns true if both operands are true, else returns false"
+        OR("||")                         : "Returns true if either operand is true, else returns false"
     }
 }
 
 define not_expr {
-    NOT                     : "Returns true if the operand is false, else returns false"
-    expr                    : "The operand"
+    NOT("!")                     : "Returns true if the operand is false, else returns false"
+    expr                         : "The operand"
 }
 
 define primary_expr {
@@ -186,7 +212,18 @@ define element_list {
 }
 
 define assign_expr {
-    IDENT EQUALS("=") expr
+    IDENT assign_op expr   
+}
+
+define assign_op {
+    any_of {
+        EQUALS("=")                : "Assigns values from right side operands to left side operand"
+        PLUS_EQUALS("+=")          : "Adds the right operand to the left operand and assign the result to the left operand"
+        MINUS_EQUALS("-=")         : "Subtracts the right operand from the left operand and assigns the result to the left operand"
+        TIMES_EQUALS("*=")         : "Multiplies the right operand with the left operand and assigns the result to the left operand"
+        BY_EQUALS("/=")            : "Divides the left operand with the right operand and assigns the result to the left operand"
+        MOD_EQUALS("%=")           : "Returns true if the first operand is less than or equal to the second operand, else returns false"    
+    }
 }
 
 define func_def {
