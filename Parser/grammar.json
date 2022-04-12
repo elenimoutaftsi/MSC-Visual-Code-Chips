@@ -74,6 +74,61 @@
             ]
         },
         {
+            "name": "func_type",
+            "any_of": [
+                {
+                    "type": "terminal",
+                    "name": "INT",
+                    "tooltip": "FUNCTION returns int "
+                },
+                {
+                    "type": "terminal",
+                    "name": "CHAR",
+                    "tooltip": "FUNCTION returns char "
+                },
+                {
+                    "type": "terminal",
+                    "name": "FLOAT",
+                    "tooltip": "FUNCTION returns float "
+                },
+                {
+                    "type": "terminal",
+                    "name": "DOUBLE",
+                    "tooltip": "FUNCTION returns double "
+                },
+                {
+                    "type": "terminal",
+                    "name": "VOID",
+                    "tooltip": "FUNCTION returns nothing "
+                }
+            ]
+        },
+        {
+            "name": "var_type",
+            "any_of": [
+                {
+                    "type": "terminal",
+                    "name": "INT",
+                    "tooltip": "Int variable definition"
+                },
+                {
+                    "type": "terminal",
+                    "name": "CHAR",
+                    "tooltip": "Char variable definition"
+                },
+                {
+                    "type": "terminal",
+                    "name": "FLOAT",
+                    "tooltip": "Float variable definition"
+                },
+                {
+                    "type": "terminal",
+                    "name": "DOUBLE",
+                    "tooltip": "Double variable definition"
+                }
+            ]
+        },
+        {
             "name": "def",
             "any_of": [
                 {
@@ -575,8 +630,8 @@
             "name": "func_def",
             "all_of": [
                 {
-                    "type": "terminal",
-                    "name": "FUNCTION"
+                    "type": "non_terminal",
+                    "name": "func_type"
                 },
                 {
                     "type": "terminal",
@@ -585,15 +640,35 @@
                 },
                 {
                     "type": "terminal",
-                    "name": "OF"
+                    "name": "WITH"
+                },
+                {
+                    "type": "terminal",
+                    "name": "PARAMETERS"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
                 },
                 {
                     "type": "non_terminal",
                     "name": "ident_list"
                 },
                 {
+                    "type": "terminal",
+                    "name": ")"
+                },
+                {
+                    "type": "terminal",
+                    "name": "{"
+                },
+                {
                     "type": "non_terminal",
                     "name": "stmts"
+                },
+                {
+                    "type": "terminal",
+                    "name": "}"
                 }
             ]
         },

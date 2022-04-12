@@ -4,6 +4,7 @@ non_terminal {
     stmt
     defs
     def
+    func_type var_type
     if_stmt if_else_stmt while_stmt for_stmt expr func_def break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
     binary_arith_expr unary_minus_expr unary_expr unary_back_expr unary_front_expr
@@ -26,9 +27,10 @@ terminal {
     PLUS_EQUALS MINUS_EQUALS TIMES_EQUALS BY_EQUALS MOD_EQUALS
     AND OR NOT
     EQUALS
+    INT CHAR FLOAT DOUBLE VOID
     true false
     IF ELSE WHILE FOR BREAK CONTINUE RETURN
-    CALL FUNCTION OF WITH
+    CALL FUNCTION OF WITH PARAMETERS "(" ")" "{" "}"
     ARRAY "IN ARRAY"
     get insert push_back set get_size
     "IN STRING"
@@ -59,6 +61,25 @@ define stmt {
         break_stmt              : "Exit from the current loop"
         continue_stmt           : "Continue to the next iteration of the current loop"
         return_stmt             : "Return an expression as the result of the current function"
+    }
+}
+
+define func_type {
+    any_of {
+        INT                     : "FUNCTION returns int "
+        CHAR                    : "FUNCTION returns char "
+        FLOAT                   : "FUNCTION returns float "
+        DOUBLE                  : "FUNCTION returns double "
+        VOID                    : "FUNCTION returns nothing "
+    }
+}
+
+define var_type {
+    any_of {
+        INT                     : "Int variable definition"
+        CHAR                    : "Char variable definition"
+        FLOAT                   : "Float variable definition"
+        DOUBLE                  : "Double variable definition"
     }
 }
 
@@ -116,6 +137,7 @@ define unary_minus_expr {
     UMINUS("-")
     expr
 }
+
 define binary_arith_expr {
     expr                    : "The first operand"
     arith_op                : "An arithmetic operator (e.g. +, -)"
@@ -227,7 +249,7 @@ define assign_op {
 }
 
 define func_def {
-    FUNCTION IDENT(NAME) OF ident_list stmts
+   func_type IDENT(NAME) WITH PARAMETERS "("ident_list")" "{" stmts "}"  
 }
 
 define break_stmt {
