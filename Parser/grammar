@@ -249,7 +249,7 @@ define assign_op {
 }
 
 define func_def {
-   func_type IDENT(NAME) WITH PARAMETERS "("ident_list")" "{" stmts "}"  
+   func_type IDENT(NAME) WITH PARAMETERS ident_list stmts  
 }
 
 define break_stmt {

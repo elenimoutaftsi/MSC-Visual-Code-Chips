@@ -647,28 +647,12 @@
                     "name": "PARAMETERS"
                 },
                 {
-                    "type": "terminal",
-                    "name": "("
-                },
-                {
                     "type": "non_terminal",
                     "name": "ident_list"
                 },
                 {
-                    "type": "terminal",
-                    "name": ")"
-                },
-                {
-                    "type": "terminal",
-                    "name": "{"
-                },
-                {
                     "type": "non_terminal",
                     "name": "stmts"
-                },
-                {
-                    "type": "terminal",
-                    "name": "}"
                 }
             ]
         },
