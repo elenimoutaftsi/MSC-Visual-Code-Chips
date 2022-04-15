@@ -18,6 +18,7 @@ non_terminal {
     string_append string_get_character string_get_substring string_size
     input_output_print input_output_input
     math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos
+    VARIABLE_DECLARATION
 }
 
 terminal {
@@ -198,7 +199,8 @@ define not_expr {
 
 define primary_expr {
     any_of {
-        IDENT                   : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters"
+        VARIABLE_DECLARATION    : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
+        IDENT
         INT_CONST               : "An integer is a positive, zero, or negative number that can be written without a fractional component (i.e. no decimal point places)"
         FLOAT_CONST             : "A floating-point number is a rational number (i.e. includes numbers with decimal point places"
         CHAR_CONST              : "One single character"
@@ -206,6 +208,10 @@ define primary_expr {
         BOOL_CONST_(boolean)    : "One of true or false"
         ARRAY_CONST             : "An array of elements"
     }
+}
+
+define VARIABLE_DECLARATION {
+    var_type IDENT
 }
 
 define BOOL_CONST_ {
@@ -226,7 +232,7 @@ define call_expr {
 }
 
 define ARRAY_CONST {
-    ARRAY WITH element_list
+    var_type ARRAY WITH element_list
 }
 
 define element_list {
@@ -408,7 +414,7 @@ define for_stmt {
 }
 
 define ident_list {
-    list_of IDENT
+    list_of VARIABLE_DECLARATION
 }
 
 define expr_list {

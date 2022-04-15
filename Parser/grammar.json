@@ -461,9 +461,13 @@
             "name": "primary_expr",
             "any_of": [
                 {
+                    "type": "non_terminal",
+                    "name": "VARIABLE_DECLARATION",
+                    "tooltip": "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
+                },
+                {
                     "type": "terminal",
-                    "name": "IDENT",
-                    "tooltip": "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters"
+                    "name": "IDENT"
                 },
                 {
                     "type": "terminal",
@@ -495,6 +499,19 @@
                     "type": "non_terminal",
                     "name": "ARRAY_CONST",
                     "tooltip": "An array of elements"
+                }
+            ]
+        },
+        {
+            "name": "VARIABLE_DECLARATION",
+            "all_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "var_type"
+                },
+                {
+                    "type": "terminal",
+                    "name": "IDENT"
                 }
             ]
         },
@@ -544,6 +561,10 @@
         {
             "name": "ARRAY_CONST",
             "all_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "var_type"
+                },
                 {
                     "type": "terminal",
                     "name": "ARRAY"
@@ -1341,8 +1362,8 @@
             "name": "ident_list",
             "list_of": [
                 {
-                    "type": "terminal",
-                    "name": "IDENT"
+                    "type": "non_terminal",
+                    "name": "VARIABLE_DECLARATION"
                 }
             ]
         },
