@@ -16,7 +16,7 @@ non_terminal {
     array_method string_method
     array_get array_insert array_push_back array_set array_size
     string_append string_get_character string_get_substring string_size
-    input_output_print input_output_input
+    input_output_printf input_output_scanf
     math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos
     VARIABLE_DECLARATION
 }
@@ -36,7 +36,7 @@ terminal {
     get insert push_back set get_size
     "IN STRING"
     append get_character get_substring
-    print input
+    printf scanf
     pow sqrt round floor ceiling sin cos
 }
 
@@ -200,12 +200,11 @@ define not_expr {
 define primary_expr {
     any_of {
         VARIABLE_DECLARATION    : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
-        IDENT
         INT_CONST               : "An integer is a positive, zero, or negative number that can be written without a fractional component (i.e. no decimal point places)"
         FLOAT_CONST             : "A floating-point number is a rational number (i.e. includes numbers with decimal point places"
         CHAR_CONST              : "One single character"
         STRING_CONST            : "Any sequence of characters or the empty sequence"
-        BOOL_CONST_(boolean)    : "One of true or false"
+        BOOL_CONST_             : "One of true or false"
         ARRAY_CONST             : "An array of elements"
     }
 }
@@ -226,7 +225,6 @@ define call_expr {
         input_output_call       : "Use a built-in input/output function"
         math_call               : "Use a built-in math function"
         string_method_call      : "Use a built-in string method"
-        array_method_call       : "Use a built-in array method"
         user_function_call      : "Use a user-defined function"
     }
 }
@@ -272,11 +270,7 @@ define return_stmt {
 }
 
 define user_function_call {
-    CALL IDENT("FUNCTION NAME") WITH expr_list
-}
-
-define array_method_call {
-    "IN ARRAY" expr(array) CALL array_method
+    IDENT("FUNCTION NAME") WITH expr_list
 }
 
 define array_method {
@@ -340,17 +334,17 @@ define string_size {
 
 define input_output_call {
     any_of {
-        input_output_print(print)       : "Print the value of the given expression (text, number etc.)"
-        input_output_input(input)       : "Prompt the user with a text message and get user-input"
+        input_output_printf(printf)       : "Print the value of the given expression (text, number etc.)"
+        input_output_scanf(scanf)       : "Prompt the user with a text message and get user-input"
     }
 }
 
-define input_output_print {
-    CALL print WITH expr_list
+define input_output_printf {
+    CALL printf WITH expr_list
 }
 
-define input_output_input {
-    CALL input WITH expr(prompt_message)
+define input_output_scanf {
+    CALL scanf WITH expr(prompt_message)
 }
 
 define math_call {

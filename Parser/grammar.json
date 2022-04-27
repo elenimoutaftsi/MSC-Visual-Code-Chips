@@ -467,10 +467,6 @@
                 },
                 {
                     "type": "terminal",
-                    "name": "IDENT"
-                },
-                {
-                    "type": "terminal",
                     "name": "INT_CONST",
                     "tooltip": "An integer is a positive, zero, or negative number that can be written without a fractional component (i.e. no decimal point places)"
                 },
@@ -492,7 +488,6 @@
                 {
                     "type": "non_terminal",
                     "name": "BOOL_CONST_",
-                    "alias": "boolean",
                     "tooltip": "One of true or false"
                 },
                 {
@@ -545,11 +540,6 @@
                     "type": "non_terminal",
                     "name": "string_method_call",
                     "tooltip": "Use a built-in string method"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "array_method_call",
-                    "tooltip": "Use a built-in array method"
                 },
                 {
                     "type": "non_terminal",
@@ -713,10 +703,6 @@
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "CALL"
-                },
-                {
-                    "type": "terminal",
                     "name": "IDENT",
                     "alias": "FUNCTION NAME"
                 },
@@ -727,28 +713,6 @@
                 {
                     "type": "non_terminal",
                     "name": "expr_list"
-                }
-            ]
-        },
-        {
-            "name": "array_method_call",
-            "all_of": [
-                {
-                    "type": "terminal",
-                    "name": "IN ARRAY"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "expr",
-                    "alias": "array"
-                },
-                {
-                    "type": "terminal",
-                    "name": "CALL"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "array_method"
                 }
             ]
         },
@@ -1002,20 +966,20 @@
             "any_of": [
                 {
                     "type": "non_terminal",
-                    "name": "input_output_print",
-                    "alias": "print",
+                    "name": "input_output_printf",
+                    "alias": "printf",
                     "tooltip": "Print the value of the given expression (text, number etc.)"
                 },
                 {
                     "type": "non_terminal",
-                    "name": "input_output_input",
-                    "alias": "input",
+                    "name": "input_output_scanf",
+                    "alias": "scanf",
                     "tooltip": "Prompt the user with a text message and get user-input"
                 }
             ]
         },
         {
-            "name": "input_output_print",
+            "name": "input_output_printf",
             "all_of": [
                 {
                     "type": "terminal",
@@ -1023,7 +987,7 @@
                 },
                 {
                     "type": "terminal",
-                    "name": "print"
+                    "name": "printf"
                 },
                 {
                     "type": "terminal",
@@ -1036,7 +1000,7 @@
             ]
         },
         {
-            "name": "input_output_input",
+            "name": "input_output_scanf",
             "all_of": [
                 {
                     "type": "terminal",
@@ -1044,7 +1008,7 @@
                 },
                 {
                     "type": "terminal",
-                    "name": "input"
+                    "name": "scanf"
                 },
                 {
                     "type": "terminal",
