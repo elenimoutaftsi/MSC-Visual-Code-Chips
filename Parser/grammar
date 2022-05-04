@@ -4,7 +4,7 @@ non_terminal {
     stmt
     defs
     def
-    func_type var_type
+    func_type var_type var_decl
     if_stmt if_else_stmt while_stmt for_stmt expr func_def break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
     binary_arith_expr unary_minus_expr unary_expr unary_back_expr unary_front_expr
@@ -15,10 +15,9 @@ non_terminal {
     ident_list expr_list element_list
     array_method string_method
     array_get array_insert array_push_back array_set array_size
-    string_append string_get_character string_get_substring string_size
+    string_append string_copy_string string_compare_strings string_size
     input_output_printf input_output_scanf
     math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos
-    VARIABLE_DECLARATION
 }
 
 terminal {
@@ -35,7 +34,7 @@ terminal {
     ARRAY "IN ARRAY"
     get insert push_back set get_size
     "IN STRING"
-    append get_character get_substring
+    append strcpy strcmp
     printf scanf
     pow sqrt round floor ceiling sin cos
 }
@@ -199,7 +198,7 @@ define not_expr {
 
 define primary_expr {
     any_of {
-        VARIABLE_DECLARATION    : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
+        var_decl    : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
         INT_CONST               : "An integer is a positive, zero, or negative number that can be written without a fractional component (i.e. no decimal point places)"
         FLOAT_CONST             : "A floating-point number is a rational number (i.e. includes numbers with decimal point places"
         CHAR_CONST              : "One single character"
@@ -209,7 +208,7 @@ define primary_expr {
     }
 }
 
-define VARIABLE_DECLARATION {
+define var_decl {
     var_type IDENT
 }
 
@@ -310,8 +309,8 @@ define string_method_call {
 define string_method {
     any_of {
         string_append(append)                           : "Get a new string with the argument string added to the end (suffix) of the original"
-        string_get_character(get_character)             : "Get the character at the specified position of the string"
-        string_get_substring(get_substring)             : "Get a substring of a string, giving a start position and an end position"
+        string_copy_string(copy_string)               : "Can copy the content of a string to another"
+        string_compare_strings(compare_string)            : "Can compare two strings"
         string_size(get_size)                           : "Get the count of characters contained in the string"
     }
 }
@@ -320,12 +319,12 @@ define string_append {
     append WITH expr("string")
 }
 
-define string_get_character {
-    get_character WITH expr(index)
+define string_copy_string {
+    strcpy WITH expr("string_dest") expr("string_dest")
 }
 
-define string_get_substring {
-    get_substring WITH expr(start_index) expr(end_index)
+define string_compare_strings {
+    strcmp WITH expr("string1") expr("string2")
 }
 
 define string_size {
@@ -408,7 +407,7 @@ define for_stmt {
 }
 
 define ident_list {
-    list_of VARIABLE_DECLARATION
+    list_of var_decl
 }
 
 define expr_list {

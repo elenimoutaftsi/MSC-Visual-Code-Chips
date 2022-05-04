@@ -462,7 +462,7 @@
             "any_of": [
                 {
                     "type": "non_terminal",
-                    "name": "VARIABLE_DECLARATION",
+                    "name": "var_decl",
                     "tooltip": "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
                 },
                 {
@@ -498,7 +498,7 @@
             ]
         },
         {
-            "name": "VARIABLE_DECLARATION",
+            "name": "var_decl",
             "all_of": [
                 {
                     "type": "non_terminal",
@@ -875,15 +875,15 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "string_get_character",
-                    "alias": "get_character",
-                    "tooltip": "Get the character at the specified position of the string"
+                    "name": "string_copy_string",
+                    "alias": "copy_string",
+                    "tooltip": "Can copy the content of a string to another"
                 },
                 {
                     "type": "non_terminal",
-                    "name": "string_get_substring",
-                    "alias": "get_substring",
-                    "tooltip": "Get a substring of a string, giving a start position and an end position"
+                    "name": "string_compare_strings",
+                    "alias": "compare_string",
+                    "tooltip": "Can compare two strings"
                 },
                 {
                     "type": "non_terminal",
@@ -912,11 +912,11 @@
             ]
         },
         {
-            "name": "string_get_character",
+            "name": "string_copy_string",
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "get_character"
+                    "name": "strcpy"
                 },
                 {
                     "type": "terminal",
@@ -925,16 +925,21 @@
                 {
                     "type": "non_terminal",
                     "name": "expr",
-                    "alias": "index"
+                    "alias": "string_dest"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "expr",
+                    "alias": "string_dest"
                 }
             ]
         },
         {
-            "name": "string_get_substring",
+            "name": "string_compare_strings",
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "get_substring"
+                    "name": "strcmp"
                 },
                 {
                     "type": "terminal",
@@ -943,12 +948,12 @@
                 {
                     "type": "non_terminal",
                     "name": "expr",
-                    "alias": "start_index"
+                    "alias": "string1"
                 },
                 {
                     "type": "non_terminal",
                     "name": "expr",
-                    "alias": "end_index"
+                    "alias": "string2"
                 }
             ]
         },
@@ -1327,7 +1332,7 @@
             "list_of": [
                 {
                     "type": "non_terminal",
-                    "name": "VARIABLE_DECLARATION"
+                    "name": "var_decl"
                 }
             ]
         },

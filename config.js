@@ -75,6 +75,61 @@ export let config = {
                 ]
             },
             {
+                "name": "func_type",
+                "any_of": [
+                    {
+                        "type": "terminal",
+                        "name": "INT",
+                        "tooltip": "FUNCTION returns int "
+                    },
+                    {
+                        "type": "terminal",
+                        "name": "CHAR",
+                        "tooltip": "FUNCTION returns char "
+                    },
+                    {
+                        "type": "terminal",
+                        "name": "FLOAT",
+                        "tooltip": "FUNCTION returns float "
+                    },
+                    {
+                        "type": "terminal",
+                        "name": "DOUBLE",
+                        "tooltip": "FUNCTION returns double "
+                    },
+                    {
+                        "type": "terminal",
+                        "name": "VOID",
+                        "tooltip": "FUNCTION returns nothing "
+                    }
+                ]
+            },
+            {
+                "name": "var_type",
+                "any_of": [
+                    {
+                        "type": "terminal",
+                        "name": "INT",
+                        "tooltip": "Int variable definition"
+                    },
+                    {
+                        "type": "terminal",
+                        "name": "CHAR",
+                        "tooltip": "Char variable definition"
+                    },
+                    {
+                        "type": "terminal",
+                        "name": "FLOAT",
+                        "tooltip": "Float variable definition"
+                    },
+                    {
+                        "type": "terminal",
+                        "name": "DOUBLE",
+                        "tooltip": "Double variable definition"
+                    }
+                ]
+            },
+            {
                 "name": "def",
                 "any_of": [
                     {
@@ -407,9 +462,9 @@ export let config = {
                 "name": "primary_expr",
                 "any_of": [
                     {
-                        "type": "terminal",
-                        "name": "IDENT",
-                        "tooltip": "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters"
+                        "type": "non_terminal",
+                        "name": "var_decl",
+                        "tooltip": "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
                     },
                     {
                         "type": "terminal",
@@ -434,13 +489,25 @@ export let config = {
                     {
                         "type": "non_terminal",
                         "name": "BOOL_CONST_",
-                        "alias": "boolean",
                         "tooltip": "One of true or false"
                     },
                     {
                         "type": "non_terminal",
                         "name": "ARRAY_CONST",
                         "tooltip": "An array of elements"
+                    }
+                ]
+            },
+            {
+                "name": "var_decl",
+                "all_of": [
+                    {
+                        "type": "non_terminal",
+                        "name": "var_type"
+                    },
+                    {
+                        "type": "terminal",
+                        "name": "IDENT"
                     }
                 ]
             },
@@ -477,11 +544,6 @@ export let config = {
                     },
                     {
                         "type": "non_terminal",
-                        "name": "array_method_call",
-                        "tooltip": "Use a built-in array method"
-                    },
-                    {
-                        "type": "non_terminal",
                         "name": "user_function_call",
                         "tooltip": "Use a user-defined function"
                     }
@@ -490,6 +552,10 @@ export let config = {
             {
                 "name": "ARRAY_CONST",
                 "all_of": [
+                    {
+                        "type": "non_terminal",
+                        "name": "var_type"
+                    },
                     {
                         "type": "terminal",
                         "name": "ARRAY"
@@ -576,8 +642,8 @@ export let config = {
                 "name": "func_def",
                 "all_of": [
                     {
-                        "type": "terminal",
-                        "name": "FUNCTION"
+                        "type": "non_terminal",
+                        "name": "func_type"
                     },
                     {
                         "type": "terminal",
@@ -586,7 +652,11 @@ export let config = {
                     },
                     {
                         "type": "terminal",
-                        "name": "OF"
+                        "name": "WITH"
+                    },
+                    {
+                        "type": "terminal",
+                        "name": "PARAMETERS"
                     },
                     {
                         "type": "non_terminal",
@@ -634,10 +704,6 @@ export let config = {
                 "all_of": [
                     {
                         "type": "terminal",
-                        "name": "CALL"
-                    },
-                    {
-                        "type": "terminal",
                         "name": "IDENT",
                         "alias": "FUNCTION NAME"
                     },
@@ -648,28 +714,6 @@ export let config = {
                     {
                         "type": "non_terminal",
                         "name": "expr_list"
-                    }
-                ]
-            },
-            {
-                "name": "array_method_call",
-                "all_of": [
-                    {
-                        "type": "terminal",
-                        "name": "IN ARRAY"
-                    },
-                    {
-                        "type": "non_terminal",
-                        "name": "expr",
-                        "alias": "array"
-                    },
-                    {
-                        "type": "terminal",
-                        "name": "CALL"
-                    },
-                    {
-                        "type": "non_terminal",
-                        "name": "array_method"
                     }
                 ]
             },
@@ -832,15 +876,15 @@ export let config = {
                     },
                     {
                         "type": "non_terminal",
-                        "name": "string_get_character",
-                        "alias": "get_character",
-                        "tooltip": "Get the character at the specified position of the string"
+                        "name": "string_copy_string",
+                        "alias": "copy_string",
+                        "tooltip": "Can copy the content of a string to another"
                     },
                     {
                         "type": "non_terminal",
-                        "name": "string_get_substring",
-                        "alias": "get_substring",
-                        "tooltip": "Get a substring of a string, giving a start position and an end position"
+                        "name": "string_compare_strings",
+                        "alias": "compare_string",
+                        "tooltip": "Can compare two strings"
                     },
                     {
                         "type": "non_terminal",
@@ -869,11 +913,11 @@ export let config = {
                 ]
             },
             {
-                "name": "string_get_character",
+                "name": "string_copy_string",
                 "all_of": [
                     {
                         "type": "terminal",
-                        "name": "get_character"
+                        "name": "strcpy"
                     },
                     {
                         "type": "terminal",
@@ -882,16 +926,21 @@ export let config = {
                     {
                         "type": "non_terminal",
                         "name": "expr",
-                        "alias": "index"
+                        "alias": "string_dest"
+                    },
+                    {
+                        "type": "non_terminal",
+                        "name": "expr",
+                        "alias": "string_dest"
                     }
                 ]
             },
             {
-                "name": "string_get_substring",
+                "name": "string_compare_strings",
                 "all_of": [
                     {
                         "type": "terminal",
-                        "name": "get_substring"
+                        "name": "strcmp"
                     },
                     {
                         "type": "terminal",
@@ -900,12 +949,12 @@ export let config = {
                     {
                         "type": "non_terminal",
                         "name": "expr",
-                        "alias": "start_index"
+                        "alias": "string1"
                     },
                     {
                         "type": "non_terminal",
                         "name": "expr",
-                        "alias": "end_index"
+                        "alias": "string2"
                     }
                 ]
             },
@@ -923,20 +972,20 @@ export let config = {
                 "any_of": [
                     {
                         "type": "non_terminal",
-                        "name": "input_output_print",
-                        "alias": "print",
+                        "name": "input_output_printf",
+                        "alias": "printf",
                         "tooltip": "Print the value of the given expression (text, number etc.)"
                     },
                     {
                         "type": "non_terminal",
-                        "name": "input_output_input",
-                        "alias": "input",
+                        "name": "input_output_scanf",
+                        "alias": "scanf",
                         "tooltip": "Prompt the user with a text message and get user-input"
                     }
                 ]
             },
             {
-                "name": "input_output_print",
+                "name": "input_output_printf",
                 "all_of": [
                     {
                         "type": "terminal",
@@ -944,7 +993,7 @@ export let config = {
                     },
                     {
                         "type": "terminal",
-                        "name": "print"
+                        "name": "printf"
                     },
                     {
                         "type": "terminal",
@@ -957,7 +1006,7 @@ export let config = {
                 ]
             },
             {
-                "name": "input_output_input",
+                "name": "input_output_scanf",
                 "all_of": [
                     {
                         "type": "terminal",
@@ -965,7 +1014,7 @@ export let config = {
                     },
                     {
                         "type": "terminal",
-                        "name": "input"
+                        "name": "scanf"
                     },
                     {
                         "type": "terminal",
@@ -1283,8 +1332,8 @@ export let config = {
                 "name": "ident_list",
                 "list_of": [
                     {
-                        "type": "terminal",
-                        "name": "IDENT"
+                        "type": "non_terminal",
+                        "name": "var_decl"
                     }
                 ]
             },
