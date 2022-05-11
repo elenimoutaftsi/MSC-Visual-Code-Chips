@@ -4,6 +4,7 @@ non_terminal {
     stmt
     defs
     def
+    var_types
     func_type var_type var_decl
     if_stmt if_else_stmt while_stmt for_stmt expr func_def break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
@@ -343,7 +344,13 @@ define input_output_printf {
 }
 
 define input_output_scanf {
-    CALL scanf WITH expr(prompt_message)
+    CALL scanf WITH var_types
+}
+
+define var_types {
+    list_of {
+        var_type
+    }
 }
 
 define math_call {

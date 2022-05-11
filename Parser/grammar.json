@@ -1021,8 +1021,16 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "expr",
-                    "alias": "prompt_message"
+                    "name": "var_types"
+                }
+            ]
+        },
+        {
+            "name": "var_types",
+            "list_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "var_type"
                 }
             ]
         },
