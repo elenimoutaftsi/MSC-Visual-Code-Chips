@@ -5,7 +5,8 @@ non_terminal {
     defs
     def
     var_types
-    func_type var_type var_decl
+    func_type var_type VAR_DECLARATION
+    printf_arg printf_variable scanf_arg scanf_variable printf_variables scanf_variables
     if_stmt if_else_stmt while_stmt for_stmt expr func_def break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
     binary_arith_expr unary_minus_expr unary_expr unary_back_expr unary_front_expr
@@ -199,7 +200,8 @@ define not_expr {
 
 define primary_expr {
     any_of {
-        var_decl    : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
+        VAR_DECLARATION    : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
+        IDENT
         INT_CONST               : "An integer is a positive, zero, or negative number that can be written without a fractional component (i.e. no decimal point places)"
         FLOAT_CONST             : "A floating-point number is a rational number (i.e. includes numbers with decimal point places"
         CHAR_CONST              : "One single character"
@@ -209,7 +211,7 @@ define primary_expr {
     }
 }
 
-define var_decl {
+define VAR_DECLARATION {
     var_type IDENT
 }
 
@@ -340,17 +342,38 @@ define input_output_call {
 }
 
 define input_output_printf {
-    CALL printf WITH expr_list
+    CALL printf WITH printf_arg
 }
 
 define input_output_scanf {
-    CALL scanf WITH var_types
+    CALL scanf WITH scanf_arg
+}
+
+define printf_arg {
+    any_of{
+        printf_variable
+        STRING_CONST
+    }
+}
+
+define printf_variable {
+    list_of printf_variables 
+}
+
+define printf_variables {
+    var_type IDENT
+}
+
+define scanf_arg {
+    list_of scanf_variables   
+}
+
+define scanf_variables {
+   var_type IDENT
 }
 
 define var_types {
-    list_of {
-        var_type
-    }
+    list_of var_type 
 }
 
 define math_call {
@@ -414,7 +437,7 @@ define for_stmt {
 }
 
 define ident_list {
-    list_of var_decl
+    list_of VAR_DECLARATION
 }
 
 define expr_list {

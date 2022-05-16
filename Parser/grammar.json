@@ -462,8 +462,12 @@
             "any_of": [
                 {
                     "type": "non_terminal",
-                    "name": "var_decl",
+                    "name": "VAR_DECLARATION",
                     "tooltip": "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
+                },
+                {
+                    "type": "terminal",
+                    "name": "IDENT"
                 },
                 {
                     "type": "terminal",
@@ -498,7 +502,7 @@
             ]
         },
         {
-            "name": "var_decl",
+            "name": "VAR_DECLARATION",
             "all_of": [
                 {
                     "type": "non_terminal",
@@ -1000,7 +1004,7 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "expr_list"
+                    "name": "printf_arg"
                 }
             ]
         },
@@ -1021,7 +1025,64 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "var_types"
+                    "name": "scanf_arg"
+                }
+            ]
+        },
+        {
+            "name": "printf_arg",
+            "any_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "printf_variable"
+                },
+                {
+                    "type": "terminal",
+                    "name": "STRING_CONST"
+                }
+            ]
+        },
+        {
+            "name": "printf_variable",
+            "list_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "printf_variables"
+                }
+            ]
+        },
+        {
+            "name": "printf_variables",
+            "all_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "var_type"
+                },
+                {
+                    "type": "terminal",
+                    "name": "IDENT"
+                }
+            ]
+        },
+        {
+            "name": "scanf_arg",
+            "list_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "scanf_variables"
+                }
+            ]
+        },
+        {
+            "name": "scanf_variables",
+            "all_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "var_type"
+                },
+                {
+                    "type": "terminal",
+                    "name": "IDENT"
                 }
             ]
         },
@@ -1340,7 +1401,7 @@
             "list_of": [
                 {
                     "type": "non_terminal",
-                    "name": "var_decl"
+                    "name": "VAR_DECLARATION"
                 }
             ]
         },
