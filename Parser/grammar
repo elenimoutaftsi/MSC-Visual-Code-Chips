@@ -6,6 +6,7 @@ non_terminal {
     def
     var_types
     func_type var_type VAR_DECLARATION
+    Array_index assign_left
     printf_arg printf_variable scanf_arg scanf_variable printf_variables scanf_variables
     if_stmt if_else_stmt while_stmt for_stmt expr func_def break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
@@ -32,7 +33,7 @@ terminal {
     INT CHAR FLOAT DOUBLE VOID
     true false
     IF ELSE WHILE FOR BREAK CONTINUE RETURN
-    CALL FUNCTION OF WITH PARAMETERS "(" ")" "{" "}"
+    CALL FUNCTION OF WITH PARAMETERS "(" ")" "{" "}" "[" "]"
     ARRAY "IN ARRAY"
     get insert push_back set get_size
     "IN STRING"
@@ -88,7 +89,7 @@ define var_type {
 define def {
     any_of {
         stmt
-        func_def           : "Define reusable code as a function"
+        func_def                : "Define reusable code as a function"
     }
 }
 
@@ -119,31 +120,31 @@ define unary_expr {
 }
 
 define unary_back_expr {
-    unary_op                   : "An unary operator (e.g. ++, --)"
-    expr                       : "The second operand"
+    unary_op                    : "An unary operator (e.g. ++, --)"
+    expr                        : "The second operand"
 }
 
 define unary_front_expr {
-    expr                       : "The first operand" 
-    unary_op                   : "An unary operator (e.g. ++, --)"
+    expr                        : "The first operand" 
+    unary_op                    : "An unary operator (e.g. ++, --)"
 }
 
 define unary_op {
     any_of {
-        PLUS_PLUS("++")                   : "Increment by one"
-        MINUS_MINUS("- -")                : "Decremen by one"
+        PLUS_PLUS("++")         : "Increment by one"
+        MINUS_MINUS("- -")      : "Decrement by one"
     }
 }
 
 define unary_minus_expr {
-    UMINUS("-")
-    expr
+    UMINUS("-")                     :"The first operand"
+    expr                            : "The second operand"
 }
 
 define binary_arith_expr {
-    expr                    : "The first operand"
-    arith_op                : "An arithmetic operator (e.g. +, -)"
-    expr                    : "The second operand"
+    expr                            : "The first operand"
+    arith_op                        : "An arithmetic operator (e.g. +, -)"
+    expr                            : "The second operand"
 }
 
 define arith_op {
@@ -157,9 +158,9 @@ define arith_op {
 }
 
 define rel_expr {
-    expr                    : "The first operand"
-    rel_op                  : "A comparison operator that returns true or false (e.g <, >)"
-    expr                    : "The second operand"
+    expr                            : "The first operand"
+    rel_op                          : "A comparison operator that returns true or false (e.g <, >)"
+    expr                            : "The second operand"
 }
 
 define rel_op {
@@ -181,15 +182,15 @@ define logical_expr {
 }
 
 define binary_logical_expr {
-    expr                    : "The first operand"
-    logical_binary_op       : "Performs a binary operation with two operands"
-    expr                    : "The second operand"
+    expr                        : "The first operand"
+    logical_binary_op           : "Performs a binary operation with two operands"
+    expr                        : "The second operand"
 }
 
 define logical_binary_op {
     any_of {
-        AND("&&")                        : "Returns true if both operands are true, else returns false"
-        OR("||")                         : "Returns true if either operand is true, else returns false"
+        AND("&&")                : "Returns true if both operands are true, else returns false"
+        OR("||")                 : "Returns true if either operand is true, else returns false"
     }
 }
 
@@ -200,8 +201,8 @@ define not_expr {
 
 define primary_expr {
     any_of {
-        VAR_DECLARATION    : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
-        IDENT
+        VAR_DECLARATION         : "Variable declaration with the type and name"
+        IDENT                   : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
         INT_CONST               : "An integer is a positive, zero, or negative number that can be written without a fractional component (i.e. no decimal point places)"
         FLOAT_CONST             : "A floating-point number is a rational number (i.e. includes numbers with decimal point places"
         CHAR_CONST              : "One single character"
@@ -232,7 +233,7 @@ define call_expr {
 }
 
 define ARRAY_CONST {
-    var_type ARRAY WITH element_list
+    var_type ARRAY WITH element_list    : "Array declaration with type and elements"
 }
 
 define element_list {
@@ -240,7 +241,17 @@ define element_list {
 }
 
 define assign_expr {
-    IDENT assign_op expr   
+    assign_left assign_op expr            
+}
+define assign_left {
+    any_of{
+        primary_expr            :"Assign values in primary expr"
+        Array_index             :"Assign values in array"
+    }   
+}
+
+define Array_index{
+    IDENT(Array_name) "[" INT_CONST "]"
 }
 
 define assign_op {
@@ -275,36 +286,6 @@ define user_function_call {
     IDENT("FUNCTION NAME") WITH expr_list
 }
 
-define array_method {
-    any_of { 
-        array_get(get)                  : "Get an element by its position in the array"
-        array_insert(insert)            : "Insert an element at a position in the array. Elements that previously were at the position, or after it, are moved one place to the right"
-        array_push_back(push_back)      : "Insert an element at the end of the array"
-        array_set(set)                  : "Set (Replace) an element in a position of the array to a new character"
-        array_size(get_size)            : "Get the count of elements in the array"
-    }
-}
-
-define array_get {
-    get WITH expr(index)
-}
-
-define array_insert {
-    insert WITH expr(index) expr(element)
-}
-
-define array_push_back {
-    push_back WITH expr(element)
-}
-
-define array_set {
-    set WITH expr(index) expr(element)
-}
-
-define array_size {
-    get_size
-}
-
 define string_method_call {
     "IN STRING" expr("string") CALL string_method
 }
@@ -312,8 +293,8 @@ define string_method_call {
 define string_method {
     any_of {
         string_append(append)                           : "Get a new string with the argument string added to the end (suffix) of the original"
-        string_copy_string(copy_string)               : "Can copy the content of a string to another"
-        string_compare_strings(compare_string)            : "Can compare two strings"
+        string_copy_string(copy_string)                 : "Can copy the content of a string to another"
+        string_compare_strings(compare_string)          : "Can compare two strings"
         string_size(get_size)                           : "Get the count of characters contained in the string"
     }
 }
@@ -323,7 +304,7 @@ define string_append {
 }
 
 define string_copy_string {
-    strcpy WITH expr("string_dest") expr("string_dest")
+    strcpy WITH expr("string_dest") expr("string_source")
 }
 
 define string_compare_strings {
@@ -337,7 +318,7 @@ define string_size {
 define input_output_call {
     any_of {
         input_output_printf(printf)       : "Print the value of the given expression (text, number etc.)"
-        input_output_scanf(scanf)       : "Prompt the user with a text message and get user-input"
+        input_output_scanf(scanf)         : "Prompt the user with a text message and get user-input"
     }
 }
 
@@ -351,8 +332,8 @@ define input_output_scanf {
 
 define printf_arg {
     any_of{
-        printf_variable
-        STRING_CONST
+        printf_variable                    :"Print variable in output screen"
+        STRING_CONST                       :"Print text in output screen"
     }
 }
 

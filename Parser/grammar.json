@@ -255,7 +255,7 @@
                     "type": "terminal",
                     "name": "MINUS_MINUS",
                     "alias": "- -",
-                    "tooltip": "Decremen by one"
+                    "tooltip": "Decrement by one"
                 }
             ]
         },
@@ -265,11 +265,13 @@
                 {
                     "type": "terminal",
                     "name": "UMINUS",
-                    "alias": "-"
+                    "alias": "-",
+                    "tooltip": "The first operand"
                 },
                 {
                     "type": "non_terminal",
-                    "name": "expr"
+                    "name": "expr",
+                    "tooltip": "The second operand"
                 }
             ]
         },
@@ -463,11 +465,12 @@
                 {
                     "type": "non_terminal",
                     "name": "VAR_DECLARATION",
-                    "tooltip": "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
+                    "tooltip": "Variable declaration with the type and name"
                 },
                 {
                     "type": "terminal",
-                    "name": "IDENT"
+                    "name": "IDENT",
+                    "tooltip": "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
                 },
                 {
                     "type": "terminal",
@@ -569,7 +572,8 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "element_list"
+                    "name": "element_list",
+                    "tooltip": "Array declaration with type and elements"
                 }
             ]
         },
@@ -587,8 +591,8 @@
             "name": "assign_expr",
             "all_of": [
                 {
-                    "type": "terminal",
-                    "name": "IDENT"
+                    "type": "non_terminal",
+                    "name": "assign_left"
                 },
                 {
                     "type": "non_terminal",
@@ -597,6 +601,43 @@
                 {
                     "type": "non_terminal",
                     "name": "expr"
+                }
+            ]
+        },
+        {
+            "name": "assign_left",
+            "any_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "primary_expr",
+                    "tooltip": "Assign values in primary expr"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "Array_index",
+                    "tooltip": "Assign values in array"
+                }
+            ]
+        },
+        {
+            "name": "Array_index",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "IDENT",
+                    "alias": "Array_name"
+                },
+                {
+                    "type": "terminal",
+                    "name": "["
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST"
+                },
+                {
+                    "type": "terminal",
+                    "name": "]"
                 }
             ]
         },
@@ -721,132 +762,6 @@
             ]
         },
         {
-            "name": "array_method",
-            "any_of": [
-                {
-                    "type": "non_terminal",
-                    "name": "array_get",
-                    "alias": "get",
-                    "tooltip": "Get an element by its position in the array"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "array_insert",
-                    "alias": "insert",
-                    "tooltip": "Insert an element at a position in the array. Elements that previously were at the position, or after it, are moved one place to the right"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "array_push_back",
-                    "alias": "push_back",
-                    "tooltip": "Insert an element at the end of the array"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "array_set",
-                    "alias": "set",
-                    "tooltip": "Set (Replace) an element in a position of the array to a new character"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "array_size",
-                    "alias": "get_size",
-                    "tooltip": "Get the count of elements in the array"
-                }
-            ]
-        },
-        {
-            "name": "array_get",
-            "all_of": [
-                {
-                    "type": "terminal",
-                    "name": "get"
-                },
-                {
-                    "type": "terminal",
-                    "name": "WITH"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "expr",
-                    "alias": "index"
-                }
-            ]
-        },
-        {
-            "name": "array_insert",
-            "all_of": [
-                {
-                    "type": "terminal",
-                    "name": "insert"
-                },
-                {
-                    "type": "terminal",
-                    "name": "WITH"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "expr",
-                    "alias": "index"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "expr",
-                    "alias": "element"
-                }
-            ]
-        },
-        {
-            "name": "array_push_back",
-            "all_of": [
-                {
-                    "type": "terminal",
-                    "name": "push_back"
-                },
-                {
-                    "type": "terminal",
-                    "name": "WITH"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "expr",
-                    "alias": "element"
-                }
-            ]
-        },
-        {
-            "name": "array_set",
-            "all_of": [
-                {
-                    "type": "terminal",
-                    "name": "set"
-                },
-                {
-                    "type": "terminal",
-                    "name": "WITH"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "expr",
-                    "alias": "index"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "expr",
-                    "alias": "element"
-                }
-            ]
-        },
-        {
-            "name": "array_size",
-            "all_of": [
-                {
-                    "type": "terminal",
-                    "name": "get_size"
-                }
-            ]
-        },
-        {
             "name": "string_method_call",
             "all_of": [
                 {
@@ -934,7 +849,7 @@
                 {
                     "type": "non_terminal",
                     "name": "expr",
-                    "alias": "string_dest"
+                    "alias": "string_source"
                 }
             ]
         },
@@ -1034,11 +949,13 @@
             "any_of": [
                 {
                     "type": "non_terminal",
-                    "name": "printf_variable"
+                    "name": "printf_variable",
+                    "tooltip": "Print variable in output screen"
                 },
                 {
                     "type": "terminal",
-                    "name": "STRING_CONST"
+                    "name": "STRING_CONST",
+                    "tooltip": "Print text in output screen"
                 }
             ]
         },
