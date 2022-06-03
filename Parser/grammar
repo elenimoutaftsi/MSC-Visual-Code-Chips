@@ -233,7 +233,7 @@ define call_expr {
 }
 
 define ARRAY_CONST {
-    var_type ARRAY WITH element_list    : "Array declaration with type and elements"
+    var_type IDENT(ARRAY NAME)[ INT_CONST(ARRAY SIZE) ]    : "Array declaration with type and elements"
 }
 
 define element_list {
