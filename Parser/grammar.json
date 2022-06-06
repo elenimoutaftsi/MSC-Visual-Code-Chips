@@ -129,11 +129,46 @@
             ]
         },
         {
+            "name": "Array_type",
+            "any_of": [
+                {
+                    "type": "terminal",
+                    "name": "INT",
+                    "tooltip": "Array of ints"
+                },
+                {
+                    "type": "terminal",
+                    "name": "CHAR",
+                    "tooltip": "Array of chars"
+                },
+                {
+                    "type": "terminal",
+                    "name": "FLOAT",
+                    "tooltip": "Array of floats"
+                },
+                {
+                    "type": "terminal",
+                    "name": "DOUBLE",
+                    "tooltip": "Array of doubles"
+                }
+            ]
+        },
+        {
             "name": "def",
             "any_of": [
                 {
                     "type": "non_terminal",
                     "name": "stmt"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "var_decl",
+                    "tooltip": "Variable or Array declaration with type and name"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "struct_def",
+                    "tooltip": "Struct declaration with name and fields"
                 },
                 {
                     "type": "non_terminal",
@@ -463,11 +498,6 @@
             "name": "primary_expr",
             "any_of": [
                 {
-                    "type": "non_terminal",
-                    "name": "VAR_DECLARATION",
-                    "tooltip": "Variable declaration with the type and name"
-                },
-                {
                     "type": "terminal",
                     "name": "IDENT",
                     "tooltip": "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
@@ -496,21 +526,41 @@
                     "type": "non_terminal",
                     "name": "BOOL_CONST_",
                     "tooltip": "One of true or false"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "ARRAY_CONST",
-                    "tooltip": "An array of elements"
                 }
             ]
         },
         {
-            "name": "VAR_DECLARATION",
+            "name": "var_decl",
+            "any_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "var_def",
+                    "tooltip": "Variable declaration with type and name"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "array_def",
+                    "tooltip": "Array declaration with type, name and size"
+                }
+            ]
+        },
+        {
+            "name": "var_def",
             "all_of": [
                 {
                     "type": "non_terminal",
                     "name": "var_type"
                 },
+                {
+                    "type": "terminal",
+                    "name": "IDENT",
+                    "alias": "VARIABLE_NAME"
+                }
+            ]
+        },
+        {
+            "name": "struct_def",
+            "all_of": [
                 {
                     "type": "terminal",
                     "name": "IDENT"
@@ -556,24 +606,30 @@
             ]
         },
         {
-            "name": "ARRAY_CONST",
+            "name": "array_def",
             "all_of": [
                 {
                     "type": "non_terminal",
-                    "name": "var_type"
+                    "name": "Array_type"
                 },
                 {
                     "type": "terminal",
-                    "name": "ARRAY"
+                    "name": "IDENT",
+                    "alias": "ARRAY_NAME"
                 },
                 {
                     "type": "terminal",
-                    "name": "WITH"
+                    "name": "["
                 },
                 {
-                    "type": "non_terminal",
-                    "name": "element_list",
-                    "tooltip": "Array declaration with type and elements"
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "ARRAY_SIZE"
+                },
+                {
+                    "type": "terminal",
+                    "name": "]",
+                    "tooltip": "Array declaration with type, name and size"
                 }
             ]
         },
@@ -625,7 +681,7 @@
                 {
                     "type": "terminal",
                     "name": "IDENT",
-                    "alias": "Array_name"
+                    "alias": "ARRAY_NAME"
                 },
                 {
                     "type": "terminal",
@@ -707,8 +763,42 @@
                     "name": "ident_list"
                 },
                 {
+                    "type": "terminal",
+                    "name": "{"
+                },
+                {
                     "type": "non_terminal",
                     "name": "stmts"
+                },
+                {
+                    "type": "terminal",
+                    "name": "}"
+                }
+            ]
+        },
+        {
+            "name": "struct_def",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "struct"
+                },
+                {
+                    "type": "terminal",
+                    "name": "IDENT",
+                    "alias": "STRUCT_NAME"
+                },
+                {
+                    "type": "terminal",
+                    "name": "{"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "ident_list"
+                },
+                {
+                    "type": "terminal",
+                    "name": "}"
                 }
             ]
         },
@@ -1318,7 +1408,7 @@
             "list_of": [
                 {
                     "type": "non_terminal",
-                    "name": "VAR_DECLARATION"
+                    "name": "var_decl"
                 }
             ]
         },

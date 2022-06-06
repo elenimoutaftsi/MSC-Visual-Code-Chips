@@ -4,8 +4,8 @@ non_terminal {
     stmt
     defs
     def
-    var_types
-    func_type var_type VAR_DECLARATION
+    var_decl var_def array_def struct_def
+    func_type var_type Array_type var_types
     Array_index assign_left
     printf_arg printf_variable scanf_arg scanf_variable printf_variables scanf_variables
     if_stmt if_else_stmt while_stmt for_stmt expr func_def break_stmt continue_stmt return_stmt
@@ -13,7 +13,7 @@ non_terminal {
     binary_arith_expr unary_minus_expr unary_expr unary_back_expr unary_front_expr
     arith_op rel_op logical_binary_op assign_op unary_op
     binary_logical_expr not_expr
-    BOOL_CONST_ ARRAY_CONST
+    BOOL_CONST_ 
     input_output_call math_call string_method_call array_method_call user_function_call
     ident_list expr_list element_list
     array_method string_method
@@ -38,6 +38,7 @@ terminal {
     get insert push_back set get_size
     "IN STRING"
     append strcpy strcmp
+    struct
     printf scanf
     pow sqrt round floor ceiling sin cos
 }
@@ -86,9 +87,20 @@ define var_type {
     }
 }
 
+define Array_type {
+    any_of {
+        INT                     : "Array of ints"
+        CHAR                    : "Array of chars"
+        FLOAT                   : "Array of floats"
+        DOUBLE                  : "Array of doubles"
+    }
+}
+
 define def {
     any_of {
         stmt
+        var_decl                : "Variable or Array declaration with type and name"
+        struct_def              : "Struct declaration with name and fields"
         func_def                : "Define reusable code as a function"
     }
 }
@@ -201,19 +213,28 @@ define not_expr {
 
 define primary_expr {
     any_of {
-        VAR_DECLARATION         : "Variable declaration with the type and name"
         IDENT                   : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
         INT_CONST               : "An integer is a positive, zero, or negative number that can be written without a fractional component (i.e. no decimal point places)"
         FLOAT_CONST             : "A floating-point number is a rational number (i.e. includes numbers with decimal point places"
         CHAR_CONST              : "One single character"
         STRING_CONST            : "Any sequence of characters or the empty sequence"
         BOOL_CONST_             : "One of true or false"
-        ARRAY_CONST             : "An array of elements"
     }
 }
 
-define VAR_DECLARATION {
-    var_type IDENT
+define var_decl {
+    any_of {
+        var_def                  : "Variable declaration with type and name"
+        array_def                : "Array declaration with type, name and size"
+    }
+}
+
+define var_def {
+    var_type IDENT(VARIABLE_NAME)          
+}
+
+define struct_def {
+    IDENT
 }
 
 define BOOL_CONST_ {
@@ -232,8 +253,8 @@ define call_expr {
     }
 }
 
-define ARRAY_CONST {
-    var_type IDENT(ARRAY NAME)[ INT_CONST(ARRAY SIZE) ]    : "Array declaration with type and elements"
+define array_def {
+    Array_type IDENT(ARRAY_NAME) "[" INT_CONST(ARRAY_SIZE) "]"    : "Array declaration with type, name and size"
 }
 
 define element_list {
@@ -251,7 +272,7 @@ define assign_left {
 }
 
 define Array_index{
-    IDENT(Array_name) "[" INT_CONST "]"
+    IDENT(ARRAY_NAME) "[" INT_CONST "]"
 }
 
 define assign_op {
@@ -266,7 +287,11 @@ define assign_op {
 }
 
 define func_def {
-   func_type IDENT(NAME) WITH PARAMETERS ident_list stmts  
+   func_type IDENT(NAME) WITH PARAMETERS ident_list "{" stmts  "}"
+}
+
+define struct_def {
+    struct IDENT(STRUCT_NAME) "{" ident_list "}"  
 }
 
 define break_stmt {
@@ -418,7 +443,7 @@ define for_stmt {
 }
 
 define ident_list {
-    list_of VAR_DECLARATION
+    list_of var_decl
 }
 
 define expr_list {
