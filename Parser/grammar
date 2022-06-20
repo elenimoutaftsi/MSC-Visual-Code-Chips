@@ -4,9 +4,9 @@ non_terminal {
     stmt
     defs
     def
-    var_decl var_def array_def struct_def
-    func_type var_type Array_type var_types
-    Array_index assign_left
+    var_decl var_def array_def struct_def scanf_type string_method stypes
+    func_type var_type Array_type var_types printf_types printf_type types variables listargs
+    ARRAY_INDEX STRUCT_FIELD assign_left
     printf_arg printf_variable scanf_arg scanf_variable printf_variables scanf_variables
     if_stmt if_else_stmt while_stmt for_stmt expr func_def break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
@@ -16,7 +16,7 @@ non_terminal {
     BOOL_CONST_ 
     input_output_call math_call string_method_call array_method_call user_function_call
     ident_list expr_list element_list
-    array_method string_method
+    array_method 
     array_get array_insert array_push_back array_set array_size
     string_append string_copy_string string_compare_strings string_size
     input_output_printf input_output_scanf
@@ -33,7 +33,7 @@ terminal {
     INT CHAR FLOAT DOUBLE VOID
     true false
     IF ELSE WHILE FOR BREAK CONTINUE RETURN
-    CALL FUNCTION OF WITH PARAMETERS "(" ")" "{" "}" "[" "]"
+    CALL FUNCTION OF WITH PARAMETERS "(" ")" "{" "}" "[" "]" "." ","
     ARRAY "IN ARRAY"
     get insert push_back set get_size
     "IN STRING"
@@ -41,6 +41,7 @@ terminal {
     struct
     printf scanf
     pow sqrt round floor ceiling sin cos
+    "%c" "%d" "%f"
 }
 
 define program {
@@ -214,6 +215,8 @@ define not_expr {
 define primary_expr {
     any_of {
         IDENT                   : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
+        ARRAY_INDEX             : "Array Index"
+        STRUCT_FIELD            : "Struct Field"
         INT_CONST               : "An integer is a positive, zero, or negative number that can be written without a fractional component (i.e. no decimal point places)"
         FLOAT_CONST             : "A floating-point number is a rational number (i.e. includes numbers with decimal point places"
         CHAR_CONST              : "One single character"
@@ -233,8 +236,8 @@ define var_def {
     var_type IDENT(VARIABLE_NAME)          
 }
 
-define struct_def {
-    IDENT
+define STRUCT_FIELD {
+    IDENT(STRUCT_NAME)"."IDENT(STRUCT_FIELD)
 }
 
 define BOOL_CONST_ {
@@ -248,7 +251,7 @@ define call_expr {
     any_of {
         input_output_call       : "Use a built-in input/output function"
         math_call               : "Use a built-in math function"
-        string_method_call      : "Use a built-in string method"
+        string_method_call           : "Use a built-in string method"
         user_function_call      : "Use a user-defined function"
     }
 }
@@ -265,13 +268,10 @@ define assign_expr {
     assign_left assign_op expr            
 }
 define assign_left {
-    any_of{
-        primary_expr            :"Assign values in primary expr"
-        Array_index             :"Assign values in array"
-    }   
+    primary_expr            :"Assign values in primary expr"
 }
 
-define Array_index{
+define ARRAY_INDEX{
     IDENT(ARRAY_NAME) "[" INT_CONST "]"
 }
 
@@ -308,14 +308,10 @@ define return_stmt {
 }
 
 define user_function_call {
-    IDENT("FUNCTION NAME") WITH expr_list
-}
+    IDENT("FUNCTION NAME")  expr_list 
+} 
 
 define string_method_call {
-    "IN STRING" expr("string") CALL string_method
-}
-
-define string_method {
     any_of {
         string_append(append)                           : "Get a new string with the argument string added to the end (suffix) of the original"
         string_copy_string(copy_string)                 : "Can copy the content of a string to another"
@@ -325,19 +321,19 @@ define string_method {
 }
 
 define string_append {
-    append WITH expr("string")
-}
+    append expr("string")
+ }
 
 define string_copy_string {
-    strcpy WITH expr("string_dest") expr("string_source")
+    strcpy expr("string_dest") "," expr("string_source")
 }
 
 define string_compare_strings {
-    strcmp WITH expr("string1") expr("string2")
+    strcmp  expr("string1") "," expr("string2")
 }
 
 define string_size {
-    get_size
+    get_size  expr("string")
 }
 
 define input_output_call {
@@ -348,11 +344,14 @@ define input_output_call {
 }
 
 define input_output_printf {
-    CALL printf WITH printf_arg
+    printf listargs
+}
+define listargs{
+    list_of printf_arg
 }
 
 define input_output_scanf {
-    CALL scanf WITH scanf_arg
+    scanf scanf_arg
 }
 
 define printf_arg {
@@ -363,23 +362,39 @@ define printf_arg {
 }
 
 define printf_variable {
-    list_of printf_variables 
+    types "," variables
 }
 
-define printf_variables {
-    var_type IDENT
+define types {
+    list_of printf_type
+}
+
+define variables {
+    list_of IDENT(VARIABLE_NAME)
+}
+
+define printf_type {
+    any_of {
+        "%d"                                 : " Print variable with int type"
+        "%f"                                 : " Print variable with double or float type"
+        "%c"                                 : " Print variable with character type"
+    } 
 }
 
 define scanf_arg {
-    list_of scanf_variables   
+    stypes "," variables  
 }
 
-define scanf_variables {
-   var_type IDENT
+define stypes {
+    list_of scanf_type
 }
 
-define var_types {
-    list_of var_type 
+define scanf_type {
+    any_of {
+        "%d"                                 : " Scan variable with int type"
+        "%f"                                 : " Scan variable with double or float type"
+        "%c"                                 : " Scan variable with character type"
+    } 
 }
 
 define math_call {
@@ -395,31 +410,31 @@ define math_call {
 }
 
 define math_pow {
-    CALL pow WITH expr(number) expr(exponent)
+    pow expr(number) "," expr(exponent)
 }
 
 define math_sqrt {
-    CALL sqrt WITH expr(number)
+    sqrt expr(number)
 }
 
 define math_round {
-    CALL round WITH expr(number)
+    round expr(number)
 }
 
 define math_floor {
-    CALL floor WITH expr(number)
+    floor expr(number)
 }
 
 define math_ceiling {
-    CALL ceiling WITH expr(number)
+    ceiling expr(number)
 }
 
 define math_sin {
-    CALL sin WITH expr(number)
+    sin expr(number)
 }
 
 define math_cos {
-    CALL cos WITH expr(number)
+    cos expr(number)
 }
 
 define if_stmt {

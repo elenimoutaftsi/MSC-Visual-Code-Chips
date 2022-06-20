@@ -503,6 +503,16 @@
                     "tooltip": "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
                 },
                 {
+                    "type": "non_terminal",
+                    "name": "ARRAY_INDEX",
+                    "tooltip": "Array Index"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "STRUCT_FIELD",
+                    "tooltip": "Struct Field"
+                },
+                {
                     "type": "terminal",
                     "name": "INT_CONST",
                     "tooltip": "An integer is a positive, zero, or negative number that can be written without a fractional component (i.e. no decimal point places)"
@@ -559,11 +569,21 @@
             ]
         },
         {
-            "name": "struct_def",
+            "name": "STRUCT_FIELD",
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "IDENT"
+                    "name": "IDENT",
+                    "alias": "STRUCT_NAME"
+                },
+                {
+                    "type": "terminal",
+                    "name": "."
+                },
+                {
+                    "type": "terminal",
+                    "name": "IDENT",
+                    "alias": "STRUCT_FIELD"
                 }
             ]
         },
@@ -662,21 +682,16 @@
         },
         {
             "name": "assign_left",
-            "any_of": [
+            "all_of": [
                 {
                     "type": "non_terminal",
                     "name": "primary_expr",
                     "tooltip": "Assign values in primary expr"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "Array_index",
-                    "tooltip": "Assign values in array"
                 }
             ]
         },
         {
-            "name": "Array_index",
+            "name": "ARRAY_INDEX",
             "all_of": [
                 {
                     "type": "terminal",
@@ -842,10 +857,6 @@
                     "alias": "FUNCTION NAME"
                 },
                 {
-                    "type": "terminal",
-                    "name": "WITH"
-                },
-                {
                     "type": "non_terminal",
                     "name": "expr_list"
                 }
@@ -853,28 +864,6 @@
         },
         {
             "name": "string_method_call",
-            "all_of": [
-                {
-                    "type": "terminal",
-                    "name": "IN STRING"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "expr",
-                    "alias": "string"
-                },
-                {
-                    "type": "terminal",
-                    "name": "CALL"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "string_method"
-                }
-            ]
-        },
-        {
-            "name": "string_method",
             "any_of": [
                 {
                     "type": "non_terminal",
@@ -910,10 +899,6 @@
                     "name": "append"
                 },
                 {
-                    "type": "terminal",
-                    "name": "WITH"
-                },
-                {
                     "type": "non_terminal",
                     "name": "expr",
                     "alias": "string"
@@ -928,13 +913,13 @@
                     "name": "strcpy"
                 },
                 {
-                    "type": "terminal",
-                    "name": "WITH"
-                },
-                {
                     "type": "non_terminal",
                     "name": "expr",
                     "alias": "string_dest"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
                 },
                 {
                     "type": "non_terminal",
@@ -951,13 +936,13 @@
                     "name": "strcmp"
                 },
                 {
-                    "type": "terminal",
-                    "name": "WITH"
-                },
-                {
                     "type": "non_terminal",
                     "name": "expr",
                     "alias": "string1"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
                 },
                 {
                     "type": "non_terminal",
@@ -972,6 +957,11 @@
                 {
                     "type": "terminal",
                     "name": "get_size"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "expr",
+                    "alias": "string"
                 }
             ]
         },
@@ -997,16 +987,17 @@
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "CALL"
-                },
-                {
-                    "type": "terminal",
                     "name": "printf"
                 },
                 {
-                    "type": "terminal",
-                    "name": "WITH"
-                },
+                    "type": "non_terminal",
+                    "name": "listargs"
+                }
+            ]
+        },
+        {
+            "name": "listargs",
+            "list_of": [
                 {
                     "type": "non_terminal",
                     "name": "printf_arg"
@@ -1018,15 +1009,7 @@
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "CALL"
-                },
-                {
-                    "type": "terminal",
                     "name": "scanf"
-                },
-                {
-                    "type": "terminal",
-                    "name": "WITH"
                 },
                 {
                     "type": "non_terminal",
@@ -1051,54 +1034,103 @@
         },
         {
             "name": "printf_variable",
-            "list_of": [
+            "all_of": [
                 {
                     "type": "non_terminal",
-                    "name": "printf_variables"
+                    "name": "types"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "variables"
                 }
             ]
         },
         {
-            "name": "printf_variables",
-            "all_of": [
+            "name": "types",
+            "list_of": [
                 {
                     "type": "non_terminal",
-                    "name": "var_type"
+                    "name": "printf_type"
+                }
+            ]
+        },
+        {
+            "name": "variables",
+            "list_of": [
+                {
+                    "type": "terminal",
+                    "name": "IDENT",
+                    "alias": "VARIABLE_NAME"
+                }
+            ]
+        },
+        {
+            "name": "printf_type",
+            "any_of": [
+                {
+                    "type": "terminal",
+                    "name": "%d",
+                    "tooltip": " Print variable with int type"
                 },
                 {
                     "type": "terminal",
-                    "name": "IDENT"
+                    "name": "%f",
+                    "tooltip": " Print variable with double or float type"
+                },
+                {
+                    "type": "terminal",
+                    "name": "%c",
+                    "tooltip": " Print variable with character type"
                 }
             ]
         },
         {
             "name": "scanf_arg",
-            "list_of": [
-                {
-                    "type": "non_terminal",
-                    "name": "scanf_variables"
-                }
-            ]
-        },
-        {
-            "name": "scanf_variables",
             "all_of": [
                 {
                     "type": "non_terminal",
-                    "name": "var_type"
+                    "name": "stypes"
                 },
                 {
                     "type": "terminal",
-                    "name": "IDENT"
+                    "name": ","
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "variables"
                 }
             ]
         },
         {
-            "name": "var_types",
+            "name": "stypes",
             "list_of": [
                 {
                     "type": "non_terminal",
-                    "name": "var_type"
+                    "name": "scanf_type"
+                }
+            ]
+        },
+        {
+            "name": "scanf_type",
+            "any_of": [
+                {
+                    "type": "terminal",
+                    "name": "%d",
+                    "tooltip": " Scan variable with int type"
+                },
+                {
+                    "type": "terminal",
+                    "name": "%f",
+                    "tooltip": " Scan variable with double or float type"
+                },
+                {
+                    "type": "terminal",
+                    "name": "%c",
+                    "tooltip": " Scan variable with character type"
                 }
             ]
         },
@@ -1154,20 +1186,16 @@
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "CALL"
-                },
-                {
-                    "type": "terminal",
                     "name": "pow"
-                },
-                {
-                    "type": "terminal",
-                    "name": "WITH"
                 },
                 {
                     "type": "non_terminal",
                     "name": "expr",
                     "alias": "number"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
                 },
                 {
                     "type": "non_terminal",
@@ -1181,15 +1209,7 @@
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "CALL"
-                },
-                {
-                    "type": "terminal",
                     "name": "sqrt"
-                },
-                {
-                    "type": "terminal",
-                    "name": "WITH"
                 },
                 {
                     "type": "non_terminal",
@@ -1203,15 +1223,7 @@
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "CALL"
-                },
-                {
-                    "type": "terminal",
                     "name": "round"
-                },
-                {
-                    "type": "terminal",
-                    "name": "WITH"
                 },
                 {
                     "type": "non_terminal",
@@ -1225,15 +1237,7 @@
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "CALL"
-                },
-                {
-                    "type": "terminal",
                     "name": "floor"
-                },
-                {
-                    "type": "terminal",
-                    "name": "WITH"
                 },
                 {
                     "type": "non_terminal",
@@ -1247,15 +1251,7 @@
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "CALL"
-                },
-                {
-                    "type": "terminal",
                     "name": "ceiling"
-                },
-                {
-                    "type": "terminal",
-                    "name": "WITH"
                 },
                 {
                     "type": "non_terminal",
@@ -1269,15 +1265,7 @@
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "CALL"
-                },
-                {
-                    "type": "terminal",
                     "name": "sin"
-                },
-                {
-                    "type": "terminal",
-                    "name": "WITH"
                 },
                 {
                     "type": "non_terminal",
@@ -1291,15 +1279,7 @@
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "CALL"
-                },
-                {
-                    "type": "terminal",
                     "name": "cos"
-                },
-                {
-                    "type": "terminal",
-                    "name": "WITH"
                 },
                 {
                     "type": "non_terminal",
