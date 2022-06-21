@@ -78,27 +78,27 @@
             "any_of": [
                 {
                     "type": "terminal",
-                    "name": "INT",
+                    "name": "int",
                     "tooltip": "FUNCTION returns int "
                 },
                 {
                     "type": "terminal",
-                    "name": "CHAR",
+                    "name": "char",
                     "tooltip": "FUNCTION returns char "
                 },
                 {
                     "type": "terminal",
-                    "name": "FLOAT",
+                    "name": "float",
                     "tooltip": "FUNCTION returns float "
                 },
                 {
                     "type": "terminal",
-                    "name": "DOUBLE",
+                    "name": "double",
                     "tooltip": "FUNCTION returns double "
                 },
                 {
                     "type": "terminal",
-                    "name": "VOID",
+                    "name": "void",
                     "tooltip": "FUNCTION returns nothing "
                 }
             ]
@@ -108,47 +108,47 @@
             "any_of": [
                 {
                     "type": "terminal",
-                    "name": "INT",
+                    "name": "int",
                     "tooltip": "Int variable definition"
                 },
                 {
                     "type": "terminal",
-                    "name": "CHAR",
+                    "name": "char",
                     "tooltip": "Char variable definition"
                 },
                 {
                     "type": "terminal",
-                    "name": "FLOAT",
+                    "name": "float",
                     "tooltip": "Float variable definition"
                 },
                 {
                     "type": "terminal",
-                    "name": "DOUBLE",
+                    "name": "double",
                     "tooltip": "Double variable definition"
                 }
             ]
         },
         {
-            "name": "Array_type",
+            "name": "array_type",
             "any_of": [
                 {
                     "type": "terminal",
-                    "name": "INT",
+                    "name": "int",
                     "tooltip": "Array of ints"
                 },
                 {
                     "type": "terminal",
-                    "name": "CHAR",
+                    "name": "char",
                     "tooltip": "Array of chars"
                 },
                 {
                     "type": "terminal",
-                    "name": "FLOAT",
+                    "name": "float",
                     "tooltip": "Array of floats"
                 },
                 {
                     "type": "terminal",
-                    "name": "DOUBLE",
+                    "name": "double",
                     "tooltip": "Array of doubles"
                 }
             ]
@@ -504,14 +504,24 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "ARRAY_INDEX",
+                    "name": "array_index",
                     "tooltip": "Array Index"
                 },
                 {
                     "type": "non_terminal",
-                    "name": "STRUCT_FIELD",
+                    "name": "struct_field",
                     "tooltip": "Struct Field"
                 },
+                {
+                    "type": "non_terminal",
+                    "name": "const_values",
+                    "tooltip": "Constant Values"
+                }
+            ]
+        },
+        {
+            "name": "const_values",
+            "any_of": [
                 {
                     "type": "terminal",
                     "name": "INT_CONST",
@@ -564,17 +574,17 @@
                 {
                     "type": "terminal",
                     "name": "IDENT",
-                    "alias": "VARIABLE_NAME"
+                    "alias": "variable_name"
                 }
             ]
         },
         {
-            "name": "STRUCT_FIELD",
+            "name": "struct_field",
             "all_of": [
                 {
                     "type": "terminal",
                     "name": "IDENT",
-                    "alias": "STRUCT_NAME"
+                    "alias": "struct_name"
                 },
                 {
                     "type": "terminal",
@@ -583,7 +593,7 @@
                 {
                     "type": "terminal",
                     "name": "IDENT",
-                    "alias": "STRUCT_FIELD"
+                    "alias": "struct_field"
                 }
             ]
         },
@@ -630,12 +640,12 @@
             "all_of": [
                 {
                     "type": "non_terminal",
-                    "name": "Array_type"
+                    "name": "array_type"
                 },
                 {
                     "type": "terminal",
                     "name": "IDENT",
-                    "alias": "ARRAY_NAME"
+                    "alias": "array_name"
                 },
                 {
                     "type": "terminal",
@@ -644,7 +654,7 @@
                 {
                     "type": "terminal",
                     "name": "INT_CONST",
-                    "alias": "ARRAY_SIZE"
+                    "alias": "array_size"
                 },
                 {
                     "type": "terminal",
@@ -691,12 +701,12 @@
             ]
         },
         {
-            "name": "ARRAY_INDEX",
+            "name": "array_index",
             "all_of": [
                 {
                     "type": "terminal",
                     "name": "IDENT",
-                    "alias": "ARRAY_NAME"
+                    "alias": "array_name"
                 },
                 {
                     "type": "terminal",
@@ -763,7 +773,7 @@
                 {
                     "type": "terminal",
                     "name": "IDENT",
-                    "alias": "NAME"
+                    "alias": "name"
                 },
                 {
                     "type": "terminal",
@@ -801,7 +811,7 @@
                 {
                     "type": "terminal",
                     "name": "IDENT",
-                    "alias": "STRUCT_NAME"
+                    "alias": "struct_name"
                 },
                 {
                     "type": "terminal",
@@ -854,7 +864,7 @@
                 {
                     "type": "terminal",
                     "name": "IDENT",
-                    "alias": "FUNCTION NAME"
+                    "alias": "function_name"
                 },
                 {
                     "type": "non_terminal",
@@ -1064,7 +1074,7 @@
                 {
                     "type": "terminal",
                     "name": "IDENT",
-                    "alias": "VARIABLE_NAME"
+                    "alias": "variable_name"
                 }
             ]
         },

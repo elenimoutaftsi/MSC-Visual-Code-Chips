@@ -5,19 +5,18 @@ non_terminal {
     defs
     def
     var_decl var_def array_def struct_def scanf_type string_method stypes
-    func_type var_type Array_type var_types printf_types printf_type types variables listargs
-    ARRAY_INDEX STRUCT_FIELD assign_left
-    printf_arg printf_variable scanf_arg scanf_variable printf_variables scanf_variables
+    func_type var_type array_type printf_type types variables listargs
+    array_index struct_field assign_left
+    printf_arg printf_variable scanf_arg
     if_stmt if_else_stmt while_stmt for_stmt expr func_def break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
     binary_arith_expr unary_minus_expr unary_expr unary_back_expr unary_front_expr
     arith_op rel_op logical_binary_op assign_op unary_op
     binary_logical_expr not_expr
-    BOOL_CONST_ 
-    input_output_call math_call string_method_call array_method_call user_function_call
+    BOOL_CONST_ const_values
+    input_output_call math_call string_method_call user_function_call
     ident_list expr_list element_list
-    array_method 
-    array_get array_insert array_push_back array_set array_size
+    array_size
     string_append string_copy_string string_compare_strings string_size
     input_output_printf input_output_scanf
     math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos
@@ -30,12 +29,11 @@ terminal {
     PLUS_EQUALS MINUS_EQUALS TIMES_EQUALS BY_EQUALS MOD_EQUALS
     AND OR NOT
     EQUALS
-    INT CHAR FLOAT DOUBLE VOID
+    int char float double void 
     true false
     IF ELSE WHILE FOR BREAK CONTINUE RETURN
     CALL FUNCTION OF WITH PARAMETERS "(" ")" "{" "}" "[" "]" "." ","
-    ARRAY "IN ARRAY"
-    get insert push_back set get_size
+    get set get_size
     "IN STRING"
     append strcpy strcmp
     struct
@@ -71,29 +69,29 @@ define stmt {
 
 define func_type {
     any_of {
-        INT                     : "FUNCTION returns int "
-        CHAR                    : "FUNCTION returns char "
-        FLOAT                   : "FUNCTION returns float "
-        DOUBLE                  : "FUNCTION returns double "
-        VOID                    : "FUNCTION returns nothing "
+        int                     : "FUNCTION returns int "
+        char                    : "FUNCTION returns char "
+        float                   : "FUNCTION returns float "
+        double                  : "FUNCTION returns double "
+        void                    : "FUNCTION returns nothing "
     }
 }
 
 define var_type {
     any_of {
-        INT                     : "Int variable definition"
-        CHAR                    : "Char variable definition"
-        FLOAT                   : "Float variable definition"
-        DOUBLE                  : "Double variable definition"
+        int                     : "Int variable definition"
+        char                    : "Char variable definition"
+        float                   : "Float variable definition"
+        double                  : "Double variable definition"
     }
 }
 
-define Array_type {
+define array_type {
     any_of {
-        INT                     : "Array of ints"
-        CHAR                    : "Array of chars"
-        FLOAT                   : "Array of floats"
-        DOUBLE                  : "Array of doubles"
+        int                     : "Array of ints"
+        char                    : "Array of chars"
+        float                   : "Array of floats"
+        double                  : "Array of doubles"
     }
 }
 
@@ -215,8 +213,14 @@ define not_expr {
 define primary_expr {
     any_of {
         IDENT                   : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
-        ARRAY_INDEX             : "Array Index"
-        STRUCT_FIELD            : "Struct Field"
+        array_index             : "Array Index"
+        struct_field            : "Struct Field"
+        const_values            : "Constant Values"
+    }
+}
+
+define const_values {
+    any_of{
         INT_CONST               : "An integer is a positive, zero, or negative number that can be written without a fractional component (i.e. no decimal point places)"
         FLOAT_CONST             : "A floating-point number is a rational number (i.e. includes numbers with decimal point places"
         CHAR_CONST              : "One single character"
@@ -233,11 +237,11 @@ define var_decl {
 }
 
 define var_def {
-    var_type IDENT(VARIABLE_NAME)          
+    var_type IDENT(variable_name)          
 }
 
-define STRUCT_FIELD {
-    IDENT(STRUCT_NAME)"."IDENT(STRUCT_FIELD)
+define struct_field {
+    IDENT(struct_name)"."IDENT(struct_field)
 }
 
 define BOOL_CONST_ {
@@ -257,7 +261,7 @@ define call_expr {
 }
 
 define array_def {
-    Array_type IDENT(ARRAY_NAME) "[" INT_CONST(ARRAY_SIZE) "]"    : "Array declaration with type, name and size"
+    array_type IDENT(array_name) "[" INT_CONST(array_size) "]"    : "Array declaration with type, name and size"
 }
 
 define element_list {
@@ -271,8 +275,8 @@ define assign_left {
     primary_expr            :"Assign values in primary expr"
 }
 
-define ARRAY_INDEX{
-    IDENT(ARRAY_NAME) "[" INT_CONST "]"
+define array_index{
+    IDENT(array_name) "[" INT_CONST "]"
 }
 
 define assign_op {
@@ -287,11 +291,11 @@ define assign_op {
 }
 
 define func_def {
-   func_type IDENT(NAME) WITH PARAMETERS ident_list "{" stmts  "}"
+   func_type IDENT(name) WITH PARAMETERS ident_list "{" stmts  "}"
 }
 
 define struct_def {
-    struct IDENT(STRUCT_NAME) "{" ident_list "}"  
+    struct IDENT(struct_name) "{" ident_list "}"  
 }
 
 define break_stmt {
@@ -308,7 +312,7 @@ define return_stmt {
 }
 
 define user_function_call {
-    IDENT("FUNCTION NAME")  expr_list 
+    IDENT("function_name")  expr_list 
 } 
 
 define string_method_call {
@@ -370,7 +374,7 @@ define types {
 }
 
 define variables {
-    list_of IDENT(VARIABLE_NAME)
+    list_of IDENT(variable_name)
 }
 
 define printf_type {
