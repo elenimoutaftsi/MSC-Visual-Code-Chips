@@ -26757,7 +26757,7 @@ config.darkColorfulTheme = {
                 "PaddingTop": "",
                 "PaddingBottom": "",
                 "BorderWidth": "",
-                "BorderColor": "#fffff",
+                "BorderColor": "",
                 "BorderRadius": ""
             }
       },

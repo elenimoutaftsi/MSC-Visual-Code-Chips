@@ -4,9 +4,11 @@ non_terminal {
     stmt
     defs
     def
-    var_decl var_def array_def struct_def scanf_type string_method stypes
-    func_type var_type array_type printf_type types variables listargs
-    array_index struct_field assign_left
+    var_decl var_def  struct_def scanf_type string_method stypes
+    func_type var_type 
+    array_def array_type array_index array_size
+    printf_type types variables listargs
+    struct_field assign_left
     printf_arg printf_variable scanf_arg
     if_stmt if_else_stmt while_stmt for_stmt expr func_def break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
@@ -16,7 +18,6 @@ non_terminal {
     BOOL_CONST_ const_values
     input_output_call math_call string_method_call user_function_call
     ident_list expr_list element_list
-    array_size
     string_append string_copy_string string_compare_strings string_size
     input_output_printf input_output_scanf
     math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos
