@@ -3,7 +3,7 @@ import { assert } from '../Utils/Assert.js';
 import { EditorElementTypes } from '../Editor/EditorElements/EditorElement.js';
 import { ReservedWords } from '../Utils/ReservedWords.js';
 
-export class ToJavascriptVisitor extends AstVisitor {
+export class toCVisitor extends AstVisitor {
 
     stack = [];
     scopeStack = [
@@ -20,22 +20,31 @@ export class ToJavascriptVisitor extends AstVisitor {
         'PARENTHESIS_CALL':     { js: '()',     precedence: 20,   associativity: 'left',    },
         'UMINUS':               { js: '-',      precedence: 17,   associativity: 'right',   assocParenthesis: 'when_same_ops'  },
         'NOT':                  { js: '!',      precedence: 17,   associativity: 'right',   assocParenthesis: 'never'   },
+
         'TIMES':                { js: '*',      precedence: 15,   associativity: 'left',    assocParenthesis: 'when_different_ops'  },
         'BY':                   { js: '/',      precedence: 15,   associativity: 'left',    assocParenthesis: 'always'  },
         'MODULO':               { js: '%',      precedence: 15,   associativity: 'left',    assocParenthesis: 'always'  },
         'PLUS':                 { js: '+',      precedence: 14,   associativity: 'left',    assocParenthesis: 'never'   },
         'MINUS':                { js: '-',      precedence: 14,   associativity: 'left',    assocParenthesis: 'never'   },
+
+        'PLUS_PLUS':            { js: '++',     precedence: 14,   associativity: 'left',    assocParenthesis: 'never'   },
+        'MINUS_MINUS':          { js: '--',     precedence: 14,   associativity: 'left',    assocParenthesis: 'never'   },
+        'PLUS_EQUALS':          { js: '+=',     precedence: 14,   associativity: 'right',    assocParenthesis: 'never'   },
+        'MINUS_EQUALS':         { js: '-=',     precedence: 14,   associativity: 'right',    assocParenthesis: 'never'   },
+        'TIMES_EQUALS':         { js: '*=',     precedence: 14,   associativity: 'right',    assocParenthesis: 'never'   },
+        'BY_EQUALS':            { js: '/=',     precedence: 14,   associativity: 'right',    assocParenthesis: 'never'   },
+        'MOD_EQUALS':           { js: '%=',     precedence: 14,   associativity: 'right',    assocParenthesis: 'never'   },
+
         'GREATER':              { js: '>',      precedence: 12,   associativity: 'left',    assocParenthesis: 'always'  },
         'LESS':                 { js: '<',      precedence: 12,   associativity: 'left',    assocParenthesis: 'always'  },
         'GREATER_EQUAL':        { js: '>=',     precedence: 12,   associativity: 'left',    assocParenthesis: 'always'  },
         'LESS_EQUAL':           { js: '<=',     precedence: 12,   associativity: 'left',    assocParenthesis: 'always'  },
-        'EQUAL_TO':             { js: '===',    precedence: 11,   associativity: 'left',    assocParenthesis: 'always'  },
-        'NOT_EQUAL_TO':         { js: '!===',   precedence: 11,   associativity: 'left',    assocParenthesis: 'always'  },
+        'EQUAL_TO':             { js: '==',     precedence: 11,   associativity: 'left',    assocParenthesis: 'always'  },
+        'NOT_EQUAL_TO':         { js: '!=',     precedence: 11,   associativity: 'left',    assocParenthesis: 'always'  },
         'AND':                  { js: '&&',     precedence: 7,    associativity: 'left',    assocParenthesis: 'never'   },
         'OR':                   { js: '||',     precedence: 6,    associativity: 'left',    assocParenthesis: 'never'   },
         'EQUALS':               { js: '=',      precedence: 3,    associativity: 'right',   assocParenthesis: 'never'   },
     };
-
 
     currTabs = 0;
     currTabStr = '';
@@ -73,51 +82,83 @@ export class ToJavascriptVisitor extends AstVisitor {
         this.SetVisitor( 'defs',                    elem => this.Visit_Defs(elem) );
         this.SetVisitor( 'stmt',                    elem => this.Visit_Stmt(elem) );
         this.SetVisitor( 'def',                     elem => this.Visit_Def(elem) );
+
+        this.SetVisitor( 'var_decl',                elem => this.Visit_VarDecl(elem) ); //
+        this.SetVisitor( 'var_def',                 elem => this.Visit_VarDef(elem) ); //
+        this.SetVisitor( 'var_type',                elem => this.Visit_VarType(elem) ); //
+
+        this.SetVisitor( 'struct_def',              elem => this.Visit_StructDef(elem) ); //
+        this.SetVisitor( 'struct_field',            elem => this.Visit_Struct_Field(elem) ); //
+
+        this.SetVisitor( 'func_def',                elem => this.Visit_FuncDefStmt(elem) );
+        this.SetVisitor( 'func_type',               elem => this.Visit_FuncType(elem) ); //
+
         this.SetVisitor( 'if_stmt',                 elem => this.Visit_IfStmt(elem) );
         this.SetVisitor( 'if_else_stmt',            elem => this.Visit_IfElseStmt(elem) );
         this.SetVisitor( 'while_stmt',              elem => this.Visit_WhileStmt(elem) );
         this.SetVisitor( 'for_stmt',                elem => this.Visit_ForStmt(elem) );
         this.SetVisitor( 'expr',                    elem => this.Visit_Expr(elem) );
-        this.SetVisitor( 'func_def',                elem => this.Visit_FuncDefStmt(elem) );
         this.SetVisitor( 'break_stmt',              elem => this.Visit_BreakStmt(elem) );
         this.SetVisitor( 'continue_stmt',           elem => this.Visit_ContinueStmt(elem) );
         this.SetVisitor( 'return_stmt',             elem => this.Visit_ReturnStmt(elem) );
+
         this.SetVisitor( 'arith_expr',              elem => this.Visit_ArithExpr(elem) );
         this.SetVisitor( 'rel_expr',                elem => this.Visit_RelExpr(elem) );
         this.SetVisitor( 'logical_expr',            elem => this.Visit_LogicalExpr(elem) );
         this.SetVisitor( 'assign_expr',             elem => this.Visit_AssignExpr(elem) );
         this.SetVisitor( 'call_expr',               elem => this.Visit_CallExpr(elem) );
         this.SetVisitor( 'primary_expr',            elem => this.Visit_PrimaryExpr(elem) );
+
         this.SetVisitor( 'binary_arith_expr',       elem => this.Visit_BinaryArithExpr(elem) );
         this.SetVisitor( 'unary_minus_expr',        elem => this.Visit_UnaryMinusExpr(elem) );
+        this.SetVisitor( 'unary_expr',              elem => this.Visit_UnaryExpr(elem) );//
+        this.SetVisitor( 'unary_back_expr',         elem => this.Visit_UnaryBackExpr(elem) );//
+        this.SetVisitor( 'unary_front_expr',        elem => this.Visit_UnaryFrontExpr(elem) );//
+
         this.SetVisitor( 'arith_op',                elem => this.Visit_ArithOp(elem) );
         this.SetVisitor( 'rel_op',                  elem => this.Visit_RelOp(elem) );
         this.SetVisitor( 'logical_binary_op',       elem => this.Visit_LogicalBinaryOp(elem) );
+        this.SetVisitor( 'assign_op',               elem => this.Visit_AssignOp(elem) ); //
+        this.SetVisitor( 'unary_op',                elem => this.Visit_UnaryOp(elem) ); //
+
         this.SetVisitor( 'binary_logical_expr',     elem => this.Visit_BinaryLogicalExpr(elem) );
         this.SetVisitor( 'not_expr',                elem => this.Visit_NotExpr(elem) );
+
         this.SetVisitor( 'BOOL_CONST_',             elem => this.Visit_BoolConst_(elem) );
-        this.SetVisitor( 'ARRAY_CONST',             elem => this.Visit_ArrayConst(elem) );
+        this.SetVisitor( 'const_values',            elem => this.Visit_ConstValues(elem) ); //
+
         this.SetVisitor( 'input_output_call',       elem => this.Visit_InputOutputCall(elem) );
         this.SetVisitor( 'math_call',               elem => this.Visit_MathCall(elem) );
+        this.SetVisitor( 'string_method_call',      elem => this.Visit_StringMethodCall(elem) );
         this.SetVisitor( 'user_function_call',      elem => this.Visit_UserFunctionCall(elem) );
+
         this.SetVisitor( 'ident_list',              elem => this.Visit_IdentList(elem) );
         this.SetVisitor( 'expr_list',               elem => this.Visit_ExprList(elem) );
         this.SetVisitor( 'element_list',            elem => this.Visit_ElementList(elem) );
-        this.SetVisitor( 'array_method',            elem => this.Visit_ArrayMethod(elem) );
-        this.SetVisitor( 'string_method',           elem => this.Visit_StringMethod(elem) );
-        this.SetVisitor( 'array_method_call',       elem => this.Visit_ArrayMethodCall(elem) );
-        this.SetVisitor( 'array_get',               elem => this.Visit_ArrayGet(elem) );
-        this.SetVisitor( 'array_insert',            elem => this.Visit_ArrayInsert(elem) );
-        this.SetVisitor( 'array_push_back',         elem => this.Visit_ArrayPushback(elem) );
-        this.SetVisitor( 'array_set',               elem => this.Visit_ArraySet(elem) );
+
+        this.SetVisitor( 'array_def',               elem => this.Visit_ArrayDef(elem) );//
+        this.SetVisitor( 'array_type',              elem => this.Visit_ArrayType(elem) );//
+        this.SetVisitor( 'array_index',             elem => this.Visit_ArrayIndex(elem) ); //
         this.SetVisitor( 'array_size',              elem => this.Visit_ArraySize(elem) );
-        this.SetVisitor( 'string_method_call',      elem => this.Visit_StringMethodCall(elem) );
+
         this.SetVisitor( 'string_append',           elem => this.Visit_StringAppend(elem) );
-        this.SetVisitor( 'string_get_character',    elem => this.Visit_StringGetCharacter(elem) );
-        this.SetVisitor( 'string_get_substring',    elem => this.Visit_StringGetSubstring(elem) );
+        this.SetVisitor( 'string_copy_string',      elem => this.Visit_StringCopyString(elem) ); //
+        this.SetVisitor( 'string_compare_strings',  elem => this.Visit_StringCompareStrings(elem) ); //
         this.SetVisitor( 'string_size',             elem => this.Visit_StringSize(elem) );
-        this.SetVisitor( 'input_output_print',      elem => this.Visit_InputOutputPrint(elem) );
-        this.SetVisitor( 'input_output_input',      elem => this.Visit_InputOutputInput(elem) );
+
+        this.SetVisitor( 'input_output_printf',     elem => this.Visit_InputOutputPrintf(elem) ); //
+        this.SetVisitor( 'input_output_scanf',      elem => this.Visit_InputOutputScanf(elem) ); //
+
+        this.SetVisitor( 'printf_type',             elem => this.Visit_PrintfType(elem) ); //
+        this.SetVisitor( 'types',                   elem => this.Visit_Types(elem) ); //
+        this.SetVisitor( 'variables',               elem => this.Visit_Variables(elem) ); //
+        this.SetVisitor( 'listargs',                elem => this.Visit_ListArgs(elem) ); //
+        this.SetVisitor( 'scanf_type',              elem => this.Visit_ScanfTypes(elem) ); //
+        this.SetVisitor( 'stypes',                  elem => this.Visit_Stypes(elem) ); //
+        this.SetVisitor( 'printf_arg',              elem => this.Visit_printfArg(elem) ); //
+        this.SetVisitor( 'printf_variable',         elem => this.Visit_PrintfVariable(elem) ); //
+        this.SetVisitor( 'scanf_arg',               elem => this.Visit_ScanfArg(elem) ); //
+
         this.SetVisitor( 'math_pow',                elem => this.Visit_MathPow(elem) );
         this.SetVisitor( 'math_sqrt',               elem => this.Visit_MathSqrt(elem) );
         this.SetVisitor( 'math_round',              elem => this.Visit_MathRound(elem) );
@@ -126,12 +167,21 @@ export class ToJavascriptVisitor extends AstVisitor {
         this.SetVisitor( 'math_sin',                elem => this.Visit_MathSin(elem) );
         this.SetVisitor( 'math_cos',                elem => this.Visit_MathCos(elem) );
 
+
+
+
+
+
+
+
+
         this.SetVisitor( 'IDENT',                   elem => this.Visit_Ident(elem) );
         this.SetVisitor( 'INT_CONST',               elem => this.Visit_IntConst(elem) );
         this.SetVisitor( 'FLOAT_CONST',             elem => this.Visit_FloatConst(elem) );
         this.SetVisitor( 'BOOL_CONST',              elem => this.Visit_BoolConst(elem) );
         this.SetVisitor( 'CHAR_CONST',              elem => this.Visit_CharConst(elem) );
         this.SetVisitor( 'STRING_CONST',            elem => this.Visit_StringConst(elem) );
+
         this.SetVisitor( 'UMINUS',                  elem => this.Visit_Uminus(elem) );
         this.SetVisitor( 'PLUS',                    elem => this.Visit_Plus(elem) );
         this.SetVisitor( 'MINUS',                   elem => this.Visit_Minus(elem) );
@@ -144,10 +194,25 @@ export class ToJavascriptVisitor extends AstVisitor {
         this.SetVisitor( 'NOT_EQUAL_TO',            elem => this.Visit_NotEqualTo(elem) );
         this.SetVisitor( 'GREATER_EQUAL',           elem => this.Visit_GreaterEqual(elem) );
         this.SetVisitor( 'LESS_EQUAL',              elem => this.Visit_LessEqual(elem) );
+        this.SetVisitor( 'PLUS_PLUS',               elem => this.Visit_Plus_Plus(elem) );//
+        this.SetVisitor( 'MINUS_MINUS',             elem => this.Visit_Minus_Minus(elem) );//
+        this.SetVisitor( 'PLUS_EQUALS',             elem => this.Visit_PlusEquals(elem) );//
+        this.SetVisitor( 'MINUS_EQUALS',            elem => this.Visit_Minus_Equals(elem) );//
+        this.SetVisitor( 'TIMES_EQUALS',            elem => this.Visit_Times_Equals(elem) );//
+        this.SetVisitor( 'BY_EQUALS',               elem => this.Visit_By_Equals(elem) );//
+        this.SetVisitor( 'MOD_EQUALS',              elem => this.Visit_Mod_Equals(elem) );//
+
+        this.SetVisitor( 'int',                     elem => this.Visit_Int(elem) );//
+        this.SetVisitor( 'char',                    elem => this.Visit_Char(elem) );//
+        this.SetVisitor( 'float',                   elem => this.Visit_Float(elem) );//
+        this.SetVisitor( 'double',                  elem => this.Visit_Double(elem) );//
+        this.SetVisitor( 'void',                    elem => this.Visit_Void(elem) );//
+
         this.SetVisitor( 'AND',                     elem => this.Visit_And(elem) );
         this.SetVisitor( 'OR',                      elem => this.Visit_Or(elem) );
         this.SetVisitor( 'NOT',                     elem => this.Visit_Not(elem) );
         this.SetVisitor( 'EQUALS',                  elem => this.Visit_Equals(elem) );
+
         this.SetVisitor( 'true',                    elem => this.Visit_True(elem) );
         this.SetVisitor( 'false',                   elem => this.Visit_False(elem) );
         this.SetVisitor( 'BREAK',                   elem => this.Visit_Break(elem) );
@@ -157,23 +222,16 @@ export class ToJavascriptVisitor extends AstVisitor {
         this.SetVisitor( 'ELSE',                    elem => this.Visit_Else(elem) );
         this.SetVisitor( 'WHILE',                   elem => this.Visit_While(elem) );
         this.SetVisitor( 'FOR',                     elem => this.Visit_For(elem) );
-        this.SetVisitor( 'CALL',                    elem => this.Visit_Call(elem) );
         this.SetVisitor( 'FUNCTION',                elem => this.Visit_Function(elem) );
-        this.SetVisitor( 'OF',                      elem => this.Visit_Of(elem) );
         this.SetVisitor( 'WITH',                    elem => this.Visit_With(elem) );
-        this.SetVisitor( 'ARRAY',                   elem => this.Visit_Array(elem) );
-        this.SetVisitor( 'IN ARRAY',                elem => this.Visit_InArray(elem) );
-        this.SetVisitor( 'get',                     elem => this.Visit_Get(elem) );
-        this.SetVisitor( 'insert',                  elem => this.Visit_Insert(elem) );
-        this.SetVisitor( 'push_back',               elem => this.Visit_PushBack(elem) );
-        this.SetVisitor( 'set',                     elem => this.Visit_Set(elem) );
         this.SetVisitor( 'get_size',                elem => this.Visit_GetSize(elem) );
         this.SetVisitor( 'IN STRING',               elem => this.Visit_InString(elem) );
         this.SetVisitor( 'append',                  elem => this.Visit_Append(elem) );
-        this.SetVisitor( 'get_character',           elem => this.Visit_GetCharacter(elem) );
-        this.SetVisitor( 'get_substring',           elem => this.Visit_GetSubstring(elem) );
-        this.SetVisitor( 'print',                   elem => this.Visit_Print(elem) );
-        this.SetVisitor( 'input',                   elem => this.Visit_Input(elem) );
+        this.SetVisitor( 'strcpy',                  elem => this.Visit_Strcpy(elem) ); //
+        this.SetVisitor( 'strcmp',                  elem => this.Visit_Strcmp(elem) ); //
+        this.SetVisitor( 'struct',                  elem => this.Visit_Struct(elem) ); //
+        this.SetVisitor( 'printf',                  elem => this.Visit_Printf(elem) );//
+        this.SetVisitor( 'scanf',                   elem => this.Visit_Scanf(elem) );//
         this.SetVisitor( 'pow',                     elem => this.Visit_Pow(elem) );
         this.SetVisitor( 'sqrt',                    elem => this.Visit_Sqrt(elem) );
         this.SetVisitor( 'round',                   elem => this.Visit_Round(elem) );
@@ -330,7 +388,6 @@ export class ToJavascriptVisitor extends AstVisitor {
     }
 
     Visit_Stmt(elem) {
-        console.log("hi_from stmt ");
         this.stack.push( ';' );
     }
 
@@ -369,7 +426,6 @@ export class ToJavascriptVisitor extends AstVisitor {
     }
 
     Visit_ForStmt(elem){
-        console.log("hi_from for ");
         let code = this.PopChildrenFromStack(elem, ['for', 'init', 'condition', 'step', 'stmts']);
 
         this.DecreaseTabs();
@@ -379,7 +435,6 @@ export class ToJavascriptVisitor extends AstVisitor {
     }
 
     Visit_Expr(elem){
-        console.log("hi_from expr ");
         this.stack.push(
             this.HandleSemicolon(elem, `0`)
         );
@@ -477,7 +532,6 @@ export class ToJavascriptVisitor extends AstVisitor {
     }
 
     Visit_RelExpr(elem){
-        console.log("hi from rel expr");
         this.HandleBinaryExpr(elem);
     }
 
@@ -486,7 +540,6 @@ export class ToJavascriptVisitor extends AstVisitor {
     }
 
     Visit_AssignExpr(elem){
-        console.log("hi_from = ");
         this.HandleBinaryExpr(elem);
     }
 
@@ -521,7 +574,6 @@ export class ToJavascriptVisitor extends AstVisitor {
     }
 
     Visit_RelOp(elem){
-        console.log("hi from rel op");
         this.stack.push(`>`);
     }
 
@@ -532,14 +584,6 @@ export class ToJavascriptVisitor extends AstVisitor {
     Visit_BoolConst_(elem){
         this.stack.push(
             this.HandleSemicolon(elem, `false`)
-        );
-    }
-
-    Visit_ArrayConst(elem){
-        let code = this.PopChildrenFromStack(elem, ['array', 'with', 'elements']);
-
-        this.stack.push(
-            this.HandleSemicolon(elem, `[${code.elements}]`)
         );
     }
 
@@ -579,46 +623,8 @@ export class ToJavascriptVisitor extends AstVisitor {
         this.stack.push(`${code}`);
     }
 
-    Visit_ArrayMethod(elem){
-        this.stack.push(`.length`);
-    }
-
     Visit_StringMethod(elem){
         this.stack.push(`.length`);
-    }
-
-    Visit_ArrayMethodCall(elem){
-        let code = this.PopChildrenFromStack(elem, ['in_array', 'array', 'call', 'method_call']);
-
-        let outerOp = this.ToOperator(elem.GetElems()[3]) || this.GetChildOperator(elem.GetElems()[3]);
-        let innerOp = this.GetChildOperator(elem.GetElems()[1]);
-
-        if ( innerOp && this.ShouldParenthesize(outerOp, innerOp, 'left') )
-            code.array = `(${code.array})`;
-
-        this.stack.push(
-            this.HandleSemicolon(elem, `${code.array}${code.method_call}`)
-        );
-    }
-
-    Visit_ArrayGet(elem){
-        let code = this.PopChildrenFromStack(elem, ['get', 'with', 'index']);
-        this.stack.push(`[${code.index}]`);
-    }
-
-    Visit_ArrayInsert(elem){
-        let code = this.PopChildrenFromStack(elem, ['insert', 'with', 'index', 'element']);
-        this.stack.push(`.splice(${code.index}, 0, ${code.element})`);
-    }
-
-    Visit_ArrayPushback(elem){
-        let code = this.PopChildrenFromStack(elem, ['push_back', 'with', 'element']);
-        this.stack.push(`.push(${code.element})`);
-    }
-
-    Visit_ArraySet(elem){
-        let code = this.PopChildrenFromStack(elem, ['set', 'with', 'index', 'element']);
-        this.stack.push(`[${code.index}] = ${code.element}`);
     }
 
     Visit_ArraySize(elem){
@@ -650,12 +656,6 @@ export class ToJavascriptVisitor extends AstVisitor {
 
         this.stack.push(`[${code.index}]`);
     }
-    
-    Visit_StringGetSubstring(elem){
-        let code = this.PopChildrenFromStack(elem, ['get_substring', 'with', 'start_index', 'end_index']);
-
-        this.stack.push(`.substring(${code.start_index}, ${code.end_index})`);
-    }
 
     Visit_StringSize(elem){
         assert(false);
@@ -669,7 +669,7 @@ export class ToJavascriptVisitor extends AstVisitor {
         );
     }
 
-    Visit_InputOutputInput(elem){
+    Visit_InputOutputScanf(elem){
         let code = this.PopChildrenFromStack(elem, ['call', 'input', 'with', 'prompt_message']);
 
         this.stack.push(
@@ -818,7 +818,7 @@ export class ToJavascriptVisitor extends AstVisitor {
     Visit_By(elem)                  { this.stack.push('/'); }
     Visit_Modulo(elem)              { this.stack.push('%'); }
     Visit_Uminus(elem)              { this.stack.push('-'); }
-    Visit_Greater(elem)             { console.log("hi from >"); this.stack.push('>'); }
+    Visit_Greater(elem)             { this.stack.push('>'); }
     Visit_Less(elem)                { this.stack.push('<'); }
     Visit_EqualTo(elem)             { this.stack.push('==='); }
     Visit_NotEqualTo(elem)          { this.stack.push('!=='); }

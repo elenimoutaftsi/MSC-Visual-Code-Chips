@@ -4,23 +4,22 @@ non_terminal {
     stmt
     defs
     def
-    var_decl var_def  struct_def scanf_type string_method stypes
-    func_type var_type 
-    array_def array_type array_index array_size
-    printf_type types variables listargs
-    struct_field assign_left
-    printf_arg printf_variable scanf_arg
-    if_stmt if_else_stmt while_stmt for_stmt expr func_def break_stmt continue_stmt return_stmt
+    var_decl var_def var_type
+    struct_def struct_field
+    func_type func_def
+    if_stmt if_else_stmt while_stmt for_stmt expr break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
     binary_arith_expr unary_minus_expr unary_expr unary_back_expr unary_front_expr
-    arith_op rel_op logical_binary_op assign_op unary_op
+    arith_op rel_op logical_binary_op assign_op unary_op 
     binary_logical_expr not_expr
     BOOL_CONST_ const_values
     input_output_call math_call string_method_call user_function_call
     ident_list expr_list element_list
-    string_append string_copy_string string_compare_strings string_size
-    input_output_printf input_output_scanf
-    math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos
+    array_def array_type array_index array_size
+    string_append string_copy_string string_compare_strings string_size 
+    input_output_printf input_output_scanf 
+    printf_type types variables listargs scanf_type stypes printf_arg printf_variable scanf_arg
+    math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos 
 }
 
 terminal {
@@ -33,9 +32,8 @@ terminal {
     int char float double void 
     true false
     IF ELSE WHILE FOR BREAK CONTINUE RETURN
-    CALL FUNCTION OF WITH PARAMETERS "(" ")" "{" "}" "[" "]" "." ","
-    get set get_size
-    "IN STRING"
+    FUNCTION WITH PARAMETERS "(" ")" "{" "}" "[" "]" "." ","
+    get_size
     append strcpy strcmp
     struct
     printf scanf
@@ -256,7 +254,7 @@ define call_expr {
     any_of {
         input_output_call       : "Use a built-in input/output function"
         math_call               : "Use a built-in math function"
-        string_method_call           : "Use a built-in string method"
+        string_method_call      : "Use a built-in string method"
         user_function_call      : "Use a user-defined function"
     }
 }
@@ -270,10 +268,7 @@ define element_list {
 }
 
 define assign_expr {
-    assign_left assign_op expr            
-}
-define assign_left {
-    primary_expr            :"Assign values in primary expr"
+    primary_expr assign_op expr            
 }
 
 define array_index{
@@ -338,7 +333,7 @@ define string_compare_strings {
 }
 
 define string_size {
-    get_size  expr("string")
+    get_size expr("string")
 }
 
 define input_output_call {

@@ -679,7 +679,7 @@ export let config = {
               "all_of": [
                   {
                       "type": "non_terminal",
-                      "name": "assign_left"
+                      "name": "primary_expr"
                   },
                   {
                       "type": "non_terminal",
@@ -688,16 +688,6 @@ export let config = {
                   {
                       "type": "non_terminal",
                       "name": "expr"
-                  }
-              ]
-          },
-          {
-              "name": "assign_left",
-              "all_of": [
-                  {
-                      "type": "non_terminal",
-                      "name": "primary_expr",
-                      "tooltip": "Assign values in primary expr"
                   }
               ]
           },
