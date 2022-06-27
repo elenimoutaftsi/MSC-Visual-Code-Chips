@@ -2,7 +2,7 @@ import { config as codeChipsConfig } from './config.js'
 import { CodeChips } from './CodeChips.js'
 import { config as javaClassesConfig } from './javaClassDef.js'
 
-import { ToJavascriptVisitor } from './Generators/ToJavascriptVisitor.js';
+import { toCVisitor } from './Generators/toCVisitor.js';
 import { AstHost } from './Generators/AstHost.js';
 
 $(document).ready(function () {
@@ -38,7 +38,7 @@ $(document).ready(function () {
     };
 
     let toJs = (code) => {
-        let visitor = new ToJavascriptVisitor();
+        let visitor = new toCVisitor();
         let host = new AstHost(visitor);
         
         host.Accept(code);
