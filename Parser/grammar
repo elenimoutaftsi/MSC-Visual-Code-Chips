@@ -33,8 +33,7 @@ terminal {
     true false
     IF ELSE WHILE FOR BREAK CONTINUE RETURN
     FUNCTION WITH PARAMETERS "(" ")" "{" "}" "[" "]" "." ","
-    get_size
-    append strcpy strcmp
+    strlen strcat strcpy strcmp
     struct
     printf scanf
     pow sqrt round floor ceiling sin cos
@@ -321,19 +320,19 @@ define string_method_call {
 }
 
 define string_append {
-    append expr("string")
+    strcat expr("string_dest") expr("string_source")
  }
 
 define string_copy_string {
-    strcpy expr("string_dest") "," expr("string_source")
+    strcpy expr("string_dest") expr("string_source")
 }
 
 define string_compare_strings {
-    strcmp  expr("string1") "," expr("string2")
+    strcmp expr("string1") expr("string2")
 }
 
 define string_size {
-    get_size expr("string")
+    strlen expr("string")
 }
 
 define input_output_call {
@@ -362,7 +361,7 @@ define printf_arg {
 }
 
 define printf_variable {
-    types "," variables
+    types variables
 }
 
 define types {
@@ -382,7 +381,7 @@ define printf_type {
 }
 
 define scanf_arg {
-    stypes "," variables  
+    stypes variables  
 }
 
 define stypes {
@@ -410,7 +409,7 @@ define math_call {
 }
 
 define math_pow {
-    pow expr(number) "," expr(exponent)
+    pow expr(number) expr(exponent)
 }
 
 define math_sqrt {

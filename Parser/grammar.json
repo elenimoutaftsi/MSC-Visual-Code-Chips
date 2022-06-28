@@ -896,12 +896,17 @@
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "append"
+                    "name": "strcat"
                 },
                 {
                     "type": "non_terminal",
                     "name": "expr",
-                    "alias": "string"
+                    "alias": "string_dest"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "expr",
+                    "alias": "string_source"
                 }
             ]
         },
@@ -916,10 +921,6 @@
                     "type": "non_terminal",
                     "name": "expr",
                     "alias": "string_dest"
-                },
-                {
-                    "type": "terminal",
-                    "name": ","
                 },
                 {
                     "type": "non_terminal",
@@ -941,10 +942,6 @@
                     "alias": "string1"
                 },
                 {
-                    "type": "terminal",
-                    "name": ","
-                },
-                {
                     "type": "non_terminal",
                     "name": "expr",
                     "alias": "string2"
@@ -956,7 +953,7 @@
             "all_of": [
                 {
                     "type": "terminal",
-                    "name": "get_size"
+                    "name": "strlen"
                 },
                 {
                     "type": "non_terminal",
@@ -1040,10 +1037,6 @@
                     "name": "types"
                 },
                 {
-                    "type": "terminal",
-                    "name": ","
-                },
-                {
                     "type": "non_terminal",
                     "name": "variables"
                 }
@@ -1094,10 +1087,6 @@
                 {
                     "type": "non_terminal",
                     "name": "stypes"
-                },
-                {
-                    "type": "terminal",
-                    "name": ","
                 },
                 {
                     "type": "non_terminal",
@@ -1192,10 +1181,6 @@
                     "type": "non_terminal",
                     "name": "expr",
                     "alias": "number"
-                },
-                {
-                    "type": "terminal",
-                    "name": ","
                 },
                 {
                     "type": "non_terminal",
