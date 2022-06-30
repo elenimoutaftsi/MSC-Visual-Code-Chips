@@ -412,8 +412,8 @@ export class toCVisitor extends AstVisitor {
     Visit_Defs(elem) {
         let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
         let vars = this.TabIn( this.PopScopeVars() );
-
-        this.stack.push(vars + childrenCode);
+        
+        this.stack.push('#include <stdio.h>\n\nint main() {\n\n ' + childrenCode +'\n\n}' );
     }
 
     Visit_Stmt(elem) {
@@ -435,7 +435,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_VarType(elem) {
-        this.stack.push( ';' );
+        this.stack.push( '' );
     }
 
     Visit_StructDef(elem) { /////
@@ -580,11 +580,11 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_AssignOp(elem){ //
-        this.stack.push(`>`);
+        this.stack.push(`=`);
     }
 
     Visit_UnaryOp(elem){ //
-        this.stack.push(`>`);
+        this.stack.push(`+`);
     }
 
     Visit_LogicalBinaryOp(elem){
@@ -865,8 +865,8 @@ export class toCVisitor extends AstVisitor {
         
         // if (ReservedWords.IsReserved(id))  || '$$id'
         //     id = '$' + id;
-        
-        this.stack.push(id);
+        if(id == null) this.stack.push('ident');
+        else this.stack.push(id);
         
         // let parent = elem.GetParent().GetSymbol().symbol.name;
 
@@ -933,12 +933,12 @@ export class toCVisitor extends AstVisitor {
     Visit_Modulo(elem)              { this.stack.push('%'); }
     Visit_Greater(elem)             { this.stack.push('>'); }
     Visit_Less(elem)                { this.stack.push('<'); }
-    Visit_EqualTo(elem)             { this.stack.push('==='); }
+    Visit_EqualTo(elem)             { this.stack.push('=='); }
     Visit_NotEqualTo(elem)          { this.stack.push('!=='); }
     Visit_GreaterEqual(elem)        { this.stack.push('>='); }
     Visit_LessEqual(elem)           { this.stack.push('<='); }
     Visit_Plus_Plus(elem)           { this.stack.push('++'); }
-    Visit_Minus_Minus(elem)         { this.stack.push('--'); }
+    Visit_Minus_Minus(elem)         { this.stack.push('- -'); }
     Visit_PlusEquals(elem)          { this.stack.push('+='); }
     Visit_Minus_Equals(elem)        { this.stack.push('-='); }
     Visit_Times_Equals(elem)        { this.stack.push('*='); }
