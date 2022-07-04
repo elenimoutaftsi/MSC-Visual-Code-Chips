@@ -731,7 +731,7 @@ export let config = {
                     {
                         "type": "terminal",
                         "name": "MINUS_EQUALS",
-                        "alias": "-=",
+                        "alias": "- =",
                         "tooltip": "Subtracts the right operand from the left operand and assigns the result to the left operand"
                     },
                     {

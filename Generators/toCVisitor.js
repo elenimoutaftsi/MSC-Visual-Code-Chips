@@ -138,7 +138,7 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'types',                   elem => this.Visit_Types(elem) ); //
         this.SetVisitor( 'variables',               elem => this.Visit_Variables(elem) ); //
         this.SetVisitor( 'listargs',                elem => this.Visit_ListArgs(elem) ); //
-        this.SetVisitor( 'scanf_type',              elem => this.Visit_ScanfTypes(elem) ); //
+        this.SetVisitor( 'scanf_type',              elem => this.Visit_ScanfType(elem) ); //
         this.SetVisitor( 'stypes',                  elem => this.Visit_Stypes(elem) ); //
         this.SetVisitor( 'printf_arg',              elem => this.Visit_printfArg(elem) ); //
         this.SetVisitor( 'printf_variable',         elem => this.Visit_PrintfVariable(elem) ); //
@@ -425,7 +425,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_VarDecl(elem) {
-        this.stack.push( ';' );
+        this.stack.push( '' );
     }
 
     Visit_VarDef(elem) {
@@ -624,30 +624,21 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_StringMethodCall(elem){
-        let code = this.PopChildrenFromStack(elem, ['in_string', 'string', 'call', 'method_call']);
-
-        let outerOp = this.ToOperator(elem.GetElems()[3]) || this.GetChildOperator(elem.GetElems()[3]);
-        let innerOp = this.GetChildOperator(elem.GetElems()[1]);
-
-        if ( innerOp && this.ShouldParenthesize(outerOp, innerOp, 'left') )
-            code.string = `(${code.string})`;
-
         this.stack.push(
-            this.HandleSemicolon(elem, `${code.string}${code.method_call}`)
+            this.HandleSemicolon(elem, `0`)
         );
     }
 
     Visit_UserFunctionCall(elem){
-        let code = this.PopChildrenFromStack(elem, ['call', 'f', 'with', 'args']);
+        let code = this.PopChildrenFromStack(elem, ['name', 'args']);
 
         this.stack.push(
-            this.HandleSemicolon(elem, `${code.f}(${code.args})`)
+            this.HandleSemicolon(elem, `${code.name}(${code.args})`)
         );
     }
 
     Visit_IdentList(elem){
         let code = this.PopChildrenFromStack(elem).join(', ');
-
         this.stack.push(`${code}`);
     }
 
@@ -683,25 +674,24 @@ export class toCVisitor extends AstVisitor {
     Visit_StringAppend(elem){
         let code = this.PopChildrenFromStack(elem, ['strcat', 'string_dest', 'string_source']);
 
-        this.stack.push(`strcat(${code.string_dest} , ${code.string_source} );`);
+        this.stack.push(`strcat(${code.string_dest} , ${code.string_source} )`);
     }
 
     Visit_StringCopyString(elem){ 
         let code = this.PopChildrenFromStack(elem, ['strcpy', 'string_dest', 'string_source']);
 
-        this.stack.push(`strcpy(${code.string_dest} , ${code.string_source} );`);
+        this.stack.push(`strcpy(${code.string_dest} , ${code.string_source} )`);
     }
 
     Visit_StringCompareStrings(elem){ 
         let code = this.PopChildrenFromStack(elem, ['strcmp', 'string1', 'string2']);
-
-        this.stack.push(`strcmp(${code.string1} , ${code.string2} );`);
+        this.stack.push(`strcmp(${code.string1} , ${code.string2} )`);
     }
 
     Visit_StringSize(elem){
         let code = this.PopChildrenFromStack(elem, ['strlen', 'string']);
 
-        this.stack.push(`strlen(${code.string});`);
+        this.stack.push(`strlen(${code.string})`);
     }
 
     Visit_InputOutputPrintF(elem){ //
@@ -709,62 +699,6 @@ export class toCVisitor extends AstVisitor {
 
         this.stack.push(
             this.HandleSemicolon(elem, `window.alert(${code.args})`)
-        );
-    }
-
-    Visit_InputOutputScanf(elem){ //
-        let code = this.PopChildrenFromStack(elem, ['call', 'input', 'with', 'prompt_message']);
-
-        this.stack.push(
-            this.HandleSemicolon(elem, `window.prompt(${code.prompt_message})`)
-        );
-    }
-
-    Visit_PrintfType(elem){ //
-        let code = this.PopChildrenFromStack(elem, ['call', 'input', 'with', 'prompt_message']);
-
-        this.stack.push(
-            this.HandleSemicolon(elem, `window.prompt(${code.prompt_message})`)
-        );
-    }
-
-    Visit_Types(elem){ //
-        let code = this.PopChildrenFromStack(elem, ['call', 'input', 'with', 'prompt_message']);
-
-        this.stack.push(
-            this.HandleSemicolon(elem, `window.prompt(${code.prompt_message})`)
-        );
-    }
-
-    Visit_Variables(elem){ //
-        let code = this.PopChildrenFromStack(elem, ['call', 'input', 'with', 'prompt_message']);
-
-        this.stack.push(
-            this.HandleSemicolon(elem, `window.prompt(${code.prompt_message})`)
-        );
-    }
-
-    Visit_ListArgs(elem){ //
-        let code = this.PopChildrenFromStack(elem, ['call', 'input', 'with', 'prompt_message']);
-
-        this.stack.push(
-            this.HandleSemicolon(elem, `window.prompt(${code.prompt_message})`)
-        );
-    }
-
-    Visit_ScanfTypes(elem){ //
-        let code = this.PopChildrenFromStack(elem, ['call', 'input', 'with', 'prompt_message']);
-
-        this.stack.push(
-            this.HandleSemicolon(elem, `window.prompt(${code.prompt_message})`)
-        );
-    }
-
-    Visit_Stypes(elem){ //
-        let code = this.PopChildrenFromStack(elem, ['call', 'input', 'with', 'prompt_message']);
-
-        this.stack.push(
-            this.HandleSemicolon(elem, `window.prompt(${code.prompt_message})`)
         );
     }
 
@@ -784,12 +718,47 @@ export class toCVisitor extends AstVisitor {
         );
     }
 
-    Visit_ScanfArg(elem){ //
+    Visit_PrintfType(elem){ //
         let code = this.PopChildrenFromStack(elem, ['call', 'input', 'with', 'prompt_message']);
 
         this.stack.push(
             this.HandleSemicolon(elem, `window.prompt(${code.prompt_message})`)
         );
+    }
+
+    Visit_InputOutputScanf(elem){ //
+        let code = this.PopChildrenFromStack(elem, ['scanf', 'args']);
+
+        this.stack.push(`scanf (${code.args})`);
+    }
+
+    Visit_Types(elem){ //
+        let code = this.PopChildrenFromStack(elem).join(', ');
+        this.stack.push(`${code}`);
+    }
+
+    Visit_ScanfType(elem){ //
+        this.stack.push(``);
+    }
+
+    Visit_Stypes(elem){ //
+        let code = this.PopChildrenFromStack(elem).join(', ');
+        this.stack.push(`${elem.GetText()}`);
+    }
+
+    Visit_ScanfArg(elem){ //
+        let code = this.PopChildrenFromStack(elem, ['stypes', 'variables']);
+
+        this.stack.push( `${code.stypes} ${code.variables}`);
+    }
+
+    Visit_Variables(elem){ //
+        this.stack.push(``);
+    }
+
+    Visit_ListArgs(elem){ //
+        let code = this.PopChildrenFromStack(elem).join(', ');
+        this.stack.push(`${code}`);
     }
 
     Visit_MathPow(elem){
