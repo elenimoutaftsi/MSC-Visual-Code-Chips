@@ -137,10 +137,8 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'printf_type',             elem => this.Visit_PrintfType(elem) ); //
         this.SetVisitor( 'types',                   elem => this.Visit_Types(elem) ); //
         this.SetVisitor( 'variables',               elem => this.Visit_Variables(elem) ); //
-        this.SetVisitor( 'listargs',                elem => this.Visit_ListArgs(elem) ); //
         this.SetVisitor( 'scanf_type',              elem => this.Visit_ScanfType(elem) ); //
         this.SetVisitor( 'stypes',                  elem => this.Visit_Stypes(elem) ); //
-        this.SetVisitor( 'printf_arg',              elem => this.Visit_printfArg(elem) ); //
         this.SetVisitor( 'printf_variable',         elem => this.Visit_PrintfVariable(elem) ); //
         this.SetVisitor( 'scanf_arg',               elem => this.Visit_ScanfArg(elem) ); //
         this.SetVisitor( 'math_pow',                elem => this.Visit_MathPow(elem) );
@@ -199,9 +197,10 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'WITH',                    elem => this.Visit_With(elem) );
         this.SetVisitor( 'get_size',                elem => this.Visit_GetSize(elem) );
         this.SetVisitor( 'append',                  elem => this.Visit_Append(elem) );
-        this.SetVisitor( 'strcpy',                  elem => this.Visit_Strcpy(elem) ); //
-        this.SetVisitor( 'strcmp',                  elem => this.Visit_Strcmp(elem) ); //
-        this.SetVisitor( 'struct',                  elem => this.Visit_Struct(elem) ); //
+        this.SetVisitor( 'strcpy',                  elem => this.Visit_Strcpy(elem) ); 
+        this.SetVisitor( 'strcmp',                  elem => this.Visit_Strcmp(elem) ); 
+        this.SetVisitor( 'strlen',                  elem => this.Visit_Strlen(elem) ); 
+        this.SetVisitor( 'struct',                  elem => this.Visit_Struct(elem) ); 
         this.SetVisitor( 'printf',                  elem => this.Visit_Printf(elem) ); //
         this.SetVisitor( 'scanf',                   elem => this.Visit_Scanf(elem) );  //
         this.SetVisitor( 'pow',                     elem => this.Visit_Pow(elem) );
@@ -211,6 +210,9 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'ceiling',                 elem => this.Visit_Ceiling(elem) );
         this.SetVisitor( 'sin',                     elem => this.Visit_Sin(elem) );
         this.SetVisitor( 'cos',                     elem => this.Visit_Cos(elem) );
+        this.SetVisitor( '%d',                     elem => this.Visit_Intt(elem) );
+        this.SetVisitor( '%f',                     elem => this.Visit_Doublee(elem) );
+        this.SetVisitor( '%c',                     elem => this.Visit_Charr(elem) );
     }
 
     HandleVarDeclaration(id){
@@ -579,11 +581,11 @@ export class toCVisitor extends AstVisitor {
         this.stack.push(`>`);
     }
 
-    Visit_AssignOp(elem){ //
+    Visit_AssignOp(elem){ 
         this.stack.push(`=`);
     }
 
-    Visit_UnaryOp(elem){ //
+    Visit_UnaryOp(elem){ 
         this.stack.push(`+`);
     }
 
@@ -639,31 +641,37 @@ export class toCVisitor extends AstVisitor {
 
     Visit_IdentList(elem){
         let code = this.PopChildrenFromStack(elem).join(', ');
+
         this.stack.push(`${code}`);
     }
 
     Visit_ExprList(elem){
         let code = this.PopChildrenFromStack(elem).join(', ');
+
         this.stack.push(`${code}`);
     }
 
     Visit_ElementList(elem){
         let code = this.PopChildrenFromStack(elem).join(', ');
+
         this.stack.push(`${code}`);
     }
 
     Visit_ArrayDef(elem){ //
         let code = this.PopChildrenFromStack(elem).join(', ');
+
         this.stack.push(`${code}`);
     }
 
     Visit_ArrayType(elem){ //
         let code = this.PopChildrenFromStack(elem).join(', ');
+
         this.stack.push(`${code}`);
     }
 
     Visit_ArrayIndex(elem){ //
         let code = this.PopChildrenFromStack(elem).join(', ');
+
         this.stack.push(`${code}`);
     }
 
@@ -685,6 +693,7 @@ export class toCVisitor extends AstVisitor {
 
     Visit_StringCompareStrings(elem){ 
         let code = this.PopChildrenFromStack(elem, ['strcmp', 'string1', 'string2']);
+
         this.stack.push(`strcmp(${code.string1} , ${code.string2} )`);
     }
 
@@ -694,71 +703,73 @@ export class toCVisitor extends AstVisitor {
         this.stack.push(`strlen(${code.string})`);
     }
 
-    Visit_InputOutputPrintF(elem){ //
-        let code = this.PopChildrenFromStack(elem, ['call', 'print', 'with', 'args']);
+    Visit_InputOutputPrintf(elem){
+        let code = this.PopChildrenFromStack(elem, ['printf', 'listargs']);
 
         this.stack.push(
-            this.HandleSemicolon(elem, `window.alert(${code.args})`)
+            this.HandleSemicolon(elem, ` printf ( ${code.listargs} )`)
         );
     }
 
-    Visit_printfArg(elem){ //
-        let code = this.PopChildrenFromStack(elem, ['call', 'input', 'with', 'prompt_message']);
+    Visit_PrintfVariable(elem){ 
+        let code = this.PopChildrenFromStack(elem, ['types' , 'variables']);
 
         this.stack.push(
-            this.HandleSemicolon(elem, `window.prompt(${code.prompt_message})`)
+            this.HandleSemicolon(elem, `${code.types}, ${code.variables}`)
         );
     }
 
-    Visit_PrintfVariable(elem){ //
-        let code = this.PopChildrenFromStack(elem, ['call', 'input', 'with', 'prompt_message']);
-
-        this.stack.push(
-            this.HandleSemicolon(elem, `window.prompt(${code.prompt_message})`)
-        );
-    }
-
-    Visit_PrintfType(elem){ //
-        let code = this.PopChildrenFromStack(elem, ['call', 'input', 'with', 'prompt_message']);
-
-        this.stack.push(
-            this.HandleSemicolon(elem, `window.prompt(${code.prompt_message})`)
-        );
+    Visit_PrintfType(elem){ 
+        this.stack.push(`%d`);
     }
 
     Visit_InputOutputScanf(elem){ //
-        let code = this.PopChildrenFromStack(elem, ['scanf', 'args']);
+        let code = this.PopChildrenFromStack(elem, ['scanf', 'listargs']);
 
-        this.stack.push(`scanf (${code.args})`);
+        this.stack.push(
+            this.HandleSemicolon(elem, ` scanf ( ${code.listargs} )`)
+        );
     }
 
-    Visit_Types(elem){ //
-        let code = this.PopChildrenFromStack(elem).join(', ');
-        this.stack.push(`${code}`);
+    Visit_Types(elem){ 
+        let code = this.PopChildrenFromStack(elem).join(' ');
+
+        this.stack.push(`" ${code} " `);
     }
 
-    Visit_ScanfType(elem){ //
-        this.stack.push(``);
+    Visit_ScanfType(elem){ 
+        this.stack.push(`%d`);
     }
 
-    Visit_Stypes(elem){ //
-        let code = this.PopChildrenFromStack(elem).join(', ');
-        this.stack.push(`${elem.GetText()}`);
+    Visit_Stypes(elem){ 
+        let code = this.PopChildrenFromStack(elem).join(' ');
+
+        this.stack.push(`" ${code} " `);
     }
 
-    Visit_ScanfArg(elem){ //
+    Visit_ScanfArg(elem){ 
         let code = this.PopChildrenFromStack(elem, ['stypes', 'variables']);
 
-        this.stack.push( `${code.stypes} ${code.variables}`);
+        this.stack.push( `${code.stypes}, ${code.variables}`);
     }
 
-    Visit_Variables(elem){ //
-        this.stack.push(``);
+    Visit_Variables(elem){ 
+        let parent = elem.GetParent()?.GetSymbol().symbol.name;
+
+        if (parent === 'scanf_arg'){
+            let code = this.PopChildrenFromStack(elem).join(',&');
+            this.stack.push(` &${code}`);
+        }
+        else{
+            let code = this.PopChildrenFromStack(elem).join(',');
+            this.stack.push(` ${code}`);
+        }
     }
 
-    Visit_ListArgs(elem){ //
+    Visit_ListArgs(elem){
         let code = this.PopChildrenFromStack(elem).join(', ');
-        this.stack.push(`${code}`);
+
+        this.stack.push(` ${code}`);
     }
 
     Visit_MathPow(elem){
@@ -889,9 +900,17 @@ export class toCVisitor extends AstVisitor {
         let quotes = /\"/g;
         let backslashes = /\\/g
 
-        let text = '"' + elem.GetText().replace(backslashes, '\\\\').replace(quotes, '\\"') + '"'
+        let text = elem.GetText().replace(backslashes, '\\\\').replace(quotes, '\\"')
 
-        this.stack.push(text);
+
+        let parent = elem.GetParent()?.GetSymbol().symbol.name;
+
+        if (parent === 'types')
+            this.stack.push(text);
+        else{
+            text = '"' + elem.GetText().replace(backslashes, '\\\\').replace(quotes, '\\"') + '"'
+            this.stack.push(text);
+        }
     }
 
     Visit_Uminus(elem)              { this.stack.push('-'); }
@@ -953,10 +972,11 @@ export class toCVisitor extends AstVisitor {
         );
     }
     
-    Visit_Append(elem)              { this.stack.push(null); }
-    Visit_Strcpy(elem)              { this.stack.push(null); }
-    Visit_Strcmp(elem)              { this.stack.push(null); }
-    Visit_Struct(elem)              { this.stack.push(null); }
+    Visit_Append(elem)              { this.stack.push('append'); }
+    Visit_Strcpy(elem)              { this.stack.push('strcpy'); }
+    Visit_Strcmp(elem)              { this.stack.push('strcmp'); }
+    Visit_Strlen(elem)              { this.stack.push('strlen'); }
+    Visit_Struct(elem)              { this.stack.push('struct'); }
     Visit_Printf(elem)              { this.stack.push(null); }
     Visit_Scanf(elem)               { this.stack.push(null); }
     Visit_Pow(elem)                 { this.stack.push(null); }
@@ -966,4 +986,7 @@ export class toCVisitor extends AstVisitor {
     Visit_Ceiling(elem)             { this.stack.push(null); }
     Visit_Sin(elem)                 { this.stack.push(null); }
     Visit_Cos(elem)                 { this.stack.push(null); }
+    Visit_Intt(elem)                { this.stack.push('%d'); }
+    Visit_Doublee(elem)             { this.stack.push('%f'); }
+    Visit_Charr(elem)               { this.stack.push('%c'); }
 }

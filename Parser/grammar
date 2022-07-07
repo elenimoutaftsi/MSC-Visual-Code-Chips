@@ -18,7 +18,7 @@ non_terminal {
     array_def array_type array_index array_size
     string_append string_copy_string string_compare_strings string_size 
     input_output_printf input_output_scanf 
-    printf_type types variables listargs scanf_type stypes printf_arg printf_variable scanf_arg
+    printf_type types variables scanf_type stypes printf_variable scanf_arg
     math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos 
 }
 
@@ -343,21 +343,11 @@ define input_output_call {
 }
 
 define input_output_printf {
-    printf listargs
-}
-define listargs{
-    list_of printf_arg
+    printf printf_variable
 }
 
 define input_output_scanf {
     scanf scanf_arg
-}
-
-define printf_arg {
-    any_of{
-        printf_variable                    :"Print variable in output screen"
-        STRING_CONST                       :"Print text in output screen"
-    }
 }
 
 define printf_variable {
@@ -377,6 +367,7 @@ define printf_type {
         "%d"                                 : " Print variable with int type"
         "%f"                                 : " Print variable with double or float type"
         "%c"                                 : " Print variable with character type"
+        STRING_CONST                         :"Print text in output screen"
     } 
 }
 

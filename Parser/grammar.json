@@ -988,16 +988,7 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "listargs"
-                }
-            ]
-        },
-        {
-            "name": "listargs",
-            "list_of": [
-                {
-                    "type": "non_terminal",
-                    "name": "printf_arg"
+                    "name": "printf_variable"
                 }
             ]
         },
@@ -1011,21 +1002,6 @@
                 {
                     "type": "non_terminal",
                     "name": "scanf_arg"
-                }
-            ]
-        },
-        {
-            "name": "printf_arg",
-            "any_of": [
-                {
-                    "type": "non_terminal",
-                    "name": "printf_variable",
-                    "tooltip": "Print variable in output screen"
-                },
-                {
-                    "type": "terminal",
-                    "name": "STRING_CONST",
-                    "tooltip": "Print text in output screen"
                 }
             ]
         },
@@ -1078,6 +1054,11 @@
                     "type": "terminal",
                     "name": "%c",
                     "tooltip": " Print variable with character type"
+                },
+                {
+                    "type": "terminal",
+                    "name": "STRING_CONST",
+                    "tooltip": "Print text in output screen"
                 }
             ]
         },
