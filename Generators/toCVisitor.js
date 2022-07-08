@@ -175,11 +175,11 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'TIMES_EQUALS',            elem => this.Visit_Times_Equals(elem) );//
         this.SetVisitor( 'BY_EQUALS',               elem => this.Visit_By_Equals(elem) );//
         this.SetVisitor( 'MOD_EQUALS',              elem => this.Visit_Mod_Equals(elem) );//
-        this.SetVisitor( 'int',                     elem => this.Visit_Int(elem) );//
-        this.SetVisitor( 'char',                    elem => this.Visit_Char(elem) );//
-        this.SetVisitor( 'float',                   elem => this.Visit_Float(elem) );//
-        this.SetVisitor( 'double',                  elem => this.Visit_Double(elem) );//
-        this.SetVisitor( 'void',                    elem => this.Visit_Void(elem) );//
+        this.SetVisitor( 'int',                     elem => this.Visit_Int(elem) );
+        this.SetVisitor( 'char',                    elem => this.Visit_Char(elem) );
+        this.SetVisitor( 'float',                   elem => this.Visit_Float(elem) );
+        this.SetVisitor( 'double',                  elem => this.Visit_Double(elem) );
+        this.SetVisitor( 'void',                    elem => this.Visit_Void(elem) );
         this.SetVisitor( 'AND',                     elem => this.Visit_And(elem) );
         this.SetVisitor( 'OR',                      elem => this.Visit_Or(elem) );
         this.SetVisitor( 'NOT',                     elem => this.Visit_Not(elem) );
@@ -201,8 +201,8 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'strcmp',                  elem => this.Visit_Strcmp(elem) ); 
         this.SetVisitor( 'strlen',                  elem => this.Visit_Strlen(elem) ); 
         this.SetVisitor( 'struct',                  elem => this.Visit_Struct(elem) ); 
-        this.SetVisitor( 'printf',                  elem => this.Visit_Printf(elem) ); //
-        this.SetVisitor( 'scanf',                   elem => this.Visit_Scanf(elem) );  //
+        this.SetVisitor( 'printf',                  elem => this.Visit_Printf(elem) ); 
+        this.SetVisitor( 'scanf',                   elem => this.Visit_Scanf(elem) );  
         this.SetVisitor( 'pow',                     elem => this.Visit_Pow(elem) );
         this.SetVisitor( 'sqrt',                    elem => this.Visit_Sqrt(elem) );
         this.SetVisitor( 'round',                   elem => this.Visit_Round(elem) );
@@ -213,6 +213,8 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( '%d',                     elem => this.Visit_Intt(elem) );
         this.SetVisitor( '%f',                     elem => this.Visit_Doublee(elem) );
         this.SetVisitor( '%c',                     elem => this.Visit_Charr(elem) );
+        this.SetVisitor( '[',                      elem => this.Visit_SqBracket1(elem) );
+        this.SetVisitor( ']',                      elem => this.Visit_SqBracket2(elem) );
     }
 
     HandleVarDeclaration(id){
@@ -658,25 +660,21 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_ArrayDef(elem){ //
-        let code = this.PopChildrenFromStack(elem).join(', ');
+        let code = this.PopChildrenFromStack(elem, ['array_type', 'id' , '[', 'size', ']']);
 
-        this.stack.push(`${code}`);
+        this.stack.push( ` ${code.array_type}  ${code.id} [ ${code.size} ] ; ` );
     }
 
     Visit_ArrayType(elem){ //
-        let code = this.PopChildrenFromStack(elem).join(', ');
-
-        this.stack.push(`${code}`);
+        this.stack.push(``);
     }
 
     Visit_ArrayIndex(elem){ //
-        let code = this.PopChildrenFromStack(elem).join(', ');
-
-        this.stack.push(`${code}`);
+        this.stack.push( '' );
     }
 
     Visit_ArraySize(elem){
-        assert(false);
+        this.stack.push(``);
     }
 
     Visit_StringAppend(elem){
@@ -989,4 +987,6 @@ export class toCVisitor extends AstVisitor {
     Visit_Intt(elem)                { this.stack.push('%d'); }
     Visit_Doublee(elem)             { this.stack.push('%f'); }
     Visit_Charr(elem)               { this.stack.push('%c'); }
+    Visit_SqBracket1(elem)          { this.stack.push('['); }
+    Visit_SqBracket2(elem)          { this.stack.push(']'); }
 }
