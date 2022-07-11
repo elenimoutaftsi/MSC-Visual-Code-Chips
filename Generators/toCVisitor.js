@@ -472,7 +472,7 @@ export class toCVisitor extends AstVisitor {
             funcs:      [],
         });
 
-        let code = this.PopChildrenFromStack(elem, ['func_type', 'id', 'ident_list', '{', 'stmts', '}']);
+        let code = this.PopChildrenFromStack(elem, ['func_type', 'id', '(', 'ident_list',  ')', '{', 'stmts', '}']);
         let vars = this.TabIn( this.PopScopeVars() );
 
         this.DecreaseTabs();
