@@ -286,7 +286,7 @@ define assign_op {
 }
 
 define func_def {
-   func_type IDENT(name) WITH PARAMETERS ident_list "{" stmts  "}"
+   func_type IDENT(name) ident_list "{" stmts  "}"
 }
 
 define struct_def {

@@ -193,9 +193,7 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'ELSE',                    elem => this.Visit_Else(elem) );
         this.SetVisitor( 'WHILE',                   elem => this.Visit_While(elem) );
         this.SetVisitor( 'FOR',                     elem => this.Visit_For(elem) );
-        this.SetVisitor( 'FUNCTION',                elem => this.Visit_Function(elem) );
-        this.SetVisitor( 'WITH',                    elem => this.Visit_With(elem) );
-        this.SetVisitor( 'PARAMETRES',              elem => this.Visit_Param(elem) );
+        //this.SetVisitor( 'FUNCTION',                elem => this.Visit_Function(elem) );
         this.SetVisitor( 'get_size',                elem => this.Visit_GetSize(elem) );
         this.SetVisitor( 'append',                  elem => this.Visit_Append(elem) );
         this.SetVisitor( 'strcpy',                  elem => this.Visit_Strcpy(elem) ); 
@@ -218,6 +216,8 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( ']',                      elem => this.Visit_SqBracket2(elem) );
         this.SetVisitor( '{',                      elem => this.Visit_Bracket1(elem) );
         this.SetVisitor( '}',                      elem => this.Visit_Bracket2(elem) );
+        this.SetVisitor( '(',                      elem => this.Visit_Parenth1(elem) );
+        this.SetVisitor( ')',                      elem => this.Visit_Parenth2(elem) );
         this.SetVisitor( '.',                      elem => this.Visit_Dot(elem) );
     }
 
@@ -438,8 +438,12 @@ export class toCVisitor extends AstVisitor {
 
     Visit_VarDef(elem) {
         let code = this.PopChildrenFromStack(elem, ['var_type', 'id']);
-
-        this.stack.push( ` ${code.var_type} ${code.id};` );
+        let parent = elem.GetParent()?.GetParent()?.GetSymbol().symbol.name;
+        
+        if (parent === 'func_def')
+            this.stack.push( ` ${code.var_type} ${code.id}` );
+        else
+            this.stack.push( ` ${code.var_type} ${code.id};` );
     }
 
     Visit_VarType(elem) {
@@ -468,13 +472,13 @@ export class toCVisitor extends AstVisitor {
             funcs:      [],
         });
 
-        let code = this.PopChildrenFromStack(elem, ['func_type', 'id', 'WITH', 'PARAMETRES', 'ident_list', '{', 'stmts', '}']);
+        let code = this.PopChildrenFromStack(elem, ['func_type', 'id', 'ident_list', '{', 'stmts', '}']);
         let vars = this.TabIn( this.PopScopeVars() );
 
         this.DecreaseTabs();
         let rBrace = this.TabIn('}');
 
-        this.stack.push(`${code.func_type} ${code.id} ( ${code.ident_list} ) { \n${code.stmts}\n }`);
+        this.stack.push(`${code.func_type} ${code.id} ( ${code.ident_list} ) { \n ${code.stmts}\n } `);
     }
 
     Visit_FuncType(elem){
@@ -650,16 +654,15 @@ export class toCVisitor extends AstVisitor {
         );
     }
 
-    Visit_UserFunctionCall(elem){
-        let code = this.PopChildrenFromStack(elem, ['name', 'args']);
+    Visit_UserFunctionCall(elem){ //
+        let code = this.PopChildrenFromStack(elem, ['id', 'args']);
 
         this.stack.push(
-            this.HandleSemicolon(elem, `${code.name}(${code.args})`)
+            this.HandleSemicolon(elem, `${code.id}( ${code.args} )`)
         );
     }
 
     Visit_IdentList(elem){
-
         let parent = elem.GetParent()?.GetSymbol().symbol.name;
 
         if (parent === 'struct_def'){
@@ -685,8 +688,12 @@ export class toCVisitor extends AstVisitor {
 
     Visit_ArrayDef(elem){ 
         let code = this.PopChildrenFromStack(elem, ['array_type', 'id' , '[', 'size', ']']);
+        let parent = elem.GetParent()?.GetParent()?.GetSymbol().symbol.name;
 
-        this.stack.push( ` ${code.array_type}  ${code.id} [ ${code.size} ] ; ` );
+        if(parent === 'func_def')
+            this.stack.push( ` ${code.array_type}  ${code.id} [ ${code.size} ] ` );
+        else
+            this.stack.push( ` ${code.array_type}  ${code.id} [ ${code.size} ] ; ` );
     }
 
     Visit_ArrayType(elem){ 
@@ -976,20 +983,17 @@ export class toCVisitor extends AstVisitor {
     Visit_While(elem)               { this.IncreaseTabs(); this.stack.push(null); }
     Visit_For(elem)                 { this.IncreaseTabs(); this.stack.push(null); }
     
-    Visit_Function(elem) {
-        this.IncreaseTabs();
+    // Visit_Function(elem) {
+    //     this.IncreaseTabs();
 
-        this.scopeStack.push({
-            args:       [],
-            vars:       [],
-            funcs:      [],
-        });
+    //     this.scopeStack.push({
+    //         args:       [],
+    //         vars:       [],
+    //         funcs:      [],
+    //     });
 
-        this.stack.push(null);
-    }
-    
-    Visit_With(elem)                { this.stack.push(''); }
-    Visit_Param(elem)               { this.stack.push(''); }
+    //     this.stack.push(null);
+    // }
     
     Visit_GetSize(elem) {
         this.stack.push(
@@ -1016,6 +1020,8 @@ export class toCVisitor extends AstVisitor {
     Visit_Charr(elem)               { this.stack.push('%c'); }
     Visit_SqBracket1(elem)          { this.stack.push('['); }
     Visit_SqBracket2(elem)          { this.stack.push(']'); }
+    Visit_Parenth1(elem)            { this.stack.push('('); }
+    Visit_Parenth2(elem)            { this.stack.push(')'); }
     Visit_Bracket1(elem)            { this.stack.push('{'); }
     Visit_Bracket2(elem)            { this.stack.push('}'); }
     Visit_Dot(elem)                 { this.stack.push('.'); }

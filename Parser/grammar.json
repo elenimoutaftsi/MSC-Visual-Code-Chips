@@ -766,14 +766,6 @@
                     "alias": "name"
                 },
                 {
-                    "type": "terminal",
-                    "name": "WITH"
-                },
-                {
-                    "type": "terminal",
-                    "name": "PARAMETERS"
-                },
-                {
                     "type": "non_terminal",
                     "name": "ident_list"
                 },
