@@ -367,7 +367,7 @@ define printf_type {
         "%d"                                 : " Print variable with int type"
         "%f"                                 : " Print variable with double or float type"
         "%c"                                 : " Print variable with character type"
-        STRING_CONST                         :"Print text in output screen"
+        STRING_CONST                         : "Print text in output screen"
     } 
 }
 

@@ -421,7 +421,7 @@ export class toCVisitor extends AstVisitor {
         let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
         let vars = this.TabIn( this.PopScopeVars() );
         
-        this.stack.push('#include <stdio.h>\n\nint main() {\n\n ' + childrenCode +'\n\n}' );
+        this.stack.push('#include <stdio.h>\n\nint main() {\n\n' + childrenCode +'\n\n}' );
     }
 
     Visit_Stmt(elem) {
@@ -453,13 +453,15 @@ export class toCVisitor extends AstVisitor {
     Visit_StructDef(elem) { 
         let code = this.PopChildrenFromStack(elem, ['struct', 'id' , '{', 'ident_list' , '}']);
 
+        console.log(this.currTabs);
+
         this.stack.push( `struct ${code.id}  { \n${code.ident_list} \n} ; ` );
     }
 
     Visit_Struct_Field(elem) { 
         let code = this.PopChildrenFromStack(elem, [ 'id1' , '.', 'id2']);
 
-        this.stack.push( ` ${code.id1}.${code.id2} ` );
+        this.stack.push( `${code.id1}.${code.id2} ` );
     }
     
     Visit_FuncDefStmt(elem){ ////
@@ -584,15 +586,15 @@ export class toCVisitor extends AstVisitor {
         this.HandleUnaryExpr(elem);
     }
 
-    Visit_UnaryExpr(elem){ //
+    Visit_UnaryExpr(elem){ 
         this.HandleUnaryExpr(elem);
     }
 
-    Visit_UnaryBackExpr(elem){ //
+    Visit_UnaryBackExpr(elem){ 
         this.HandleUnaryExpr(elem);
     }
 
-    Visit_UnaryFrontExpr(elem){ //
+    Visit_UnaryFrontExpr(elem){ 
         this.HandleUnaryExpr(elem);
     }
 
@@ -630,7 +632,7 @@ export class toCVisitor extends AstVisitor {
         );
     }
 
-    Visit_ConstValues(elem){ //
+    Visit_ConstValues(elem){ 
         this.stack.push(
             this.HandleSemicolon(elem, `false`)
         );
@@ -930,18 +932,24 @@ export class toCVisitor extends AstVisitor {
     Visit_StringConst(elem) {
         let quotes = /\"/g;
         let backslashes = /\\/g
+        console.log(elem.GetText());
 
-        let text = elem.GetText().replace(backslashes, '\\\\').replace(quotes, '\\"')
+        if (elem.GetText() != undefined ){
+            let text = elem.GetText().replace(backslashes, '\\\\').replace(quotes, '\\"')
 
+            let parent = elem.GetParent()?.GetSymbol().symbol.name;
 
-        let parent = elem.GetParent()?.GetSymbol().symbol.name;
+            if (parent === 'types')
+                this.stack.push(text);
+            else{
+                text = '"' + elem.GetText().replace(backslashes, '\\\\').replace(quotes, '\\"') + '"'
+                this.stack.push(text);
+            }
 
-        if (parent === 'types')
-            this.stack.push(text);
-        else{
-            text = '"' + elem.GetText().replace(backslashes, '\\\\').replace(quotes, '\\"') + '"'
-            this.stack.push(text);
+        } else {
+            this.stack.push('string');
         }
+
     }
 
     Visit_Uminus(elem)              { this.stack.push('-'); }
@@ -1005,7 +1013,7 @@ export class toCVisitor extends AstVisitor {
     Visit_Strcpy(elem)              { this.stack.push('strcpy'); }
     Visit_Strcmp(elem)              { this.stack.push('strcmp'); }
     Visit_Strlen(elem)              { this.stack.push('strlen'); }
-    Visit_Struct(elem)              { this.stack.push('struct'); }
+    Visit_Struct(elem)              { this.stack.push(null); }
     Visit_Printf(elem)              { this.stack.push(null); }
     Visit_Scanf(elem)               { this.stack.push(null); }
     Visit_Pow(elem)                 { this.stack.push(null); }

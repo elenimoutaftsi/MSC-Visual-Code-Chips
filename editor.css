@@ -617,8 +617,8 @@ body{
 }
 
 .editor-toolbar-js-button {
-    -webkit-mask-image: url(./Images/EditorToolbar/js.svg);
-    mask-image: url(./Images/EditorToolbar/js.svg);
+    -webkit-mask-image: url(./Images/EditorToolbar/C.svg);
+    mask-image: url(./Images/EditorToolbar/C.svg);
     background-color: #CBCB41;
 }
 
