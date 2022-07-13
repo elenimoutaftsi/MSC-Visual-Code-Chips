@@ -37,7 +37,7 @@ terminal {
     struct
     printf scanf
     pow sqrt round floor ceiling sin cos
-    "%c" "%d" "%f"
+    "%c" "%d" "%f" "%s"
 }
 
 define program {
@@ -367,6 +367,7 @@ define printf_type {
         "%d"                                 : " Print variable with int type"
         "%f"                                 : " Print variable with double or float type"
         "%c"                                 : " Print variable with character type"
+        "%s"                                 : " Print variable with string type"
         STRING_CONST                         : "Print text in output screen"
     } 
 }

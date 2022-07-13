@@ -1057,6 +1057,11 @@
                 },
                 {
                     "type": "terminal",
+                    "name": "%s",
+                    "tooltip": " Print variable with string type"
+                },
+                {
+                    "type": "terminal",
                     "name": "STRING_CONST",
                     "tooltip": "Print text in output screen"
                 }

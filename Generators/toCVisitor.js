@@ -62,6 +62,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     TabIn(str, tabs = this.currTabs){
+        console.log(tabs);
         if (tabs === 0)
             return str;
         
@@ -149,7 +150,7 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'math_sin',                elem => this.Visit_MathSin(elem) );
         this.SetVisitor( 'math_cos',                elem => this.Visit_MathCos(elem) );
 
-
+        this.SetVisitor( 'main',                    elem => this.Visit_Main(elem) );
         this.SetVisitor( 'IDENT',                   elem => this.Visit_Ident(elem) );
         this.SetVisitor( 'INT_CONST',               elem => this.Visit_IntConst(elem) );
         this.SetVisitor( 'FLOAT_CONST',             elem => this.Visit_FloatConst(elem) );
@@ -209,16 +210,17 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'ceiling',                 elem => this.Visit_Ceiling(elem) );
         this.SetVisitor( 'sin',                     elem => this.Visit_Sin(elem) );
         this.SetVisitor( 'cos',                     elem => this.Visit_Cos(elem) );
-        this.SetVisitor( '%d',                     elem => this.Visit_Intt(elem) );
-        this.SetVisitor( '%f',                     elem => this.Visit_Doublee(elem) );
-        this.SetVisitor( '%c',                     elem => this.Visit_Charr(elem) );
-        this.SetVisitor( '[',                      elem => this.Visit_SqBracket1(elem) );
-        this.SetVisitor( ']',                      elem => this.Visit_SqBracket2(elem) );
-        this.SetVisitor( '{',                      elem => this.Visit_Bracket1(elem) );
-        this.SetVisitor( '}',                      elem => this.Visit_Bracket2(elem) );
-        this.SetVisitor( '(',                      elem => this.Visit_Parenth1(elem) );
-        this.SetVisitor( ')',                      elem => this.Visit_Parenth2(elem) );
-        this.SetVisitor( '.',                      elem => this.Visit_Dot(elem) );
+        this.SetVisitor( '%d',                      elem => this.Visit_Intt(elem) );
+        this.SetVisitor( '%f',                      elem => this.Visit_Doublee(elem) );
+        this.SetVisitor( '%c',                      elem => this.Visit_Charr(elem) );
+        this.SetVisitor( '%s',                      elem => this.Visit_Stringg(elem) );
+        this.SetVisitor( '[',                       elem => this.Visit_SqBracket1(elem) );
+        this.SetVisitor( ']',                       elem => this.Visit_SqBracket2(elem) );
+        this.SetVisitor( '{',                       elem => this.Visit_Bracket1(elem) );
+        this.SetVisitor( '}',                       elem => this.Visit_Bracket2(elem) );
+        this.SetVisitor( '(',                       elem => this.Visit_Parenth1(elem) );
+        this.SetVisitor( ')',                       elem => this.Visit_Parenth2(elem) );
+        this.SetVisitor( '.',                       elem => this.Visit_Dot(elem) );
     }
 
     HandleVarDeclaration(id){
@@ -421,7 +423,9 @@ export class toCVisitor extends AstVisitor {
         let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
         let vars = this.TabIn( this.PopScopeVars() );
         
-        this.stack.push('#include <stdio.h>\n\nint main() {\n\n' + childrenCode +'\n\n}' );
+        let rBrace = this.TabIn('}');
+        
+        this.stack.push(`#include <stdio.h>\n\nint main() {\n\n` + childrenCode +`\n\n${rBrace}` );
     }
 
     Visit_Stmt(elem) {
@@ -429,7 +433,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_Def(elem) {
-        this.stack.push( ';' );
+        this.stack.push(';');
     }
 
     Visit_VarDecl(elem) {
@@ -452,10 +456,13 @@ export class toCVisitor extends AstVisitor {
 
     Visit_StructDef(elem) { 
         let code = this.PopChildrenFromStack(elem, ['struct', 'id' , '{', 'ident_list' , '}']);
-
         console.log(this.currTabs);
 
-        this.stack.push( `struct ${code.id}  { \n${code.ident_list} \n} ; ` );
+        this.DecreaseTabs();
+        
+        let rBrace = this.TabIn('}');
+
+        this.stack.push( `struct ${code.id}  { \n${code.ident_list} \n${rBrace} ; ` );
     }
 
     Visit_Struct_Field(elem) { 
@@ -465,8 +472,6 @@ export class toCVisitor extends AstVisitor {
     }
     
     Visit_FuncDefStmt(elem){ ////
-
-        this.IncreaseTabs();
 
         this.scopeStack.push({
             args:       [],
@@ -480,11 +485,11 @@ export class toCVisitor extends AstVisitor {
         this.DecreaseTabs();
         let rBrace = this.TabIn('}');
 
-        this.stack.push(`${code.func_type} ${code.id} ( ${code.ident_list} ) { \n ${code.stmts}\n } `);
+        this.stack.push(`${code.func_type} ${code.id} (${code.ident_list} ) { \n ${code.stmts}\n ${rBrace} `);
     }
 
     Visit_FuncType(elem){
-        this.stack.push( ';' );
+        this.stack.push( 'int' );
     }
 
     Visit_IfStmt(elem) {
@@ -668,8 +673,9 @@ export class toCVisitor extends AstVisitor {
         let parent = elem.GetParent()?.GetSymbol().symbol.name;
 
         if (parent === 'struct_def'){
-            let code = this.PopChildrenFromStack(elem).join('\n');
-            this.stack.push(`${code}`);
+            let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
+
+            this.stack.push( childrenCode );
         } else{
             let code = this.PopChildrenFromStack(elem).join(', ');
             this.stack.push(`${code}`);
@@ -881,16 +887,17 @@ export class toCVisitor extends AstVisitor {
         if(id == null) this.stack.push('ident');
         else this.stack.push(id);
         
-        // let parent = elem.GetParent().GetSymbol().symbol.name;
+        let parent = elem.GetParent().GetSymbol().symbol.name;
 
-        // if (parent === 'func_def'){
-        //     this.scopeStack[this.scopeStack.length - 2].funcs.push(id); // don't care about duplicates
-        // }
-        // else if (parent === 'ident_list'){
-        //     this.scopeStack[this.scopeStack.length - 1].args.push(id); // don't care about duplicates
-        // }
-        // else
-        //     this.HandleVarDeclaration(id);
+        if (parent === 'func_def'){
+            //this.scopeStack[this.scopeStack.length - 2].funcs.push(id); // don't care about duplicates
+            this.IncreaseTabs(); 
+        }
+        else if (parent === 'ident_list'){
+            //this.scopeStack[this.scopeStack.length - 1].args.push(id); // don't care about duplicates
+        }
+        //else
+            //this.HandleVarDeclaration(id);
     }
 
     Visit_IntConst(elem) {
@@ -951,7 +958,7 @@ export class toCVisitor extends AstVisitor {
         }
 
     }
-
+    Visit_Main(elem)                { this.IncreaseTabs(); console.log("main"); this.stack.push(null); }
     Visit_Uminus(elem)              { this.stack.push('-'); }
     Visit_Plus(elem)                { this.stack.push('+'); }
     Visit_Minus(elem)               { this.stack.push('-'); }
@@ -961,7 +968,7 @@ export class toCVisitor extends AstVisitor {
     Visit_Greater(elem)             { this.stack.push('>'); }
     Visit_Less(elem)                { this.stack.push('<'); }
     Visit_EqualTo(elem)             { this.stack.push('=='); }
-    Visit_NotEqualTo(elem)          { this.stack.push('!=='); }
+    Visit_NotEqualTo(elem)          { this.stack.push('!='); }
     Visit_GreaterEqual(elem)        { this.stack.push('>='); }
     Visit_LessEqual(elem)           { this.stack.push('<='); }
     Visit_Plus_Plus(elem)           { this.stack.push('++'); }
@@ -986,7 +993,7 @@ export class toCVisitor extends AstVisitor {
     Visit_Continue(elem)            { this.stack.push('continue;'); }
     Visit_Return(elem)              { this.stack.push('return'); }
 
-    Visit_If(elem)                  { this.IncreaseTabs(); this.stack.push(null); }
+    Visit_If(elem)                  { this.IncreaseTabs(); console.log(this.currTabs); this.stack.push(null); }
     Visit_Else(elem)                { this.stack.push(null); }
     Visit_While(elem)               { this.IncreaseTabs(); this.stack.push(null); }
     Visit_For(elem)                 { this.IncreaseTabs(); this.stack.push(null); }
@@ -1013,7 +1020,7 @@ export class toCVisitor extends AstVisitor {
     Visit_Strcpy(elem)              { this.stack.push('strcpy'); }
     Visit_Strcmp(elem)              { this.stack.push('strcmp'); }
     Visit_Strlen(elem)              { this.stack.push('strlen'); }
-    Visit_Struct(elem)              { this.stack.push(null); }
+    Visit_Struct(elem)              { this.IncreaseTabs(); this.stack.push(null); }
     Visit_Printf(elem)              { this.stack.push(null); }
     Visit_Scanf(elem)               { this.stack.push(null); }
     Visit_Pow(elem)                 { this.stack.push(null); }
@@ -1026,6 +1033,7 @@ export class toCVisitor extends AstVisitor {
     Visit_Intt(elem)                { this.stack.push('%d'); }
     Visit_Doublee(elem)             { this.stack.push('%f'); }
     Visit_Charr(elem)               { this.stack.push('%c'); }
+    Visit_Stringg(elem)             { this.stack.push('%s'); }
     Visit_SqBracket1(elem)          { this.stack.push('['); }
     Visit_SqBracket2(elem)          { this.stack.push(']'); }
     Visit_Parenth1(elem)            { this.stack.push('('); }

@@ -1058,6 +1058,11 @@ export let config = {
                   },
                   {
                       "type": "terminal",
+                      "name": "%s",
+                      "tooltip": " Print variable with string type"
+                  },
+                  {
+                      "type": "terminal",
                       "name": "STRING_CONST",
                       "tooltip": "Print text in output screen"
                   }
@@ -16046,6 +16051,13 @@ export let config = {
                           },
                           {
                             "symbol": {
+                              "name": "%s",
+                              "isTerminal": true
+                            },
+                            "tooltip": " Print variable with string type"
+                          },
+                          {
+                            "symbol": {
                               "name": "STRING_CONST",
                               "isTerminal": true
                             },
@@ -16083,6 +16095,13 @@ export let config = {
                             "isTerminal": true
                           },
                           "tooltip": " Print variable with character type"
+                        },
+                        {
+                          "symbol": {
+                            "name": "%s",
+                            "isTerminal": true
+                          },
+                          "tooltip": " Print variable with string type"
                         },
                         {
                           "symbol": {
@@ -28087,7 +28106,7 @@ config.darkColorfulTheme = {
         "while_stmt":           [ "WHILE", "condition_expr", "$$_newline", "$$_tab", "while_part" ],
         "for_stmt":             [ "FOR", "initialization", "condition_expr", "step", "$$_newline", "$$_tab", "for_part" ],
         "func_def":             [ "TYPE", "NAME", "(", "ident_list",")", "$$_newline", "stmts" ],
-        "ident_list":           { "NewLine Between Blocks": false },
+        "ident_list":           { "NewLine Between Blocks": true },
         "expr_list":            { "NewLine Between Blocks": false },
         "element_list":         { "NewLine Between Blocks": false },
         "types":                { "NewLine Between Blocks": false },
