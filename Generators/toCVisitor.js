@@ -62,7 +62,6 @@ export class toCVisitor extends AstVisitor {
     }
 
     TabIn(str, tabs = this.currTabs){
-        console.log(tabs);
         if (tabs === 0)
             return str;
         
@@ -150,7 +149,6 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'math_sin',                elem => this.Visit_MathSin(elem) );
         this.SetVisitor( 'math_cos',                elem => this.Visit_MathCos(elem) );
 
-        this.SetVisitor( 'main',                    elem => this.Visit_Main(elem) );
         this.SetVisitor( 'IDENT',                   elem => this.Visit_Ident(elem) );
         this.SetVisitor( 'INT_CONST',               elem => this.Visit_IntConst(elem) );
         this.SetVisitor( 'FLOAT_CONST',             elem => this.Visit_FloatConst(elem) );
@@ -194,7 +192,6 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'ELSE',                    elem => this.Visit_Else(elem) );
         this.SetVisitor( 'WHILE',                   elem => this.Visit_While(elem) );
         this.SetVisitor( 'FOR',                     elem => this.Visit_For(elem) );
-        //this.SetVisitor( 'FUNCTION',                elem => this.Visit_Function(elem) );
         this.SetVisitor( 'get_size',                elem => this.Visit_GetSize(elem) );
         this.SetVisitor( 'append',                  elem => this.Visit_Append(elem) );
         this.SetVisitor( 'strcpy',                  elem => this.Visit_Strcpy(elem) ); 
@@ -410,7 +407,7 @@ export class toCVisitor extends AstVisitor {
 
     Visit_Stmts(elem) {
         let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
-
+        console.log("stmts");
         if (elem.GetParent()){
             this.stack.push(childrenCode);
         }else
@@ -419,21 +416,23 @@ export class toCVisitor extends AstVisitor {
             );
     }
 
+    Visit_Stmt(elem) {
+        this.stack.push( ';' );
+        console.log("stmt");
+    }
+
     Visit_Defs(elem) {
         let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
         let vars = this.TabIn( this.PopScopeVars() );
         
         let rBrace = this.TabIn('}');
-        
+        console.log("defs");
         this.stack.push(`#include <stdio.h>\n\nint main() {\n\n` + childrenCode +`\n\n${rBrace}` );
-    }
-
-    Visit_Stmt(elem) {
-        this.stack.push( ';' );
     }
 
     Visit_Def(elem) {
         this.stack.push(';');
+        console.log("def");
     }
 
     Visit_VarDecl(elem) {
@@ -471,7 +470,7 @@ export class toCVisitor extends AstVisitor {
         this.stack.push( `${code.id1}.${code.id2} ` );
     }
     
-    Visit_FuncDefStmt(elem){ ////
+    Visit_FuncDefStmt(elem){ 
 
         this.scopeStack.push({
             args:       [],
@@ -661,7 +660,7 @@ export class toCVisitor extends AstVisitor {
         );
     }
 
-    Visit_UserFunctionCall(elem){ //
+    Visit_UserFunctionCall(elem){ 
         let code = this.PopChildrenFromStack(elem, ['id', 'args']);
 
         this.stack.push(
@@ -958,7 +957,7 @@ export class toCVisitor extends AstVisitor {
         }
 
     }
-    Visit_Main(elem)                { this.IncreaseTabs(); console.log("main"); this.stack.push(null); }
+
     Visit_Uminus(elem)              { this.stack.push('-'); }
     Visit_Plus(elem)                { this.stack.push('+'); }
     Visit_Minus(elem)               { this.stack.push('-'); }
@@ -997,19 +996,7 @@ export class toCVisitor extends AstVisitor {
     Visit_Else(elem)                { this.stack.push(null); }
     Visit_While(elem)               { this.IncreaseTabs(); this.stack.push(null); }
     Visit_For(elem)                 { this.IncreaseTabs(); this.stack.push(null); }
-    
-    // Visit_Function(elem) {
-    //     this.IncreaseTabs();
 
-    //     this.scopeStack.push({
-    //         args:       [],
-    //         vars:       [],
-    //         funcs:      [],
-    //     });
-
-    //     this.stack.push(null);
-    // }
-    
     Visit_GetSize(elem) {
         this.stack.push(
             this.HandleSemicolon(elem, `.length`)
