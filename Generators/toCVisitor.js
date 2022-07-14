@@ -48,6 +48,7 @@ export class toCVisitor extends AstVisitor {
 
     currTabs = 0;
     currTabStr = '';
+    flag_main = 0;
 
     IncreaseTabs(){
         this.currTabs++;
@@ -406,8 +407,12 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_Stmts(elem) {
+
+        if (this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
         console.log("stmts");
+
         if (elem.GetParent()){
             this.stack.push(childrenCode);
         }else
@@ -417,29 +422,35 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_Stmt(elem) {
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
         this.stack.push( ';' );
-        console.log("stmt");
     }
 
     Visit_Defs(elem) {
         let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
         let vars = this.TabIn( this.PopScopeVars() );
-        
+
         let rBrace = this.TabIn('}');
+
+        this.DecreaseTabs();
+
         console.log("defs");
-        this.stack.push(`#include <stdio.h>\n\nint main() {\n\n` + childrenCode +`\n\n${rBrace}` );
+        this.stack.push(`#include <stdio.h>\n\nint main() {\n\n` + childrenCode + vars +`\n\n}` );
     }
 
     Visit_Def(elem) {
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
         this.stack.push(';');
-        console.log("def");
     }
 
     Visit_VarDecl(elem) {
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
         this.stack.push( '' );
     }
 
     Visit_VarDef(elem) {
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++; 
+
         let code = this.PopChildrenFromStack(elem, ['var_type', 'id']);
         let parent = elem.GetParent()?.GetParent()?.GetSymbol().symbol.name;
         
@@ -453,7 +464,37 @@ export class toCVisitor extends AstVisitor {
         this.stack.push( '' );
     }
 
+    Visit_ArrayDef(elem){ 
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
+        let code = this.PopChildrenFromStack(elem, ['array_type', 'id' , '[', 'size', ']']);
+        let parent = elem.GetParent()?.GetParent()?.GetSymbol().symbol.name;
+
+        if(parent === 'func_def')
+            this.stack.push( ` ${code.array_type}  ${code.id} [ ${code.size} ] ` );
+        else
+            this.stack.push( ` ${code.array_type}  ${code.id} [ ${code.size} ] ; ` );
+    }
+
+    Visit_ArrayType(elem){ 
+        this.stack.push(``);
+    }
+
+    Visit_ArrayIndex(elem){ 
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+        
+        let code = this.PopChildrenFromStack(elem, [ 'id' , '[', 'size', ']']);
+
+        this.stack.push( ` ${code.id} [ ${code.size} ] ` );
+    }
+
+    Visit_ArraySize(elem){
+        this.stack.push(``);
+    }
+
     Visit_StructDef(elem) { 
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['struct', 'id' , '{', 'ident_list' , '}']);
         console.log(this.currTabs);
 
@@ -531,6 +572,8 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_Expr(elem){
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+        
         this.stack.push(
             this.HandleSemicolon(elem, `0`)
         );
@@ -661,6 +704,8 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_UserFunctionCall(elem){ 
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['id', 'args']);
 
         this.stack.push(
@@ -693,59 +738,45 @@ export class toCVisitor extends AstVisitor {
         this.stack.push(`${code}`);
     }
 
-    Visit_ArrayDef(elem){ 
-        let code = this.PopChildrenFromStack(elem, ['array_type', 'id' , '[', 'size', ']']);
-        let parent = elem.GetParent()?.GetParent()?.GetSymbol().symbol.name;
-
-        if(parent === 'func_def')
-            this.stack.push( ` ${code.array_type}  ${code.id} [ ${code.size} ] ` );
-        else
-            this.stack.push( ` ${code.array_type}  ${code.id} [ ${code.size} ] ; ` );
-    }
-
-    Visit_ArrayType(elem){ 
-        this.stack.push(``);
-    }
-
-    Visit_ArrayIndex(elem){ 
-        let code = this.PopChildrenFromStack(elem, [ 'id' , '[', 'size', ']']);
-
-        this.stack.push( ` ${code.id} [ ${code.size} ] ` );
-    }
-
-    Visit_ArraySize(elem){
-        this.stack.push(``);
-    }
-
     Visit_StringAppend(elem){
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['strcat', 'string_dest', 'string_source']);
 
         this.stack.push(`strcat(${code.string_dest} , ${code.string_source} )`);
     }
 
     Visit_StringCopyString(elem){ 
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['strcpy', 'string_dest', 'string_source']);
 
         this.stack.push(`strcpy(${code.string_dest} , ${code.string_source} )`);
     }
 
     Visit_StringCompareStrings(elem){ 
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['strcmp', 'string1', 'string2']);
 
         this.stack.push(`strcmp(${code.string1} , ${code.string2} )`);
     }
 
     Visit_StringSize(elem){
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['strlen', 'string']);
 
         this.stack.push(`strlen(${code.string})`);
     }
 
     Visit_InputOutputPrintf(elem){
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['printf', 'listargs']);
 
         this.stack.push(
-            this.HandleSemicolon(elem, ` printf ( ${code.listargs} )`)
+            this.HandleSemicolon(elem, `printf ( ${code.listargs} )`)
         );
     }
 
@@ -762,10 +793,12 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_InputOutputScanf(elem){ 
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['scanf', 'listargs']);
 
         this.stack.push(
-            this.HandleSemicolon(elem, ` scanf ( ${code.listargs} )`)
+            this.HandleSemicolon(elem, `scanf ( ${code.listargs} )`)
         );
     }
 
@@ -811,6 +844,8 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_MathPow(elem){
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['pow', 'number', 'exponent']);
 
         this.stack.push(
@@ -819,6 +854,8 @@ export class toCVisitor extends AstVisitor {
     }
     
     Visit_MathSqrt(elem){
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['sqrt', 'number']);
 
         this.stack.push(
@@ -827,6 +864,8 @@ export class toCVisitor extends AstVisitor {
     }
     
     Visit_MathRound(elem){
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['round', 'number']);
 
         this.stack.push(
@@ -835,6 +874,8 @@ export class toCVisitor extends AstVisitor {
     }
     
     Visit_MathFloor(elem){
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['floor', 'number']);
 
         this.stack.push(
@@ -843,6 +884,8 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_MathCeiling(elem){
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['ceiling', 'number']);
 
         this.stack.push(
@@ -851,6 +894,8 @@ export class toCVisitor extends AstVisitor {
     }
     
     Visit_MathSin(elem){
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['sin', 'number']);
 
         let innerOp = this.GetChildOperator(elem.GetElems()[1]);
@@ -864,6 +909,8 @@ export class toCVisitor extends AstVisitor {
     }
     
     Visit_MathCos(elem){
+        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
+
         let code = this.PopChildrenFromStack(elem, ['cos', 'number']);
 
         let innerOp = this.GetChildOperator(elem.GetElems()[1]);
@@ -992,7 +1039,7 @@ export class toCVisitor extends AstVisitor {
     Visit_Continue(elem)            { this.stack.push('continue;'); }
     Visit_Return(elem)              { this.stack.push('return'); }
 
-    Visit_If(elem)                  { this.IncreaseTabs(); console.log(this.currTabs); this.stack.push(null); }
+    Visit_If(elem)                  { this.IncreaseTabs(); this.stack.push(null); }
     Visit_Else(elem)                { this.stack.push(null); }
     Visit_While(elem)               { this.IncreaseTabs(); this.stack.push(null); }
     Visit_For(elem)                 { this.IncreaseTabs(); this.stack.push(null); }
