@@ -32,7 +32,7 @@ terminal {
     int char float double void 
     true false
     IF ELSE WHILE FOR BREAK CONTINUE RETURN
-    FUNCTION WITH PARAMETERS "(" ")" "{" "}" "[" "]" "." ","
+    "(" ")" "{" "}" "[" "]" "." ","
     strlen strcat strcpy strcmp
     struct
     printf scanf
