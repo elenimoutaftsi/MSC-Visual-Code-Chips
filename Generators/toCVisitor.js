@@ -193,8 +193,7 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'ELSE',                    elem => this.Visit_Else(elem) );
         this.SetVisitor( 'WHILE',                   elem => this.Visit_While(elem) );
         this.SetVisitor( 'FOR',                     elem => this.Visit_For(elem) );
-        this.SetVisitor( 'get_size',                elem => this.Visit_GetSize(elem) );
-        this.SetVisitor( 'append',                  elem => this.Visit_Append(elem) );
+        this.SetVisitor( 'strcat',                  elem => this.Visit_Append(elem) );
         this.SetVisitor( 'strcpy',                  elem => this.Visit_Strcpy(elem) ); 
         this.SetVisitor( 'strcmp',                  elem => this.Visit_Strcmp(elem) ); 
         this.SetVisitor( 'strlen',                  elem => this.Visit_Strlen(elem) ); 
@@ -428,14 +427,14 @@ export class toCVisitor extends AstVisitor {
 
     Visit_Defs(elem) {
         let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
-        let vars = this.TabIn( this.PopScopeVars() );
+        //let vars = this.TabIn( this.PopScopeVars() );
 
         let rBrace = this.TabIn('}');
 
         this.DecreaseTabs();
 
         console.log("defs");
-        this.stack.push(`#include <stdio.h>\n\nint main() {\n\n` + childrenCode + vars +`\n\n}` );
+        this.stack.push(`#include <stdio.h>\n\nint main() {\n\n` + childrenCode +`\n\n}` );
     }
 
     Visit_Def(elem) {
@@ -485,7 +484,7 @@ export class toCVisitor extends AstVisitor {
         
         let code = this.PopChildrenFromStack(elem, [ 'id' , '[', 'size', ']']);
 
-        this.stack.push( ` ${code.id} [ ${code.size} ] ` );
+        this.stack.push( `${code.id} [ ${code.size} ] ` );
     }
 
     Visit_ArraySize(elem){
@@ -533,6 +532,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_IfStmt(elem) {
+        if (this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
         let code = this.PopChildrenFromStack(elem, ['if', 'expr', 'stmts']);
         
         this.DecreaseTabs();
@@ -543,6 +543,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_IfElseStmt(elem){
+        if (this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
         let code = this.PopChildrenFromStack(elem, ['if', 'expr', 'stmts1', 'else', 'stmts2']);
         
         this.DecreaseTabs();
@@ -554,6 +555,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_WhileStmt(elem){
+        if (this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
         let code = this.PopChildrenFromStack(elem, ['while', 'expr', 'stmts']);
 
         this.DecreaseTabs();
@@ -563,6 +565,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_ForStmt(elem){
+        if (this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
         let code = this.PopChildrenFromStack(elem, ['for', 'init', 'condition', 'step', 'stmts']);
 
         this.DecreaseTabs();
@@ -703,9 +706,7 @@ export class toCVisitor extends AstVisitor {
         );
     }
 
-    Visit_UserFunctionCall(elem){ 
-        if ( this.flag_main === 0 ) this.IncreaseTabs(); this.flag_main++;
-
+    Visit_UserFunctionCall(elem){
         let code = this.PopChildrenFromStack(elem, ['id', 'args']);
 
         this.stack.push(
@@ -743,7 +744,9 @@ export class toCVisitor extends AstVisitor {
 
         let code = this.PopChildrenFromStack(elem, ['strcat', 'string_dest', 'string_source']);
 
-        this.stack.push(`strcat(${code.string_dest} , ${code.string_source} )`);
+        this.stack.push(
+            this.HandleSemicolon(elem, `strcat( ${code.string_dest} , ${code.string_source} )`)
+        );
     }
 
     Visit_StringCopyString(elem){ 
@@ -751,7 +754,9 @@ export class toCVisitor extends AstVisitor {
 
         let code = this.PopChildrenFromStack(elem, ['strcpy', 'string_dest', 'string_source']);
 
-        this.stack.push(`strcpy(${code.string_dest} , ${code.string_source} )`);
+        this.stack.push(
+            this.HandleSemicolon(elem, `strcpy( ${code.string_dest} , ${code.string_source} )`)
+        );
     }
 
     Visit_StringCompareStrings(elem){ 
@@ -759,7 +764,9 @@ export class toCVisitor extends AstVisitor {
 
         let code = this.PopChildrenFromStack(elem, ['strcmp', 'string1', 'string2']);
 
-        this.stack.push(`strcmp(${code.string1} , ${code.string2} )`);
+        this.stack.push(
+            this.HandleSemicolon(elem, `strcmp( ${code.string1} , ${code.string2} )`)
+        );
     }
 
     Visit_StringSize(elem){
@@ -767,7 +774,9 @@ export class toCVisitor extends AstVisitor {
 
         let code = this.PopChildrenFromStack(elem, ['strlen', 'string']);
 
-        this.stack.push(`strlen(${code.string})`);
+        this.stack.push(
+            this.HandleSemicolon(elem, `strlen( ${code.string} )`)
+        );
     }
 
     Visit_InputOutputPrintf(elem){
@@ -859,7 +868,7 @@ export class toCVisitor extends AstVisitor {
         let code = this.PopChildrenFromStack(elem, ['sqrt', 'number']);
 
         this.stack.push(
-            this.HandleSemicolon(elem, `sqrt(${code.number})`)
+            this.HandleSemicolon(elem, `sqrt( ${code.number} )`)
         );
     }
     
@@ -869,7 +878,7 @@ export class toCVisitor extends AstVisitor {
         let code = this.PopChildrenFromStack(elem, ['round', 'number']);
 
         this.stack.push(
-            this.HandleSemicolon(elem, `round(${code.number})`)
+            this.HandleSemicolon(elem, `round( ${code.number} )`)
         );
     }
     
@@ -879,7 +888,7 @@ export class toCVisitor extends AstVisitor {
         let code = this.PopChildrenFromStack(elem, ['floor', 'number']);
 
         this.stack.push(
-            this.HandleSemicolon(elem, `floor(${code.number})`)
+            this.HandleSemicolon(elem, `floor( ${code.number} )`)
         );
     }
 
@@ -889,7 +898,7 @@ export class toCVisitor extends AstVisitor {
         let code = this.PopChildrenFromStack(elem, ['ceiling', 'number']);
 
         this.stack.push(
-            this.HandleSemicolon(elem, `ceiling(${code.number})`)
+            this.HandleSemicolon(elem, `ceiling( ${code.number} )`)
         );
     }
     
@@ -904,7 +913,7 @@ export class toCVisitor extends AstVisitor {
             code.number = `(${code.number})`;
 
         this.stack.push(
-            this.HandleSemicolon(elem, `sin(${code.number})`)
+            this.HandleSemicolon(elem, `sin( ${code.number} )`)
         );
     }
     
@@ -919,7 +928,7 @@ export class toCVisitor extends AstVisitor {
             code.number = `(${code.number})`;
 
         this.stack.push(
-            this.HandleSemicolon(elem, `cos(${code.number})`)
+            this.HandleSemicolon(elem, `cos( ${code.number} )`)
         );
     }
 
@@ -936,7 +945,7 @@ export class toCVisitor extends AstVisitor {
         let parent = elem.GetParent().GetSymbol().symbol.name;
 
         if (parent === 'func_def'){
-            //this.scopeStack[this.scopeStack.length - 2].funcs.push(id); // don't care about duplicates
+           // this.scopeStack[this.scopeStack.length - 2].funcs.push(id); // don't care about duplicates
             this.IncreaseTabs(); 
         }
         else if (parent === 'ident_list'){
@@ -1050,7 +1059,7 @@ export class toCVisitor extends AstVisitor {
         );
     }
     
-    Visit_Append(elem)              { this.stack.push('append'); }
+    Visit_Append(elem)              { this.stack.push('strcat'); }
     Visit_Strcpy(elem)              { this.stack.push('strcpy'); }
     Visit_Strcmp(elem)              { this.stack.push('strcmp'); }
     Visit_Strlen(elem)              { this.stack.push('strlen'); }
