@@ -158,7 +158,8 @@
             "any_of": [
                 {
                     "type": "non_terminal",
-                    "name": "stmt"
+                    "name": "main_func",
+                    "tooltip": "Main is the starting point for program execution"
                 },
                 {
                     "type": "non_terminal",
@@ -174,6 +175,51 @@
                     "type": "non_terminal",
                     "name": "func_def",
                     "tooltip": "Define reusable code as a function"
+                }
+            ]
+        },
+        {
+            "name": "main_func",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "int main( ) {"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "main_block"
+                },
+                {
+                    "type": "terminal",
+                    "name": "}"
+                }
+            ]
+        },
+        {
+            "name": "main_block",
+            "list_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "main_defs"
+                }
+            ]
+        },
+        {
+            "name": "main_defs",
+            "any_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "stmt"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "var_decl",
+                    "tooltip": "Variable or Array declaration with type and name"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "struct_def",
+                    "tooltip": "Struct declaration with name and fields"
                 }
             ]
         },

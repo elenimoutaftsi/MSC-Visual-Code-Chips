@@ -159,7 +159,8 @@ export let config = {
               "any_of": [
                   {
                       "type": "non_terminal",
-                      "name": "stmt"
+                      "name": "main_func",
+                      "tooltip": "Main is the starting point for program execution"
                   },
                   {
                       "type": "non_terminal",
@@ -175,6 +176,51 @@ export let config = {
                       "type": "non_terminal",
                       "name": "func_def",
                       "tooltip": "Define reusable code as a function"
+                  }
+              ]
+          },
+          {
+              "name": "main_func",
+              "all_of": [
+                  {
+                      "type": "terminal",
+                      "name": "int main( ) {"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "main_block"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "}"
+                  }
+              ]
+          },
+          {
+              "name": "main_block",
+              "list_of": [
+                  {
+                      "type": "non_terminal",
+                      "name": "main_defs"
+                  }
+              ]
+          },
+          {
+              "name": "main_defs",
+              "any_of": [
+                  {
+                      "type": "non_terminal",
+                      "name": "stmt"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "var_decl",
+                      "tooltip": "Variable or Array declaration with type and name"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "struct_def",
+                      "tooltip": "Struct declaration with name and fields"
                   }
               ]
           },
@@ -27337,6 +27383,43 @@ config.darkColorfulTheme = {
                     "BackgroundColor": ""
                 }
             },
+            "main_func": {
+              "Group Block": {
+                  "BackgroundColor": "rgb(165, 128, 91)",
+                  "PaddingLeft": "",
+                  "PaddingRight": "",
+                  "PaddingTop": "",
+                  "PaddingBottom": "",
+                  "BorderWidth": "",
+                  "BorderColor": "",
+                  "BorderRadius": ""
+              },
+              "Button": {
+                  "BackgroundColor": "",
+                  "PaddingLeft": "",
+                  "PaddingRight": "",
+                  "PaddingTop": "",
+                  "PaddingBottom": "",
+                  "BorderWidth": "",
+                  "BorderColor": ""
+              },
+              "Button Plus Sign": {
+                  "Width": "",
+                  "Height": "",
+                  "BackgroundColor": ""
+              },
+              "Button Tooltip": {
+                  "FontSize": "",
+                  "FontColor": "",
+                  "BackgroundColor": ""
+              },
+              "Button On Hover": {
+                  "BackgroundColor": ""
+              },
+              "Button Plus Sign On Hover": {
+                  "BackgroundColor": ""
+              }
+          },
             "expr_list": {
                 "Group Block": {
                     "BackgroundColor": "",
@@ -28093,11 +28176,11 @@ config.darkColorfulTheme = {
         "insert": "#ffffff",
         "push_back": "#ffffff",
         "set": "#ffffff",
-        "string_method": "#ffffff",
     },
     "Pretty Print": {
         "stmts":                { "NewLine Between Blocks": true },
         "defs":                 { "NewLine Between Blocks": true },
+        "main_func":            [ "int main( ) {","$$_newline", "$$_tab","main_block", "$$_newline", "}"],
         "if_stmt":              [ "IF", "condition_expr", "$$_newline", "$$_tab", "if_part"],
         "if_else_stmt":         [ 
                                     "IF", "condition_expr", "$$_newline", "$$_tab", "if_part",
@@ -28105,7 +28188,7 @@ config.darkColorfulTheme = {
                                 ],
         "while_stmt":           [ "WHILE", "condition_expr", "$$_newline", "$$_tab", "while_part" ],
         "for_stmt":             [ "FOR", "initialization", "condition_expr", "step", "$$_newline", "$$_tab", "for_part" ],
-        "func_def":             [ "TYPE", "NAME", "(", "ident_list",")", "$$_newline", "$$_tab", "stmts" ],
+        "func_def":             [ "TYPE", "NAME", "(", "ident_list",")", "{", "$$_newline" , "$$_tab", "$$_tab", "stmts", "$$_newline" , "}"],
         "ident_list":           { "NewLine Between Blocks": true  },
         "expr_list":            { "NewLine Between Blocks": false },
         "element_list":         { "NewLine Between Blocks": false },

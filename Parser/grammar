@@ -4,6 +4,7 @@ non_terminal {
     stmt
     defs
     def
+    main_func main_defs main_block
     var_decl var_def var_type
     struct_def struct_field
     func_type func_def
@@ -30,11 +31,12 @@ terminal {
     AND OR NOT
     EQUALS
     int char float double void 
+    main
     true false
     IF ELSE WHILE FOR BREAK CONTINUE RETURN
     "(" ")" "{" "}" "[" "]" "." ","
     strlen strcat strcpy strcmp
-    struct
+    struct "int main( ) {"
     printf scanf
     pow sqrt round floor ceiling sin cos
     "%c" "%d" "%f" "%s"
@@ -95,10 +97,26 @@ define array_type {
 
 define def {
     any_of {
-        stmt
+        main_func               : "Main is the starting point for program execution"
         var_decl                : "Variable or Array declaration with type and name"
         struct_def              : "Struct declaration with name and fields"
         func_def                : "Define reusable code as a function"
+    }
+}
+
+define main_func {
+    "int main( ) {" main_block "}"
+}
+
+define main_block {
+    list_of main_defs
+}
+
+define main_defs {
+    any_of{
+        stmt
+        var_decl                : "Variable or Array declaration with type and name"
+        struct_def              : "Struct declaration with name and fields"
     }
 }
 
