@@ -48,7 +48,7 @@ export class toCVisitor extends AstVisitor {
 
     currTabs = 0;
     currTabStr = '';
-    flag_main = 0;
+    //flag_main = 0;
 
     IncreaseTabs(){
         this.currTabs++;
@@ -79,17 +79,17 @@ export class toCVisitor extends AstVisitor {
 
     InitVisitors() {
         this.SetVisitor( 'program',                 elem => this.Visit_Program(elem) );
-        this.SetVisitor( 'main_func',               elem => this.Visit_MainFunc(elem) );
-        this.SetVisitor( 'main_defs',               elem => this.Visit_MainDefs(elem) );
+        this.SetVisitor( 'main_def',                elem => this.Visit_MainFunc(elem) );
+        this.SetVisitor( 'local_def',               elem => this.Visit_MainDefs(elem) );
         this.SetVisitor( 'main_block',              elem => this.Visit_MainBlock(elem) );
         this.SetVisitor( 'stmts',                   elem => this.Visit_Stmts(elem) );
         this.SetVisitor( 'defs',                    elem => this.Visit_Defs(elem) );
         this.SetVisitor( 'stmt',                    elem => this.Visit_Stmt(elem) );
-        this.SetVisitor( 'def',                     elem => this.Visit_Def(elem) );
+        this.SetVisitor( 'global_def',              elem => this.Visit_Def(elem) );
         this.SetVisitor( 'var_decl',                elem => this.Visit_VarDecl(elem) ); 
         this.SetVisitor( 'var_def',                 elem => this.Visit_VarDef(elem) ); 
         this.SetVisitor( 'var_type',                elem => this.Visit_VarType(elem) ); 
-        this.SetVisitor( 'struct_def',              elem => this.Visit_StructDef(elem) ); 
+        this.SetVisitor( 'struct_decl',             elem => this.Visit_StructDef(elem) ); 
         this.SetVisitor( 'struct_field',            elem => this.Visit_Struct_Field(elem) ); 
         this.SetVisitor( 'func_def',                elem => this.Visit_FuncDefStmt(elem) );
         this.SetVisitor( 'func_type',               elem => this.Visit_FuncType(elem) ); 
@@ -189,13 +189,13 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'EQUALS',                  elem => this.Visit_Equals(elem) );
         this.SetVisitor( 'true',                    elem => this.Visit_True(elem) );
         this.SetVisitor( 'false',                   elem => this.Visit_False(elem) );
-        this.SetVisitor( 'BREAK',                   elem => this.Visit_Break(elem) );
-        this.SetVisitor( 'CONTINUE',                elem => this.Visit_Continue(elem) );
-        this.SetVisitor( 'RETURN',                  elem => this.Visit_Return(elem) );
-        this.SetVisitor( 'IF',                      elem => this.Visit_If(elem) );
-        this.SetVisitor( 'ELSE',                    elem => this.Visit_Else(elem) );
-        this.SetVisitor( 'WHILE',                   elem => this.Visit_While(elem) );
-        this.SetVisitor( 'FOR',                     elem => this.Visit_For(elem) );
+        this.SetVisitor( 'break',                   elem => this.Visit_Break(elem) );
+        this.SetVisitor( 'continue',                elem => this.Visit_Continue(elem) );
+        this.SetVisitor( 'return',                  elem => this.Visit_Return(elem) );
+        this.SetVisitor( 'if',                      elem => this.Visit_If(elem) );
+        this.SetVisitor( 'else',                    elem => this.Visit_Else(elem) );
+        this.SetVisitor( 'while',                   elem => this.Visit_While(elem) );
+        this.SetVisitor( 'for',                     elem => this.Visit_For(elem) );
         this.SetVisitor( 'strcat',                  elem => this.Visit_Append(elem) );
         this.SetVisitor( 'strcpy',                  elem => this.Visit_Strcpy(elem) ); 
         this.SetVisitor( 'strcmp',                  elem => this.Visit_Strcmp(elem) ); 
@@ -412,7 +412,7 @@ export class toCVisitor extends AstVisitor {
     Visit_MainFunc(elem){
         let code = this.PopChildrenFromStack(elem, ['main', 'main_block', '}']);
 
-        this.stack.push( `${code.main} ${code.main_block} \n}` );
+        this.stack.push( `${code.main}\n ${code.main_block} \n}` );
     }
 
     Visit_MainBlock(elem){
@@ -429,7 +429,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_Stmts(elem) {
-        let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
+        let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n\n');
         console.log("stmts");
 
         if (elem.GetParent()){
@@ -451,7 +451,7 @@ export class toCVisitor extends AstVisitor {
         let rBrace = this.TabIn('}');
 
         console.log("defs");
-        this.stack.push(`#include <stdio.h>\n\n\n` + childrenCode +`\n\n` );
+        this.stack.push(`#include <stdio.h>\n#include <stdlib.h>\n\n` + childrenCode +`\n\n` );
     }
 
     Visit_Def(elem) {
@@ -467,9 +467,9 @@ export class toCVisitor extends AstVisitor {
         let parent = elem.GetParent()?.GetParent()?.GetSymbol().symbol.name;
         
         if (parent === 'func_def')
-            this.stack.push( ` ${code.var_type} ${code.id}` );
+            this.stack.push( `${code.var_type} ${code.id}` );
         else
-            this.stack.push( ` ${code.var_type} ${code.id};` );
+            this.stack.push( `${code.var_type} ${code.id};` );
     }
 
     Visit_VarType(elem) {
@@ -718,7 +718,7 @@ export class toCVisitor extends AstVisitor {
     Visit_IdentList(elem){
         let parent = elem.GetParent()?.GetSymbol().symbol.name;
 
-        if (parent === 'struct_def'){
+        if (parent === 'struct_decl'){
             let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
 
             this.stack.push( childrenCode );

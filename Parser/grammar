@@ -3,10 +3,10 @@ non_terminal {
     stmts
     stmt
     defs
-    def
-    main_func main_defs main_block
+    global_def
+    main_def local_def main_block
     var_decl var_def var_type
-    struct_def struct_field
+    struct_decl struct_field
     func_type func_def
     if_stmt if_else_stmt while_stmt for_stmt expr break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
@@ -33,7 +33,7 @@ terminal {
     int char float double void 
     main
     true false
-    IF ELSE WHILE FOR BREAK CONTINUE RETURN
+    if else while for break continue return
     "(" ")" "{" "}" "[" "]" "." ","
     strlen strcat strcpy strcmp
     struct "int main( ) {"
@@ -47,7 +47,7 @@ define program {
 }
 
 define defs {
-    list_of def
+    list_of global_def
 }
 
 define stmts {
@@ -95,28 +95,28 @@ define array_type {
     }
 }
 
-define def {
+define global_def {
     any_of {
-        main_func               : "Main is the starting point for program execution"
-        var_decl                : "Variable or Array declaration with type and name"
-        struct_def              : "Struct declaration with name and fields"
+        main_def                : "Main is the starting point for program execution"
         func_def                : "Define reusable code as a function"
+        var_decl                : "Variable or Array declaration with type and name"
+        struct_decl             : "Struct declaration with name and fields"
     }
 }
 
-define main_func {
+define main_def {
     "int main( ) {" main_block "}"
 }
 
 define main_block {
-    list_of main_defs
+    list_of local_def
 }
 
-define main_defs {
+define local_def {
     any_of{
         stmt
-        var_decl                : "Variable or Array declaration with type and name"
-        struct_def              : "Struct declaration with name and fields"
+        var_decl                 : "Variable or Array declaration with type and name"
+        struct_decl              : "Struct declaration with name and fields"
     }
 }
 
@@ -307,20 +307,20 @@ define func_def {
    func_type IDENT(name) "(" ident_list ")" "{" stmts  "}"
 }
 
-define struct_def {
+define struct_decl {
     struct IDENT(struct_name) "{" ident_list "}"  
 }
 
 define break_stmt {
-    BREAK
+    break
 }
 
 define continue_stmt {
-    CONTINUE
+    continue
 }
 
 define return_stmt {
-    RETURN
+    return
     expr
 }
 
@@ -447,19 +447,19 @@ define math_cos {
 }
 
 define if_stmt {
-    IF expr(condition_expr) stmts(if_part)
+    if expr(condition_expr) stmts(if_part)
 }
 
 define if_else_stmt {
-    IF expr(condition_expr) stmts(if_part) ELSE stmts(else_part)
+    if expr(condition_expr) stmts(if_part) else stmts(else_part)
 }
 
 define while_stmt {
-    WHILE expr(condition_expr) stmts(while_part)
+    while expr(condition_expr) stmts(while_part)
 }
 
 define for_stmt {
-    FOR
+    for
     expr(initialization_expr)
     expr(condition_expr)
     expr(step_expr)
