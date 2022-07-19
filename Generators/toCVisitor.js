@@ -152,6 +152,11 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'math_ceiling',            elem => this.Visit_MathCeiling(elem) );
         this.SetVisitor( 'math_sin',                elem => this.Visit_MathSin(elem) );
         this.SetVisitor( 'math_cos',                elem => this.Visit_MathCos(elem) );
+        this.SetVisitor( 'user_type_decl',          elem => this.Visit_UserTypeDecl(elem) );
+        this.SetVisitor( 'enumeration_type',        elem => this.Visit_EnumerationType(elem) );
+        this.SetVisitor( 'typedef_type',            elem => this.Visit_TypedefType(elem) );
+        this.SetVisitor( 'existing_type',           elem => this.Visit_ExistingType(elem) );
+        this.SetVisitor( 'struct_name',             elem => this.Visit_StructName(elem) );
 
         this.SetVisitor( 'IDENT',                   elem => this.Visit_Ident(elem) );
         this.SetVisitor( 'INT_CONST',               elem => this.Visit_IntConst(elem) );
@@ -222,6 +227,7 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( ')',                       elem => this.Visit_Parenth2(elem) );
         this.SetVisitor( '.',                       elem => this.Visit_Dot(elem) );
         this.SetVisitor( 'int main( ) {',           elem => this.Visit_Main(elem) );
+        this.SetVisitor( 'typedef',                 elem => this.Visit_Typedef(elem) );
     }
 
     HandleVarDeclaration(id){
@@ -456,6 +462,27 @@ export class toCVisitor extends AstVisitor {
 
     Visit_Def(elem) {
         this.stack.push(';');
+    }
+
+    Visit_UserTypeDecl(elem) {
+        this.stack.push(';');
+    }
+
+    Visit_TypedefType(elem) {
+        let code = this.PopChildrenFromStack(elem, ['typedef', 'ex_type', 'id']);
+
+        this.stack.push( `${code.typedef} ${code.ex_type} ${code.id};` );
+    }
+
+    Visit_ExistingType(elem) {
+        this.stack.push(';');
+    }
+
+    Visit_StructName(elem) {
+        this.DecreaseTabs();
+        let code = this.PopChildrenFromStack(elem, ['struct', 'id']);
+
+        this.stack.push( `struct ${code.id}` );
     }
 
     Visit_VarDecl(elem) {
@@ -1054,10 +1081,11 @@ export class toCVisitor extends AstVisitor {
     Visit_Stringg(elem)             { this.stack.push('%s'); }
     Visit_SqBracket1(elem)          { this.stack.push('['); }
     Visit_SqBracket2(elem)          { this.stack.push(']'); }
-    Visit_Parenth1(elem)            {this.stack.push('(');  }
+    Visit_Parenth1(elem)            { this.stack.push('(');  }
     Visit_Parenth2(elem)            { this.stack.push(')'); }
     Visit_Bracket1(elem)            { this.stack.push('{'); }
     Visit_Bracket2(elem)            { this.stack.push('}'); }
     Visit_Dot(elem)                 { this.stack.push('.'); }
-    Visit_Main(elem)                { this.stack.push('int main( ) {\n'); this.IncreaseTabs(); console.log("geia");}
+    Visit_Main(elem)                { this.stack.push('int main( ) {\n'); this.IncreaseTabs();}
+    Visit_Typedef(elem)             { this.stack.push('typedef'); }
 }

@@ -155,6 +155,87 @@ export let config = {
               ]
           },
           {
+              "name": "user_type_decl",
+              "any_of": [
+                  {
+                      "type": "non_terminal",
+                      "name": "typedef_type",
+                      "tooltip": "Create an additional name (alias) for another data type"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "enumeration_type",
+                      "tooltip": "User defined data type in C"
+                  }
+              ]
+          },
+          {
+              "name": "enumeration_type",
+              "all_of": [
+                  {
+                      "type": "terminal",
+                      "name": "IDENT"
+                  }
+              ]
+          },
+          {
+              "name": "typedef_type",
+              "all_of": [
+                  {
+                      "type": "terminal",
+                      "name": "typedef"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "existing_type"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "IDENT",
+                      "alias": "alias_name"
+                  }
+              ]
+          },
+          {
+              "name": "existing_type",
+              "any_of": [
+                  {
+                      "type": "terminal",
+                      "name": "int"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "char"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "float"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "double"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "struct_name"
+                  }
+              ]
+          },
+          {
+              "name": "struct_name",
+              "all_of": [
+                  {
+                      "type": "terminal",
+                      "name": "struct"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "IDENT",
+                      "alias": "struct_name"
+                  }
+              ]
+          },
+          {
               "name": "global_def",
               "any_of": [
                   {
@@ -176,6 +257,11 @@ export let config = {
                       "type": "non_terminal",
                       "name": "struct_decl",
                       "tooltip": "Struct declaration with name and fields"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "user_type_decl",
+                      "tooltip": "User Type Declaration"
                   }
               ]
           },
@@ -27059,6 +27145,30 @@ config.darkColorfulTheme = {
                     "BorderRadius": ""
                 }
             },
+            "typedef_type": {
+              "Group Block": {
+                  "BackgroundColor": "#A55B5B",
+                  "PaddingLeft": "",
+                  "PaddingRight": "",
+                  "PaddingTop": "",
+                  "PaddingBottom": "",
+                  "BorderWidth": "",
+                  "BorderColor": "#7A4884",
+                  "BorderRadius": ""
+              }
+          },
+          "struct_name": {
+            "Group Block": {
+                "BackgroundColor": "#A55B5B",
+                "PaddingLeft": "",
+                "PaddingRight": "",
+                "PaddingTop": "",
+                "PaddingBottom": "",
+                "BorderWidth": "",
+                "BorderColor": "#7A4884",
+                "BorderRadius": ""
+            }
+        },
             "expr": {
                 "Selection Block": {
                     "BackgroundColor": "",

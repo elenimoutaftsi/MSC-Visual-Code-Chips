@@ -7,6 +7,7 @@ non_terminal {
     main_def local_def main_block
     var_decl var_def var_type
     struct_decl struct_field
+    user_type_decl enumeration_type typedef_type existing_type struct_name
     func_type func_def
     if_stmt if_else_stmt while_stmt for_stmt expr break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
@@ -32,6 +33,7 @@ terminal {
     EQUALS
     int char float double void 
     main
+    typedef
     true false
     if else while for break continue return
     "(" ")" "{" "}" "[" "]" "." ","
@@ -95,12 +97,42 @@ define array_type {
     }
 }
 
+define user_type_decl {
+    any_of{
+        typedef_type            : "Create an additional name (alias) for another data type"
+        enumeration_type        : "User defined data type in C"
+    }
+}
+
+define enumeration_type {
+    IDENT
+}
+
+define typedef_type {
+    typedef existing_type IDENT(alias_name)
+}
+
+define existing_type {
+    any_of{
+        int
+        char
+        float
+        double
+        struct_name
+    }
+}
+
+define struct_name {
+    struct IDENT("struct_name")
+}
+
 define global_def {
     any_of {
         main_def                : "Main is the starting point for program execution"
         func_def                : "Define reusable code as a function"
         var_decl                : "Variable or Array declaration with type and name"
         struct_decl             : "Struct declaration with name and fields"
+        user_type_decl          : "User Type Declaration"
     }
 }
 
