@@ -48,7 +48,7 @@ export class toCVisitor extends AstVisitor {
 
     currTabs = 0;
     currTabStr = '';
-    //flag_main = 0;
+    today= new Date().toLocaleString('en-GB', { timeZone: 'Europe/Athens' });
 
     IncreaseTabs(){
         this.currTabs++;
@@ -115,12 +115,12 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'arith_op',                elem => this.Visit_ArithOp(elem) );
         this.SetVisitor( 'rel_op',                  elem => this.Visit_RelOp(elem) );
         this.SetVisitor( 'logical_binary_op',       elem => this.Visit_LogicalBinaryOp(elem) );
-        this.SetVisitor( 'assign_op',               elem => this.Visit_AssignOp(elem) ); //
-        this.SetVisitor( 'unary_op',                elem => this.Visit_UnaryOp(elem) ); //
+        this.SetVisitor( 'assign_op',               elem => this.Visit_AssignOp(elem) ); 
+        this.SetVisitor( 'unary_op',                elem => this.Visit_UnaryOp(elem) ); 
         this.SetVisitor( 'binary_logical_expr',     elem => this.Visit_BinaryLogicalExpr(elem) );
         this.SetVisitor( 'not_expr',                elem => this.Visit_NotExpr(elem) );
         this.SetVisitor( 'BOOL_CONST_',             elem => this.Visit_BoolConst_(elem) );
-        this.SetVisitor( 'const_values',            elem => this.Visit_ConstValues(elem) ); //
+        this.SetVisitor( 'const_values',            elem => this.Visit_ConstValues(elem) ); 
         this.SetVisitor( 'input_output_call',       elem => this.Visit_InputOutputCall(elem) );
         this.SetVisitor( 'math_call',               elem => this.Visit_MathCall(elem) );
         this.SetVisitor( 'string_method_call',      elem => this.Visit_StringMethodCall(elem) );
@@ -128,23 +128,23 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'ident_list',              elem => this.Visit_IdentList(elem) );
         this.SetVisitor( 'expr_list',               elem => this.Visit_ExprList(elem) );
         this.SetVisitor( 'element_list',            elem => this.Visit_ElementList(elem) );
-        this.SetVisitor( 'array_def',               elem => this.Visit_ArrayDef(elem) );//
-        this.SetVisitor( 'array_type',              elem => this.Visit_ArrayType(elem) );//
-        this.SetVisitor( 'array_index',             elem => this.Visit_ArrayIndex(elem) ); //
+        this.SetVisitor( 'array_def',               elem => this.Visit_ArrayDef(elem) );
+        this.SetVisitor( 'array_type',              elem => this.Visit_ArrayType(elem) );
+        this.SetVisitor( 'array_index',             elem => this.Visit_ArrayIndex(elem) ); 
         this.SetVisitor( 'array_size',              elem => this.Visit_ArraySize(elem) );
         this.SetVisitor( 'string_append',           elem => this.Visit_StringAppend(elem) );
-        this.SetVisitor( 'string_copy_string',      elem => this.Visit_StringCopyString(elem) ); //
-        this.SetVisitor( 'string_compare_strings',  elem => this.Visit_StringCompareStrings(elem) ); //
+        this.SetVisitor( 'string_copy_string',      elem => this.Visit_StringCopyString(elem) ); 
+        this.SetVisitor( 'string_compare_strings',  elem => this.Visit_StringCompareStrings(elem) ); 
         this.SetVisitor( 'string_size',             elem => this.Visit_StringSize(elem) );
-        this.SetVisitor( 'input_output_printf',     elem => this.Visit_InputOutputPrintf(elem) ); //
-        this.SetVisitor( 'input_output_scanf',      elem => this.Visit_InputOutputScanf(elem) ); //
-        this.SetVisitor( 'printf_type',             elem => this.Visit_PrintfType(elem) ); //
-        this.SetVisitor( 'types',                   elem => this.Visit_Types(elem) ); //
-        this.SetVisitor( 'variables',               elem => this.Visit_Variables(elem) ); //
-        this.SetVisitor( 'scanf_type',              elem => this.Visit_ScanfType(elem) ); //
-        this.SetVisitor( 'stypes',                  elem => this.Visit_Stypes(elem) ); //
-        this.SetVisitor( 'printf_variable',         elem => this.Visit_PrintfVariable(elem) ); //
-        this.SetVisitor( 'scanf_arg',               elem => this.Visit_ScanfArg(elem) ); //
+        this.SetVisitor( 'input_output_printf',     elem => this.Visit_InputOutputPrintf(elem) ); 
+        this.SetVisitor( 'input_output_scanf',      elem => this.Visit_InputOutputScanf(elem) ); 
+        this.SetVisitor( 'printf_type',             elem => this.Visit_PrintfType(elem) ); 
+        this.SetVisitor( 'types',                   elem => this.Visit_Types(elem) ); 
+        this.SetVisitor( 'variables',               elem => this.Visit_Variables(elem) ); 
+        this.SetVisitor( 'scanf_type',              elem => this.Visit_ScanfType(elem) ); 
+        this.SetVisitor( 'stypes',                  elem => this.Visit_Stypes(elem) ); 
+        this.SetVisitor( 'printf_variable',         elem => this.Visit_PrintfVariable(elem) ); 
+        this.SetVisitor( 'scanf_arg',               elem => this.Visit_ScanfArg(elem) ); 
         this.SetVisitor( 'math_pow',                elem => this.Visit_MathPow(elem) );
         this.SetVisitor( 'math_sqrt',               elem => this.Visit_MathSqrt(elem) );
         this.SetVisitor( 'math_round',              elem => this.Visit_MathRound(elem) );
@@ -154,6 +154,9 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'math_cos',                elem => this.Visit_MathCos(elem) );
         this.SetVisitor( 'user_type_decl',          elem => this.Visit_UserTypeDecl(elem) );
         this.SetVisitor( 'enumeration_type',        elem => this.Visit_EnumerationType(elem) );
+        this.SetVisitor( 'enum_assigns',            elem => this.Visit_EnumAssigns(elem) );
+        this.SetVisitor( 'enum_assign',             elem => this.Visit_EnumAssign(elem) );
+        this.SetVisitor( 'enum_var',                elem => this.Visit_EnumVar(elem) );
         this.SetVisitor( 'typedef_type',            elem => this.Visit_TypedefType(elem) );
         this.SetVisitor( 'existing_type',           elem => this.Visit_ExistingType(elem) );
         this.SetVisitor( 'struct_name',             elem => this.Visit_StructName(elem) );
@@ -176,13 +179,13 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'NOT_EQUAL_TO',            elem => this.Visit_NotEqualTo(elem) );
         this.SetVisitor( 'GREATER_EQUAL',           elem => this.Visit_GreaterEqual(elem) );
         this.SetVisitor( 'LESS_EQUAL',              elem => this.Visit_LessEqual(elem) );
-        this.SetVisitor( 'PLUS_PLUS',               elem => this.Visit_Plus_Plus(elem) );//
-        this.SetVisitor( 'MINUS_MINUS',             elem => this.Visit_Minus_Minus(elem) );//
-        this.SetVisitor( 'PLUS_EQUALS',             elem => this.Visit_PlusEquals(elem) );//
-        this.SetVisitor( 'MINUS_EQUALS',            elem => this.Visit_Minus_Equals(elem) );//
-        this.SetVisitor( 'TIMES_EQUALS',            elem => this.Visit_Times_Equals(elem) );//
-        this.SetVisitor( 'BY_EQUALS',               elem => this.Visit_By_Equals(elem) );//
-        this.SetVisitor( 'MOD_EQUALS',              elem => this.Visit_Mod_Equals(elem) );//
+        this.SetVisitor( 'PLUS_PLUS',               elem => this.Visit_Plus_Plus(elem) );
+        this.SetVisitor( 'MINUS_MINUS',             elem => this.Visit_Minus_Minus(elem) );
+        this.SetVisitor( 'PLUS_EQUALS',             elem => this.Visit_PlusEquals(elem) );
+        this.SetVisitor( 'MINUS_EQUALS',            elem => this.Visit_Minus_Equals(elem) );
+        this.SetVisitor( 'TIMES_EQUALS',            elem => this.Visit_Times_Equals(elem) );
+        this.SetVisitor( 'BY_EQUALS',               elem => this.Visit_By_Equals(elem) );
+        this.SetVisitor( 'MOD_EQUALS',              elem => this.Visit_Mod_Equals(elem) );
         this.SetVisitor( 'int',                     elem => this.Visit_Int(elem) );
         this.SetVisitor( 'char',                    elem => this.Visit_Char(elem) );
         this.SetVisitor( 'float',                   elem => this.Visit_Float(elem) );
@@ -226,8 +229,10 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( '(',                       elem => this.Visit_Parenth1(elem) );
         this.SetVisitor( ')',                       elem => this.Visit_Parenth2(elem) );
         this.SetVisitor( '.',                       elem => this.Visit_Dot(elem) );
+        this.SetVisitor( ',',                       elem => this.Visit_Comma(elem) );
         this.SetVisitor( 'int main( ) {',           elem => this.Visit_Main(elem) );
         this.SetVisitor( 'typedef',                 elem => this.Visit_Typedef(elem) );
+        this.SetVisitor( 'enum',                    elem => this.Visit_Enum(elem) );
     }
 
     HandleVarDeclaration(id){
@@ -436,7 +441,6 @@ export class toCVisitor extends AstVisitor {
 
     Visit_Stmts(elem) {
         let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n\n');
-        console.log("stmts");
 
         if (elem.GetParent()){
             this.stack.push(childrenCode);
@@ -456,8 +460,7 @@ export class toCVisitor extends AstVisitor {
 
         let rBrace = this.TabIn('}');
 
-        console.log("defs");
-        this.stack.push(`#include <stdio.h>\n#include <stdlib.h>\n\n` + childrenCode +`\n\n` );
+        this.stack.push(`#include <stdio.h>\n#include <stdlib.h>\n#include <math.h>\n#include <string.h>\n\n /* C Code Generated By Code Chips at ` + this.today + `  */ \n\n` + childrenCode +`\n\n` );
     }
 
     Visit_Def(elem) {
@@ -475,7 +478,31 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_ExistingType(elem) {
-        this.stack.push(';');
+        this.stack.push('int');
+    }
+
+    Visit_EnumerationType(elem) {
+        let code = this.PopChildrenFromStack(elem, ['enum', 'id1', '{', 'enum_assigns','}', 'id2']);        
+
+        this.stack.push( `${code.enum} ${code.id1} { ${code.enum_assigns} } ${code.id2} ;` );
+    }
+
+    Visit_EnumAssigns(elem) {
+        let code = this.PopChildrenFromStack(elem).join(', ');
+        
+        this.stack.push(`${code}`);
+    }
+
+    Visit_EnumAssign(elem) {
+        let code = this.PopChildrenFromStack(elem, ['id', 'eq', 'int']);
+
+        this.stack.push( `${code.id} ${code.eq} ${code.int}`);
+    }
+
+    Visit_EnumVar(elem) {
+        let code = this.PopChildrenFromStack(elem, ['id']);
+
+        this.stack.push( `${code.id}`);
     }
 
     Visit_StructName(elem) {
@@ -500,7 +527,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_VarType(elem) {
-        this.stack.push( '' );
+        this.stack.push( 'int' );
     }
 
     Visit_ArrayDef(elem){ 
@@ -1081,11 +1108,13 @@ export class toCVisitor extends AstVisitor {
     Visit_Stringg(elem)             { this.stack.push('%s'); }
     Visit_SqBracket1(elem)          { this.stack.push('['); }
     Visit_SqBracket2(elem)          { this.stack.push(']'); }
-    Visit_Parenth1(elem)            { this.stack.push('(');  }
+    Visit_Parenth1(elem)            { this.stack.push('('); }
     Visit_Parenth2(elem)            { this.stack.push(')'); }
     Visit_Bracket1(elem)            { this.stack.push('{'); }
     Visit_Bracket2(elem)            { this.stack.push('}'); }
     Visit_Dot(elem)                 { this.stack.push('.'); }
+    Visit_Comma(elem)               { this.stack.push(','); }
     Visit_Main(elem)                { this.stack.push('int main( ) {\n'); this.IncreaseTabs();}
     Visit_Typedef(elem)             { this.stack.push('typedef'); }
+    Visit_Enum(elem)                { this.stack.push('enum'); }
 }

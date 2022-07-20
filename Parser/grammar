@@ -7,8 +7,8 @@ non_terminal {
     main_def local_def main_block
     var_decl var_def var_type
     struct_decl struct_field
-    user_type_decl enumeration_type typedef_type existing_type struct_name
-    
+    user_type_decl typedef_type existing_type struct_name user_type
+    enumeration_type enum_assigns enum_assign enum_var
     func_type func_def
     if_stmt if_else_stmt while_stmt for_stmt expr break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
@@ -39,7 +39,7 @@ terminal {
     if else while for break continue return
     "(" ")" "{" "}" "[" "]" "." ","
     strlen strcat strcpy strcmp
-    struct "int main( ) {"
+    struct "int main( ) {" enum
     printf scanf
     pow sqrt round floor ceiling sin cos
     "%c" "%d" "%f" "%s"
@@ -64,6 +64,7 @@ define stmt {
         while_stmt              : "Do something while a condition is true"
         for_stmt                : "Do something while a condition is true. Commonly used with a known number of iterations."
         expr(expr_stmt)         : "A single expression as a statement"
+        user_type_decl          : "User Type Declaration"
         break_stmt              : "Exit from the current loop"
         continue_stmt           : "Continue to the next iteration of the current loop"
         return_stmt             : "Return an expression as the result of the current function"
@@ -77,6 +78,7 @@ define func_type {
         float                   : "FUNCTION returns float "
         double                  : "FUNCTION returns double "
         void                    : "FUNCTION returns nothing "
+        user_type               : "FUNCTION returns user defined type"  
     }
 }
 
@@ -86,6 +88,7 @@ define var_type {
         char                    : "Char variable definition"
         float                   : "Float variable definition"
         double                  : "Double variable definition"
+        user_type               : "User defined variable definition"  
     }
 }
 
@@ -95,18 +98,31 @@ define array_type {
         char                    : "Array of chars"
         float                   : "Array of floats"
         double                  : "Array of doubles"
+        user_type               : "Array of user defined types"  
     }
+}
+
+define user_type {
+    IDENT(user_defined_type)
 }
 
 define user_type_decl {
     any_of{
         typedef_type            : "Create an additional name (alias) for another data type"
-        enumeration_type        : "User defined data type in C"
+        enumeration_type        : "User defined data type with assigning names to integral constants"
     }
 }
 
 define enumeration_type {
-    IDENT
+    enum IDENT(enum_name) "{" enum_assigns "}" IDENT(name)
+}
+
+define enum_assigns {
+    list_of enum_assign
+}
+
+define enum_assign {
+    IDENT(variable_name) EQUALS("=") INT_CONST(int_value)
 }
 
 define typedef_type {
@@ -264,6 +280,7 @@ define primary_expr {
         IDENT                   : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
         array_index             : "Array Index"
         struct_field            : "Struct Field"
+        enum_var                : "Enum Variable"
         const_values            : "Constant Values"
     }
 }
@@ -287,6 +304,10 @@ define var_decl {
 
 define var_def {
     var_type IDENT(variable_name)          
+}
+
+define enum_var {
+    IDENT(enum_var_name)          
 }
 
 define struct_field {
@@ -419,7 +440,7 @@ define printf_type {
         "%f"                                 : " Print variable with double or float type"
         "%c"                                 : " Print variable with character type"
         "%s"                                 : " Print variable with string type"
-        STRING_CONST                         : "Print text in output screen"
+        STRING_CONST                         : " Print text in output screen"
     } 
 }
 

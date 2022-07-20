@@ -59,6 +59,11 @@ export let config = {
                   },
                   {
                       "type": "non_terminal",
+                      "name": "user_type_decl",
+                      "tooltip": "User Type Declaration"
+                  },
+                  {
+                      "type": "non_terminal",
                       "name": "break_stmt",
                       "tooltip": "Exit from the current loop"
                   },
@@ -101,6 +106,11 @@ export let config = {
                       "type": "terminal",
                       "name": "void",
                       "tooltip": "FUNCTION returns nothing "
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "user_type",
+                      "tooltip": "FUNCTION returns user defined type"
                   }
               ]
           },
@@ -126,6 +136,11 @@ export let config = {
                       "type": "terminal",
                       "name": "double",
                       "tooltip": "Double variable definition"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "user_type",
+                      "tooltip": "User defined variable definition"
                   }
               ]
           },
@@ -151,6 +166,21 @@ export let config = {
                       "type": "terminal",
                       "name": "double",
                       "tooltip": "Array of doubles"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "user_type",
+                      "tooltip": "Array of user defined types"
+                  }
+              ]
+          },
+          {
+              "name": "user_type",
+              "all_of": [
+                  {
+                      "type": "terminal",
+                      "name": "IDENT",
+                      "alias": "user_defined_type"
                   }
               ]
           },
@@ -165,7 +195,7 @@ export let config = {
                   {
                       "type": "non_terminal",
                       "name": "enumeration_type",
-                      "tooltip": "User defined data type in C"
+                      "tooltip": "User defined data type with assigning names to integral constants"
                   }
               ]
           },
@@ -174,7 +204,58 @@ export let config = {
               "all_of": [
                   {
                       "type": "terminal",
-                      "name": "IDENT"
+                      "name": "enum"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "IDENT",
+                      "alias": "enum_name"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "{"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "enum_assigns"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "}"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "IDENT",
+                      "alias": "name"
+                  }
+              ]
+          },
+          {
+              "name": "enum_assigns",
+              "list_of": [
+                  {
+                      "type": "non_terminal",
+                      "name": "enum_assign"
+                  }
+              ]
+          },
+          {
+              "name": "enum_assign",
+              "all_of": [
+                  {
+                      "type": "terminal",
+                      "name": "IDENT",
+                      "alias": "variable_name"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "EQUALS",
+                      "alias": "="
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "INT_CONST",
+                      "alias": "int_value"
                   }
               ]
           },
@@ -647,6 +728,11 @@ export let config = {
                   },
                   {
                       "type": "non_terminal",
+                      "name": "enum_var",
+                      "tooltip": "Enum Variable"
+                  },
+                  {
+                      "type": "non_terminal",
                       "name": "const_values",
                       "tooltip": "Constant Values"
                   }
@@ -708,6 +794,16 @@ export let config = {
                       "type": "terminal",
                       "name": "IDENT",
                       "alias": "variable_name"
+                  }
+              ]
+          },
+          {
+              "name": "enum_var",
+              "all_of": [
+                  {
+                      "type": "terminal",
+                      "name": "IDENT",
+                      "alias": "enum_var_name"
                   }
               ]
           },
@@ -1196,7 +1292,7 @@ export let config = {
                   {
                       "type": "terminal",
                       "name": "STRING_CONST",
-                      "tooltip": "Print text in output screen"
+                      "tooltip": " Print text in output screen"
                   }
               ]
           },
@@ -1804,6 +1900,13 @@ export let config = {
                       },
                       {
                         "symbol": {
+                          "name": "user_type_decl",
+                          "isTerminal": false
+                        },
+                        "tooltip": "User Type Declaration"
+                      },
+                      {
+                        "symbol": {
                           "name": "break_stmt",
                           "isTerminal": false
                         },
@@ -1870,6 +1973,13 @@ export let config = {
                       },
                       "alias": "expr_stmt",
                       "tooltip": "A single expression as a statement"
+                    },
+                    {
+                      "symbol": {
+                        "name": "user_type_decl",
+                        "isTerminal": false
+                      },
+                      "tooltip": "User Type Declaration"
                     },
                     {
                       "symbol": {
@@ -1942,6 +2052,13 @@ export let config = {
                   },
                   "alias": "expr_stmt",
                   "tooltip": "A single expression as a statement"
+                },
+                {
+                  "symbol": {
+                    "name": "user_type_decl",
+                    "isTerminal": false
+                  },
+                  "tooltip": "User Type Declaration"
                 },
                 {
                   "symbol": {
@@ -2134,6 +2251,13 @@ export let config = {
                       },
                       {
                         "symbol": {
+                          "name": "user_type_decl",
+                          "isTerminal": false
+                        },
+                        "tooltip": "User Type Declaration"
+                      },
+                      {
+                        "symbol": {
                           "name": "break_stmt",
                           "isTerminal": false
                         },
@@ -2200,6 +2324,13 @@ export let config = {
                       },
                       "alias": "expr_stmt",
                       "tooltip": "A single expression as a statement"
+                    },
+                    {
+                      "symbol": {
+                        "name": "user_type_decl",
+                        "isTerminal": false
+                      },
+                      "tooltip": "User Type Declaration"
                     },
                     {
                       "symbol": {
@@ -2300,6 +2431,13 @@ export let config = {
                       },
                       {
                         "symbol": {
+                          "name": "user_type_decl",
+                          "isTerminal": false
+                        },
+                        "tooltip": "User Type Declaration"
+                      },
+                      {
+                        "symbol": {
                           "name": "break_stmt",
                           "isTerminal": false
                         },
@@ -2366,6 +2504,13 @@ export let config = {
                       },
                       "alias": "expr_stmt",
                       "tooltip": "A single expression as a statement"
+                    },
+                    {
+                      "symbol": {
+                        "name": "user_type_decl",
+                        "isTerminal": false
+                      },
+                      "tooltip": "User Type Declaration"
                     },
                     {
                       "symbol": {
@@ -2438,6 +2583,13 @@ export let config = {
                   },
                   "alias": "expr_stmt",
                   "tooltip": "A single expression as a statement"
+                },
+                {
+                  "symbol": {
+                    "name": "user_type_decl",
+                    "isTerminal": false
+                  },
+                  "tooltip": "User Type Declaration"
                 },
                 {
                   "symbol": {
@@ -2630,6 +2782,13 @@ export let config = {
                       },
                       {
                         "symbol": {
+                          "name": "user_type_decl",
+                          "isTerminal": false
+                        },
+                        "tooltip": "User Type Declaration"
+                      },
+                      {
+                        "symbol": {
                           "name": "break_stmt",
                           "isTerminal": false
                         },
@@ -2696,6 +2855,13 @@ export let config = {
                       },
                       "alias": "expr_stmt",
                       "tooltip": "A single expression as a statement"
+                    },
+                    {
+                      "symbol": {
+                        "name": "user_type_decl",
+                        "isTerminal": false
+                      },
+                      "tooltip": "User Type Declaration"
                     },
                     {
                       "symbol": {
@@ -2768,6 +2934,13 @@ export let config = {
                   },
                   "alias": "expr_stmt",
                   "tooltip": "A single expression as a statement"
+                },
+                {
+                  "symbol": {
+                    "name": "user_type_decl",
+                    "isTerminal": false
+                  },
+                  "tooltip": "User Type Declaration"
                 },
                 {
                   "symbol": {
@@ -3068,6 +3241,13 @@ export let config = {
                       },
                       {
                         "symbol": {
+                          "name": "user_type_decl",
+                          "isTerminal": false
+                        },
+                        "tooltip": "User Type Declaration"
+                      },
+                      {
+                        "symbol": {
                           "name": "break_stmt",
                           "isTerminal": false
                         },
@@ -3134,6 +3314,13 @@ export let config = {
                       },
                       "alias": "expr_stmt",
                       "tooltip": "A single expression as a statement"
+                    },
+                    {
+                      "symbol": {
+                        "name": "user_type_decl",
+                        "isTerminal": false
+                      },
+                      "tooltip": "User Type Declaration"
                     },
                     {
                       "symbol": {
@@ -3206,6 +3393,13 @@ export let config = {
                   },
                   "alias": "expr_stmt",
                   "tooltip": "A single expression as a statement"
+                },
+                {
+                  "symbol": {
+                    "name": "user_type_decl",
+                    "isTerminal": false
+                  },
+                  "tooltip": "User Type Declaration"
                 },
                 {
                   "symbol": {
@@ -3540,6 +3734,13 @@ export let config = {
                 },
                 {
                   "symbol": {
+                    "name": "user_type_decl",
+                    "isTerminal": false
+                  },
+                  "tooltip": "User Type Declaration"
+                },
+                {
+                  "symbol": {
                     "name": "break_stmt",
                     "isTerminal": false
                   },
@@ -3560,8 +3761,40 @@ export let config = {
                   "tooltip": "Return an expression as the result of the current function"
                 }
               ],
-              "selectedSymbol": 7,
-              "type": "SelectionBlock"
+              "selectedSymbol": 8,
+              "type": "SelectionBlock",
+              "generatedBy": {
+                "symbol": {
+                  "symbol": {
+                    "name": "local_def",
+                    "isTerminal": false
+                  }
+                },
+                "alternateSymbols": [
+                  {
+                    "symbol": {
+                      "name": "stmt",
+                      "isTerminal": false
+                    }
+                  },
+                  {
+                    "symbol": {
+                      "name": "var_decl",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Variable or Array declaration with type and name"
+                  },
+                  {
+                    "symbol": {
+                      "name": "struct_decl",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Struct declaration with name and fields"
+                  }
+                ],
+                "selectedSymbol": 0,
+                "type": "SelectionBlock"
+              }
             }
           }
         ]
@@ -3895,8 +4128,7 @@ export let config = {
                   "symbol": {
                     "name": "primary_expr",
                     "isTerminal": false
-                  },
-                  "tooltip": "Assign values in primary expr"
+                  }
                 },
                 "alternateSymbols": [
                   {
@@ -3919,6 +4151,13 @@ export let config = {
                       "isTerminal": false
                     },
                     "tooltip": "Struct Field"
+                  },
+                  {
+                    "symbol": {
+                      "name": "enum_var",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Enum Variable"
                   },
                   {
                     "symbol": {
@@ -3969,7 +4208,7 @@ export let config = {
                         "name": "MINUS_EQUALS",
                         "isTerminal": true
                       },
-                      "alias": "-=",
+                      "alias": "- =",
                       "tooltip": "Subtracts the right operand from the left operand and assigns the result to the left operand"
                     },
                     {
@@ -4182,7 +4421,7 @@ export let config = {
                 "generatedBy": {
                   "symbol": {
                     "symbol": {
-                      "name": "def",
+                      "name": "local_def",
                       "isTerminal": false
                     }
                   },
@@ -4206,13 +4445,6 @@ export let config = {
                         "isTerminal": false
                       },
                       "tooltip": "Struct declaration with name and fields"
-                    },
-                    {
-                      "symbol": {
-                        "name": "func_def",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Define reusable code as a function"
                     }
                   ],
                   "selectedSymbol": 0,
@@ -4235,8 +4467,7 @@ export let config = {
                   "symbol": {
                     "name": "primary_expr",
                     "isTerminal": false
-                  },
-                  "tooltip": "Assign values in primary expr"
+                  }
                 },
                 "alternateSymbols": [
                   {
@@ -4259,6 +4490,13 @@ export let config = {
                       "isTerminal": false
                     },
                     "tooltip": "Struct Field"
+                  },
+                  {
+                    "symbol": {
+                      "name": "enum_var",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Enum Variable"
                   },
                   {
                     "symbol": {
@@ -4309,7 +4547,7 @@ export let config = {
                         "name": "MINUS_EQUALS",
                         "isTerminal": true
                       },
-                      "alias": "-=",
+                      "alias": "- =",
                       "tooltip": "Subtracts the right operand from the left operand and assigns the result to the left operand"
                     },
                     {
@@ -4522,7 +4760,7 @@ export let config = {
                 "generatedBy": {
                   "symbol": {
                     "symbol": {
-                      "name": "def",
+                      "name": "local_def",
                       "isTerminal": false
                     }
                   },
@@ -4546,13 +4784,6 @@ export let config = {
                         "isTerminal": false
                       },
                       "tooltip": "Struct declaration with name and fields"
-                    },
-                    {
-                      "symbol": {
-                        "name": "func_def",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Define reusable code as a function"
                     }
                   ],
                   "selectedSymbol": 0,
@@ -4575,8 +4806,7 @@ export let config = {
                   "symbol": {
                     "name": "primary_expr",
                     "isTerminal": false
-                  },
-                  "tooltip": "Assign values in primary expr"
+                  }
                 },
                 "alternateSymbols": [
                   {
@@ -4602,6 +4832,13 @@ export let config = {
                   },
                   {
                     "symbol": {
+                      "name": "enum_var",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Enum Variable"
+                  },
+                  {
+                    "symbol": {
                       "name": "const_values",
                       "isTerminal": false
                     },
@@ -4616,7 +4853,7 @@ export let config = {
                     "name": "MINUS_EQUALS",
                     "isTerminal": true
                   },
-                  "alias": "-=",
+                  "alias": "- =",
                   "tooltip": "Subtracts the right operand from the left operand and assigns the result to the left operand"
                 },
                 "type": "SimpleBlock",
@@ -4649,7 +4886,7 @@ export let config = {
                         "name": "MINUS_EQUALS",
                         "isTerminal": true
                       },
-                      "alias": "-=",
+                      "alias": "- =",
                       "tooltip": "Subtracts the right operand from the left operand and assigns the result to the left operand"
                     },
                     {
@@ -4862,7 +5099,7 @@ export let config = {
                 "generatedBy": {
                   "symbol": {
                     "symbol": {
-                      "name": "def",
+                      "name": "local_def",
                       "isTerminal": false
                     }
                   },
@@ -4886,13 +5123,6 @@ export let config = {
                         "isTerminal": false
                       },
                       "tooltip": "Struct declaration with name and fields"
-                    },
-                    {
-                      "symbol": {
-                        "name": "func_def",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Define reusable code as a function"
                     }
                   ],
                   "selectedSymbol": 0,
@@ -4915,8 +5145,7 @@ export let config = {
                   "symbol": {
                     "name": "primary_expr",
                     "isTerminal": false
-                  },
-                  "tooltip": "Assign values in primary expr"
+                  }
                 },
                 "alternateSymbols": [
                   {
@@ -4939,6 +5168,13 @@ export let config = {
                       "isTerminal": false
                     },
                     "tooltip": "Struct Field"
+                  },
+                  {
+                    "symbol": {
+                      "name": "enum_var",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Enum Variable"
                   },
                   {
                     "symbol": {
@@ -4989,7 +5225,7 @@ export let config = {
                         "name": "MINUS_EQUALS",
                         "isTerminal": true
                       },
-                      "alias": "-=",
+                      "alias": "- =",
                       "tooltip": "Subtracts the right operand from the left operand and assigns the result to the left operand"
                     },
                     {
@@ -5202,7 +5438,7 @@ export let config = {
                 "generatedBy": {
                   "symbol": {
                     "symbol": {
-                      "name": "def",
+                      "name": "local_def",
                       "isTerminal": false
                     }
                   },
@@ -5226,13 +5462,6 @@ export let config = {
                         "isTerminal": false
                       },
                       "tooltip": "Struct declaration with name and fields"
-                    },
-                    {
-                      "symbol": {
-                        "name": "func_def",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Define reusable code as a function"
                     }
                   ],
                   "selectedSymbol": 0,
@@ -5255,8 +5484,7 @@ export let config = {
                   "symbol": {
                     "name": "primary_expr",
                     "isTerminal": false
-                  },
-                  "tooltip": "Assign values in primary expr"
+                  }
                 },
                 "alternateSymbols": [
                   {
@@ -5279,6 +5507,13 @@ export let config = {
                       "isTerminal": false
                     },
                     "tooltip": "Struct Field"
+                  },
+                  {
+                    "symbol": {
+                      "name": "enum_var",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Enum Variable"
                   },
                   {
                     "symbol": {
@@ -5329,7 +5564,7 @@ export let config = {
                         "name": "MINUS_EQUALS",
                         "isTerminal": true
                       },
-                      "alias": "-=",
+                      "alias": "- =",
                       "tooltip": "Subtracts the right operand from the left operand and assigns the result to the left operand"
                     },
                     {
@@ -5542,7 +5777,7 @@ export let config = {
                 "generatedBy": {
                   "symbol": {
                     "symbol": {
-                      "name": "def",
+                      "name": "local_def",
                       "isTerminal": false
                     }
                   },
@@ -5566,13 +5801,6 @@ export let config = {
                         "isTerminal": false
                       },
                       "tooltip": "Struct declaration with name and fields"
-                    },
-                    {
-                      "symbol": {
-                        "name": "func_def",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Define reusable code as a function"
                     }
                   ],
                   "selectedSymbol": 0,
@@ -5595,8 +5823,7 @@ export let config = {
                   "symbol": {
                     "name": "primary_expr",
                     "isTerminal": false
-                  },
-                  "tooltip": "Assign values in primary expr"
+                  }
                 },
                 "alternateSymbols": [
                   {
@@ -5619,6 +5846,13 @@ export let config = {
                       "isTerminal": false
                     },
                     "tooltip": "Struct Field"
+                  },
+                  {
+                    "symbol": {
+                      "name": "enum_var",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Enum Variable"
                   },
                   {
                     "symbol": {
@@ -5669,7 +5903,7 @@ export let config = {
                         "name": "MINUS_EQUALS",
                         "isTerminal": true
                       },
-                      "alias": "-=",
+                      "alias": "- =",
                       "tooltip": "Subtracts the right operand from the left operand and assigns the result to the left operand"
                     },
                     {
@@ -5882,7 +6116,7 @@ export let config = {
                 "generatedBy": {
                   "symbol": {
                     "symbol": {
-                      "name": "def",
+                      "name": "local_def",
                       "isTerminal": false
                     }
                   },
@@ -5906,18 +6140,389 @@ export let config = {
                         "isTerminal": false
                       },
                       "tooltip": "Struct declaration with name and fields"
-                    },
-                    {
-                      "symbol": {
-                        "name": "func_def",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Define reusable code as a function"
                     }
                   ],
                   "selectedSymbol": 0,
                   "type": "SelectionBlock"
                 }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Type",
+        "icon": "./Images/Toolbox/a.svg",
+        "blocks": [
+          {
+            "symbol": {
+              "symbol": {
+                "name": "typedef_type",
+                "isTerminal": false
+              },
+              "tooltip": "Create an additional name (alias) for another data type"
+            },
+            "elems": [
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "typedef",
+                    "isTerminal": true
+                  }
+                },
+                "type": "SimpleBlock"
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "existing_type",
+                    "isTerminal": false
+                  }
+                },
+                "alternateSymbols": [
+                  {
+                    "symbol": {
+                      "name": "int",
+                      "isTerminal": true
+                    }
+                  },
+                  {
+                    "symbol": {
+                      "name": "char",
+                      "isTerminal": true
+                    }
+                  },
+                  {
+                    "symbol": {
+                      "name": "float",
+                      "isTerminal": true
+                    }
+                  },
+                  {
+                    "symbol": {
+                      "name": "double",
+                      "isTerminal": true
+                    }
+                  },
+                  {
+                    "symbol": {
+                      "name": "struct_name",
+                      "isTerminal": false
+                    }
+                  }
+                ],
+                "type": "SelectionBlock"
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "IDENT",
+                    "isTerminal": true
+                  },
+                  "alias": "alias_name"
+                },
+                "type": "InputBlock"
+              }
+            ],
+            "type": "Group",
+            "generatedBy": {
+              "symbol": {
+                "symbol": {
+                  "name": "user_type_decl",
+                  "isTerminal": false
+                },
+                "tooltip": "User Type Declaration"
+              },
+              "alternateSymbols": [
+                {
+                  "symbol": {
+                    "name": "typedef_type",
+                    "isTerminal": false
+                  },
+                  "tooltip": "Create an additional name (alias) for another data type"
+                },
+                {
+                  "symbol": {
+                    "name": "enumeration_type",
+                    "isTerminal": false
+                  },
+                  "tooltip": "User defined data type with assigning names to integral constants"
+                }
+              ],
+              "selectedSymbol": 0,
+              "type": "SelectionBlock",
+              "generatedBy": {
+                "symbol": {
+                  "symbol": {
+                    "name": "global_def",
+                    "isTerminal": false
+                  }
+                },
+                "alternateSymbols": [
+                  {
+                    "symbol": {
+                      "name": "main_def",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Main is the starting point for program execution"
+                  },
+                  {
+                    "symbol": {
+                      "name": "func_def",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Define reusable code as a function"
+                  },
+                  {
+                    "symbol": {
+                      "name": "var_decl",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Variable or Array declaration with type and name"
+                  },
+                  {
+                    "symbol": {
+                      "name": "struct_decl",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Struct declaration with name and fields"
+                  },
+                  {
+                    "symbol": {
+                      "name": "user_type_decl",
+                      "isTerminal": false
+                    },
+                    "tooltip": "User Type Declaration"
+                  }
+                ],
+                "selectedSymbol": 4,
+                "type": "SelectionBlock"
+              }
+            }
+          },
+          {
+            "symbol": {
+              "symbol": {
+                "name": "enumeration_type",
+                "isTerminal": false
+              },
+              "tooltip": "User defined data type with assigning names to integral constants"
+            },
+            "elems": [
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "enum",
+                    "isTerminal": true
+                  }
+                },
+                "type": "SimpleBlock"
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "IDENT",
+                    "isTerminal": true
+                  },
+                  "alias": "enum_name"
+                },
+                "type": "InputBlock"
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "{",
+                    "isTerminal": true
+                  }
+                },
+                "type": "SimpleBlock"
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "enum_assigns",
+                    "isTerminal": false
+                  }
+                },
+                "elems": [
+                  {
+                    "symbol": {
+                      "symbol": {
+                        "name": "enum_assign",
+                        "isTerminal": false
+                      }
+                    },
+                    "elems": [
+                      {
+                        "symbol": {
+                          "symbol": {
+                            "name": "IDENT",
+                            "isTerminal": true
+                          },
+                          "alias": "variable_name"
+                        },
+                        "type": "InputBlock"
+                      },
+                      {
+                        "symbol": {
+                          "symbol": {
+                            "name": "EQUALS",
+                            "isTerminal": true
+                          },
+                          "alias": "="
+                        },
+                        "type": "SimpleBlock"
+                      },
+                      {
+                        "symbol": {
+                          "symbol": {
+                            "name": "INT_CONST",
+                            "isTerminal": true
+                          },
+                          "alias": "int_value"
+                        },
+                        "type": "InputBlock"
+                      }
+                    ],
+                    "type": "Group"
+                  }
+                ],
+                "repetitiveElem": {
+                  "symbol": {
+                    "symbol": {
+                      "name": "enum_assign",
+                      "isTerminal": false
+                    }
+                  },
+                  "elems": [
+                    {
+                      "symbol": {
+                        "symbol": {
+                          "name": "IDENT",
+                          "isTerminal": true
+                        },
+                        "alias": "variable_name"
+                      },
+                      "type": "InputBlock"
+                    },
+                    {
+                      "symbol": {
+                        "symbol": {
+                          "name": "EQUALS",
+                          "isTerminal": true
+                        },
+                        "alias": "="
+                      },
+                      "type": "SimpleBlock"
+                    },
+                    {
+                      "symbol": {
+                        "symbol": {
+                          "name": "INT_CONST",
+                          "isTerminal": true
+                        },
+                        "alias": "int_value"
+                      },
+                      "type": "InputBlock"
+                    }
+                  ],
+                  "type": "Group"
+                },
+                "type": "RepetitionGroup"
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "}",
+                    "isTerminal": true
+                  }
+                },
+                "type": "SimpleBlock"
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "IDENT",
+                    "isTerminal": true
+                  },
+                  "alias": "name"
+                },
+                "type": "InputBlock"
+              }
+            ],
+            "type": "Group",
+            "generatedBy": {
+              "symbol": {
+                "symbol": {
+                  "name": "user_type_decl",
+                  "isTerminal": false
+                },
+                "tooltip": "User Type Declaration"
+              },
+              "alternateSymbols": [
+                {
+                  "symbol": {
+                    "name": "typedef_type",
+                    "isTerminal": false
+                  },
+                  "tooltip": "Create an additional name (alias) for another data type"
+                },
+                {
+                  "symbol": {
+                    "name": "enumeration_type",
+                    "isTerminal": false
+                  },
+                  "tooltip": "User defined data type with assigning names to integral constants"
+                }
+              ],
+              "selectedSymbol": 1,
+              "type": "SelectionBlock",
+              "generatedBy": {
+                "symbol": {
+                  "symbol": {
+                    "name": "global_def",
+                    "isTerminal": false
+                  }
+                },
+                "alternateSymbols": [
+                  {
+                    "symbol": {
+                      "name": "main_def",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Main is the starting point for program execution"
+                  },
+                  {
+                    "symbol": {
+                      "name": "func_def",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Define reusable code as a function"
+                  },
+                  {
+                    "symbol": {
+                      "name": "var_decl",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Variable or Array declaration with type and name"
+                  },
+                  {
+                    "symbol": {
+                      "name": "struct_decl",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Struct declaration with name and fields"
+                  },
+                  {
+                    "symbol": {
+                      "name": "user_type_decl",
+                      "isTerminal": false
+                    },
+                    "tooltip": "User Type Declaration"
+                  }
+                ],
+                "selectedSymbol": 4,
+                "type": "SelectionBlock"
               }
             }
           }
@@ -19417,6 +20022,13 @@ export let config = {
                       "isTerminal": true
                     },
                     "tooltip": "FUNCTION returns nothing "
+                  },
+                  {
+                    "symbol": {
+                      "name": "user_type",
+                      "isTerminal": false
+                    },
+                    "tooltip": "FUNCTION returns user defined type"
                   }
                 ],
                 "type": "SelectionBlock"
@@ -19511,9 +20123,6 @@ export let config = {
                 "type": "SimpleBlock"
               },
               {
-                "type": "NewLine"
-              },
-              {
                 "symbol": {
                   "symbol": {
                     "name": "{",
@@ -19521,6 +20130,15 @@ export let config = {
                   }
                 },
                 "type": "SimpleBlock"
+              },
+              {
+                "type": "NewLine"
+              },
+              {
+                "type": "TabBlock"
+              },
+              {
+                "type": "TabBlock"
               },
               {
                 "symbol": {
@@ -19573,6 +20191,13 @@ export let config = {
                         },
                         "alias": "expr_stmt",
                         "tooltip": "A single expression as a statement"
+                      },
+                      {
+                        "symbol": {
+                          "name": "user_type_decl",
+                          "isTerminal": false
+                        },
+                        "tooltip": "User Type Declaration"
                       },
                       {
                         "symbol": {
@@ -19645,6 +20270,13 @@ export let config = {
                     },
                     {
                       "symbol": {
+                        "name": "user_type_decl",
+                        "isTerminal": false
+                      },
+                      "tooltip": "User Type Declaration"
+                    },
+                    {
+                      "symbol": {
                         "name": "break_stmt",
                         "isTerminal": false
                       },
@@ -19670,6 +20302,9 @@ export let config = {
                 "type": "RepetitionGroup"
               },
               {
+                "type": "NewLine"
+              },
+              {
                 "symbol": {
                   "symbol": {
                     "name": "}",
@@ -19683,16 +20318,24 @@ export let config = {
             "generatedBy": {
               "symbol": {
                 "symbol": {
-                  "name": "def",
+                  "name": "global_def",
                   "isTerminal": false
                 }
               },
               "alternateSymbols": [
                 {
                   "symbol": {
-                    "name": "stmt",
+                    "name": "main_def",
                     "isTerminal": false
-                  }
+                  },
+                  "tooltip": "Main is the starting point for program execution"
+                },
+                {
+                  "symbol": {
+                    "name": "func_def",
+                    "isTerminal": false
+                  },
+                  "tooltip": "Define reusable code as a function"
                 },
                 {
                   "symbol": {
@@ -19710,13 +20353,13 @@ export let config = {
                 },
                 {
                   "symbol": {
-                    "name": "func_def",
+                    "name": "user_type_decl",
                     "isTerminal": false
                   },
-                  "tooltip": "Define reusable code as a function"
+                  "tooltip": "User Type Declaration"
                 }
               ],
-              "selectedSymbol": 3,
+              "selectedSymbol": 1,
               "type": "SelectionBlock"
             }
           },
@@ -27129,7 +27772,7 @@ config.darkColorfulTheme = {
                     "PaddingTop": "5px",
                     "PaddingBottom": "5px",
                     "BorderWidth": "",
-                    "BorderColor": "#7A4884",
+                    "BorderColor": "",
                     "BorderRadius": ""
                 }
             },
@@ -27141,7 +27784,7 @@ config.darkColorfulTheme = {
                     "PaddingTop": "",
                     "PaddingBottom": "",
                     "BorderWidth": "",
-                    "BorderColor": "#7A4884",
+                    "BorderColor": "",
                     "BorderRadius": ""
                 }
             },
@@ -27153,10 +27796,34 @@ config.darkColorfulTheme = {
                   "PaddingTop": "",
                   "PaddingBottom": "",
                   "BorderWidth": "",
-                  "BorderColor": "#7A4884",
+                  "BorderColor": "",
                   "BorderRadius": ""
               }
           },
+          "enumeration_type": {
+            "Group Block": {
+                "BackgroundColor": "#A55B5B",
+                "PaddingLeft": "",
+                "PaddingRight": "",
+                "PaddingTop": "",
+                "PaddingBottom": "",
+                "BorderWidth": "",
+                "BorderColor": "",
+                "BorderRadius": ""
+            }
+        },
+        "enum_assign": {
+          "Group Block": {
+              "BackgroundColor": "#A55B5B",
+              "PaddingLeft": "",
+              "PaddingRight": "",
+              "PaddingTop": "",
+              "PaddingBottom": "",
+              "BorderWidth": "",
+              "BorderColor": "",
+              "BorderRadius": ""
+          }
+      },
           "struct_name": {
             "Group Block": {
                 "BackgroundColor": "#A55B5B",
