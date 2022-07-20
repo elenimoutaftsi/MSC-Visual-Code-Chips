@@ -533,9 +533,11 @@ export class Editor {
         const Keys = KeyboardEventManager.Keys;
         
         let EvHandler = (f) => {
-            return () => {
-                if (this.viewMode !== EditorElementViewMode.BlockView)
-                    return;
+            return (e) => {
+                if (this.viewMode !== EditorElementViewMode.BlockView) return;
+
+                e.preventDefault();
+                e.stopPropagation();
 
                 f();
             };
@@ -786,6 +788,8 @@ export class Editor {
 
     SetUpContextMenu_(){
         this.$workspace.on('contextmenu', (e) => {
+            if (this.viewMode === Editor.ViewMode.JsView) return;
+
             e.preventDefault();
             this.Select(undefined);
             

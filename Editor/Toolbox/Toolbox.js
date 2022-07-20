@@ -352,9 +352,13 @@ export class Toolbox {
         const Keys = KeyboardEventManager.Keys;
         
         this.keyboardEventManager = new KeyboardEventManager(this.$toolbox)
-            .AddEventHandler( [Keys.CTRL, Keys.Z],                  () => this.EventHandler_Undo_() )
-            .AddEventHandler( [Keys.CTRL, Keys.Y],                  () => this.EventHandler_Redo_() )
-            .AddEventHandler( [Keys.CTRL, Keys.P],                  () => console.log(this.ToJson()) )
+            .AddEventHandler([Keys.CTRL, Keys.Z], e => this.EventHandler_Undo_(e))
+            .AddEventHandler([Keys.CTRL, Keys.Y], e=> this.EventHandler_Redo_(e))
+            .AddEventHandler([Keys.CTRL, Keys.P], e => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log(this.ToJson())
+            })
         ;
     }
 
@@ -702,11 +706,17 @@ export class Toolbox {
         this.minWidth = f;
     }
 
-    EventHandler_Undo_(){
+    EventHandler_Undo_(e){
+        e.stopPropagation();
+        e.preventDefault();
+
         this.history.Undo();
     }
     
-    EventHandler_Redo_(){
+    EventHandler_Redo_(e){
+        e.stopPropagation();
+        e.preventDefault();
+        
         this.history.Redo();
     }
 

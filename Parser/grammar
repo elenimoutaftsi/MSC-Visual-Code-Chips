@@ -8,6 +8,7 @@ non_terminal {
     var_decl var_def var_type
     struct_decl struct_field
     user_type_decl enumeration_type typedef_type existing_type struct_name
+    
     func_type func_def
     if_stmt if_else_stmt while_stmt for_stmt expr break_stmt continue_stmt return_stmt
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr

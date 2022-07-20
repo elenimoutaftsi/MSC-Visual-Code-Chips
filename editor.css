@@ -171,8 +171,11 @@ body{
 .selection-block-container.pure-text .text{
     font-style: italic !important;
     font-weight: normal !important;
-    text-decoration: none !important;
     opacity: 0.8 !important;
+}
+
+.selection-block-container:not(.pure-text) .text {
+    user-select: none;
 }
 
 .selection-block-container .selection-block {
@@ -181,7 +184,6 @@ body{
     font-family: Roboto;
     font-size: 14px;
     color: #E5ECF0;
-    user-select: none;
     display: inline-flex;
     align-items: center;
 }
@@ -261,6 +263,9 @@ body{
     font-family: Roboto;
     font-size: 14px;
     color: #E5ECF0;
+}
+
+.input-block:not(.pure-text) .text {
     user-select: none;
 }
 
@@ -284,7 +289,6 @@ body{
     padding: 0 !important;
     background-color: transparent !important;
     font-weight: normal !important;
-    text-decoration: none !important;
     font-style: normal !important;
 }
 
@@ -312,6 +316,7 @@ body{
     border-radius: 10px;
     border: 2px solid transparent;
     padding: 0px 4px;
+    user-select: none;
 }
 
 .simple-block.pure-text {
@@ -319,7 +324,6 @@ body{
     border: none !important;
     background-color: transparent !important;
     font-weight: normal !important;
-    text-decoration: none !important;
     font-style: normal !important;
 }
 
@@ -336,7 +340,6 @@ body{
     font-family: Roboto;
     font-size: 14px;
     color: #E5ECF0;
-    user-select: none;
 }
 
 /* Optional Block */
@@ -617,8 +620,8 @@ body{
 }
 
 .editor-toolbar-js-button {
-    -webkit-mask-image: url(./Images/EditorToolbar/C.svg);
-    mask-image: url(./Images/EditorToolbar/C.svg);
+    -webkit-mask-image: url(./Images/EditorToolbar/js.svg);
+    mask-image: url(./Images/EditorToolbar/js.svg);
     background-color: #CBCB41;
 }
 

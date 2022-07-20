@@ -42,12 +42,7 @@ export class KeyboardEventManager {
         this.$element.on('keydown', (e) => {
             let code = e.char || e.charCode || e.which;
             this.keysDown.push(code);
-            let invoked = this.HandleKey_(code);
-            
-            if (invoked){
-                e.preventDefault();
-                e.stopPropagation();
-            }
+            this.HandleKey_(e);
         });
 
         this.$element.on('focusout', () => {
@@ -59,13 +54,15 @@ export class KeyboardEventManager {
         If a keypress is in multiple key combinations that can apply,
         only 1 handler will be executed and that will be the first registered appliable handler 
     */
-    HandleKey_(key){
+    HandleKey_(e){
+        let key = e.char || e.charCode || e.which;
         let handlers = this.handlers[key];
+
         if (handlers){
             for (let {keyCombination, eventHandler} of handlers){
                 let combinationDown = !keyCombination.map(key => this.IsKeyDown_(key)).includes(false);
                 if (combinationDown){
-                    eventHandler();
+                    eventHandler(e);
                     return true;
                 }
             }
