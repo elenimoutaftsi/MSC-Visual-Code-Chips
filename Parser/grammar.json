@@ -52,6 +52,11 @@
                 },
                 {
                     "type": "non_terminal",
+                    "name": "switch_stmt",
+                    "tooltip": "Do something when the evaluated expression is equal with the case constant"
+                },
+                {
+                    "type": "non_terminal",
                     "name": "expr",
                     "alias": "expr_stmt",
                     "tooltip": "A single expression as a statement"
@@ -1526,6 +1531,58 @@
                     "type": "non_terminal",
                     "name": "stmts",
                     "alias": "else_part"
+                }
+            ]
+        },
+        {
+            "name": "switch_stmt",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "switch"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "expr"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "switch_cases"
+                },
+                {
+                    "type": "terminal",
+                    "name": "default"
+                }
+            ]
+        },
+        {
+            "name": "switch_cases",
+            "list_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "switch_case"
+                }
+            ]
+        },
+        {
+            "name": "switch_case",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "case"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "const_values",
+                    "alias": "const_value"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "stmts"
+                },
+                {
+                    "type": "terminal",
+                    "name": "break"
                 }
             ]
         },

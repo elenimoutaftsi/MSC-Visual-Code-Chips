@@ -10,7 +10,8 @@ non_terminal {
     user_type_decl typedef_type existing_type struct_name user_type
     enumeration_type enum_assigns enum_assign enum_var
     func_type func_def
-    if_stmt if_else_stmt while_stmt for_stmt expr break_stmt continue_stmt return_stmt
+    if_stmt if_else_stmt while_stmt for_stmt expr break_stmt continue_stmt return_stmt switch_stmt
+    switch_cases switch_case
     arith_expr rel_expr logical_expr assign_expr call_expr primary_expr
     binary_arith_expr unary_minus_expr unary_expr unary_back_expr unary_front_expr
     arith_op rel_op logical_binary_op assign_op unary_op 
@@ -36,8 +37,8 @@ terminal {
     main
     typedef
     true false
-    if else while for break continue return
-    "(" ")" "{" "}" "[" "]" "." ","
+    if else while for break continue return switch case default
+    "(" ")" "{" "}" "[" "]" "." "," ":"
     strlen strcat strcpy strcmp
     struct "int main( ) {" enum
     printf scanf
@@ -63,6 +64,7 @@ define stmt {
         if_else_stmt            : "Do something if a condition is true, else do something else"
         while_stmt              : "Do something while a condition is true"
         for_stmt                : "Do something while a condition is true. Commonly used with a known number of iterations."
+        switch_stmt             : "Do something when the evaluated expression is equal with the case constant"
         expr(expr_stmt)         : "A single expression as a statement"
         break_stmt              : "Exit from the current loop"
         continue_stmt           : "Continue to the next iteration of the current loop"
@@ -506,6 +508,18 @@ define if_stmt {
 
 define if_else_stmt {
     if expr(condition_expr) stmts(if_part) else stmts(else_part)
+}
+
+define switch_stmt {
+    switch expr switch_cases default
+}
+
+define switch_cases {
+    list_of switch_case
+}
+
+define switch_case {
+    case const_values(const_value) stmts break
 }
 
 define while_stmt {
