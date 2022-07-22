@@ -59,11 +59,6 @@ export let config = {
                   },
                   {
                       "type": "non_terminal",
-                      "name": "user_type_decl",
-                      "tooltip": "User Type Declaration"
-                  },
-                  {
-                      "type": "non_terminal",
                       "name": "break_stmt",
                       "tooltip": "Exit from the current loop"
                   },
@@ -196,6 +191,11 @@ export let config = {
                       "type": "non_terminal",
                       "name": "enumeration_type",
                       "tooltip": "User defined data type with assigning names to integral constants"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "struct_decl",
+                      "tooltip": "Struct declaration with name and fields"
                   }
               ]
           },
@@ -336,11 +336,6 @@ export let config = {
                   },
                   {
                       "type": "non_terminal",
-                      "name": "struct_decl",
-                      "tooltip": "Struct declaration with name and fields"
-                  },
-                  {
-                      "type": "non_terminal",
                       "name": "user_type_decl",
                       "tooltip": "User Type Declaration"
                   }
@@ -386,8 +381,8 @@ export let config = {
                   },
                   {
                       "type": "non_terminal",
-                      "name": "struct_decl",
-                      "tooltip": "Struct declaration with name and fields"
+                      "name": "user_type_decl",
+                      "tooltip": "User Type Declaration"
                   }
               ]
           },
@@ -1604,7 +1599,7 @@ export let config = {
           }
       ]
   },
-    toolbox: [
+    toolbox:[
       {
         "name": "Main",
         "icon": "./Images/Toolbox/a.svg",
@@ -1664,10 +1659,10 @@ export let config = {
                       },
                       {
                         "symbol": {
-                          "name": "struct_decl",
+                          "name": "user_type_decl",
                           "isTerminal": false
                         },
-                        "tooltip": "Struct declaration with name and fields"
+                        "tooltip": "User Type Declaration"
                       }
                     ],
                     "type": "SelectionBlock"
@@ -1696,10 +1691,10 @@ export let config = {
                     },
                     {
                       "symbol": {
-                        "name": "struct_decl",
+                        "name": "user_type_decl",
                         "isTerminal": false
                       },
-                      "tooltip": "Struct declaration with name and fields"
+                      "tooltip": "User Type Declaration"
                     }
                   ],
                   "type": "SelectionBlock"
@@ -1723,7 +1718,7 @@ export let config = {
             "generatedBy": {
               "symbol": {
                 "symbol": {
-                  "name": "def",
+                  "name": "global_def",
                   "isTerminal": false
                 }
               },
@@ -1751,10 +1746,10 @@ export let config = {
                 },
                 {
                   "symbol": {
-                    "name": "struct_decl",
+                    "name": "user_type_decl",
                     "isTerminal": false
                   },
-                  "tooltip": "Struct declaration with name and fields"
+                  "tooltip": "User Type Declaration"
                 }
               ],
               "selectedSymbol": 0,
@@ -1900,13 +1895,6 @@ export let config = {
                       },
                       {
                         "symbol": {
-                          "name": "user_type_decl",
-                          "isTerminal": false
-                        },
-                        "tooltip": "User Type Declaration"
-                      },
-                      {
-                        "symbol": {
                           "name": "break_stmt",
                           "isTerminal": false
                         },
@@ -1973,13 +1961,6 @@ export let config = {
                       },
                       "alias": "expr_stmt",
                       "tooltip": "A single expression as a statement"
-                    },
-                    {
-                      "symbol": {
-                        "name": "user_type_decl",
-                        "isTerminal": false
-                      },
-                      "tooltip": "User Type Declaration"
                     },
                     {
                       "symbol": {
@@ -2055,13 +2036,6 @@ export let config = {
                 },
                 {
                   "symbol": {
-                    "name": "user_type_decl",
-                    "isTerminal": false
-                  },
-                  "tooltip": "User Type Declaration"
-                },
-                {
-                  "symbol": {
                     "name": "break_stmt",
                     "isTerminal": false
                   },
@@ -2107,10 +2081,10 @@ export let config = {
                   },
                   {
                     "symbol": {
-                      "name": "struct_decl",
+                      "name": "user_type_decl",
                       "isTerminal": false
                     },
-                    "tooltip": "Struct declaration with name and fields"
+                    "tooltip": "User Type Declaration"
                   }
                 ],
                 "selectedSymbol": 0,
@@ -2251,13 +2225,6 @@ export let config = {
                       },
                       {
                         "symbol": {
-                          "name": "user_type_decl",
-                          "isTerminal": false
-                        },
-                        "tooltip": "User Type Declaration"
-                      },
-                      {
-                        "symbol": {
                           "name": "break_stmt",
                           "isTerminal": false
                         },
@@ -2324,13 +2291,6 @@ export let config = {
                       },
                       "alias": "expr_stmt",
                       "tooltip": "A single expression as a statement"
-                    },
-                    {
-                      "symbol": {
-                        "name": "user_type_decl",
-                        "isTerminal": false
-                      },
-                      "tooltip": "User Type Declaration"
                     },
                     {
                       "symbol": {
@@ -2431,13 +2391,6 @@ export let config = {
                       },
                       {
                         "symbol": {
-                          "name": "user_type_decl",
-                          "isTerminal": false
-                        },
-                        "tooltip": "User Type Declaration"
-                      },
-                      {
-                        "symbol": {
                           "name": "break_stmt",
                           "isTerminal": false
                         },
@@ -2504,13 +2457,6 @@ export let config = {
                       },
                       "alias": "expr_stmt",
                       "tooltip": "A single expression as a statement"
-                    },
-                    {
-                      "symbol": {
-                        "name": "user_type_decl",
-                        "isTerminal": false
-                      },
-                      "tooltip": "User Type Declaration"
                     },
                     {
                       "symbol": {
@@ -2586,13 +2532,6 @@ export let config = {
                 },
                 {
                   "symbol": {
-                    "name": "user_type_decl",
-                    "isTerminal": false
-                  },
-                  "tooltip": "User Type Declaration"
-                },
-                {
-                  "symbol": {
                     "name": "break_stmt",
                     "isTerminal": false
                   },
@@ -2638,10 +2577,10 @@ export let config = {
                   },
                   {
                     "symbol": {
-                      "name": "struct_decl",
+                      "name": "user_type_decl",
                       "isTerminal": false
                     },
-                    "tooltip": "Struct declaration with name and fields"
+                    "tooltip": "User Type Declaration"
                   }
                 ],
                 "selectedSymbol": 0,
@@ -2782,13 +2721,6 @@ export let config = {
                       },
                       {
                         "symbol": {
-                          "name": "user_type_decl",
-                          "isTerminal": false
-                        },
-                        "tooltip": "User Type Declaration"
-                      },
-                      {
-                        "symbol": {
                           "name": "break_stmt",
                           "isTerminal": false
                         },
@@ -2855,13 +2787,6 @@ export let config = {
                       },
                       "alias": "expr_stmt",
                       "tooltip": "A single expression as a statement"
-                    },
-                    {
-                      "symbol": {
-                        "name": "user_type_decl",
-                        "isTerminal": false
-                      },
-                      "tooltip": "User Type Declaration"
                     },
                     {
                       "symbol": {
@@ -2937,13 +2862,6 @@ export let config = {
                 },
                 {
                   "symbol": {
-                    "name": "user_type_decl",
-                    "isTerminal": false
-                  },
-                  "tooltip": "User Type Declaration"
-                },
-                {
-                  "symbol": {
                     "name": "break_stmt",
                     "isTerminal": false
                   },
@@ -2989,10 +2907,10 @@ export let config = {
                   },
                   {
                     "symbol": {
-                      "name": "struct_decl",
+                      "name": "user_type_decl",
                       "isTerminal": false
                     },
-                    "tooltip": "Struct declaration with name and fields"
+                    "tooltip": "User Type Declaration"
                   }
                 ],
                 "selectedSymbol": 0,
@@ -3241,13 +3159,6 @@ export let config = {
                       },
                       {
                         "symbol": {
-                          "name": "user_type_decl",
-                          "isTerminal": false
-                        },
-                        "tooltip": "User Type Declaration"
-                      },
-                      {
-                        "symbol": {
                           "name": "break_stmt",
                           "isTerminal": false
                         },
@@ -3314,13 +3225,6 @@ export let config = {
                       },
                       "alias": "expr_stmt",
                       "tooltip": "A single expression as a statement"
-                    },
-                    {
-                      "symbol": {
-                        "name": "user_type_decl",
-                        "isTerminal": false
-                      },
-                      "tooltip": "User Type Declaration"
                     },
                     {
                       "symbol": {
@@ -3396,13 +3300,6 @@ export let config = {
                 },
                 {
                   "symbol": {
-                    "name": "user_type_decl",
-                    "isTerminal": false
-                  },
-                  "tooltip": "User Type Declaration"
-                },
-                {
-                  "symbol": {
                     "name": "break_stmt",
                     "isTerminal": false
                   },
@@ -3448,10 +3345,10 @@ export let config = {
                   },
                   {
                     "symbol": {
-                      "name": "struct_decl",
+                      "name": "user_type_decl",
                       "isTerminal": false
                     },
-                    "tooltip": "Struct declaration with name and fields"
+                    "tooltip": "User Type Declaration"
                   }
                 ],
                 "selectedSymbol": 0,
@@ -6152,7 +6049,7 @@ export let config = {
       },
       {
         "name": "Type",
-        "icon": "./Images/Toolbox/a.svg",
+        "icon": "./Images/Toolbox/struct.svg",
         "blocks": [
           {
             "symbol": {
@@ -6523,6 +6420,537 @@ export let config = {
                 ],
                 "selectedSymbol": 4,
                 "type": "SelectionBlock"
+              }
+            }
+          },
+          {
+            "symbol": {
+              "symbol": {
+                "name": "struct_decl",
+                "isTerminal": false
+              },
+              "tooltip": "Struct declaration with name and fields"
+            },
+            "elems": [
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "struct",
+                    "isTerminal": true
+                  }
+                },
+                "type": "SimpleBlock"
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "IDENT",
+                    "isTerminal": true
+                  },
+                  "alias": "struct_name"
+                },
+                "type": "InputBlock"
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "{",
+                    "isTerminal": true
+                  }
+                },
+                "type": "SimpleBlock"
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "ident_list",
+                    "isTerminal": false
+                  }
+                },
+                "elems": [
+                  {
+                    "symbol": {
+                      "symbol": {
+                        "name": "var_decl",
+                        "isTerminal": false
+                      }
+                    },
+                    "alternateSymbols": [
+                      {
+                        "symbol": {
+                          "name": "var_def",
+                          "isTerminal": false
+                        },
+                        "tooltip": "Variable declaration with type and name"
+                      },
+                      {
+                        "symbol": {
+                          "name": "array_def",
+                          "isTerminal": false
+                        },
+                        "tooltip": "Array declaration with type, name and size"
+                      }
+                    ],
+                    "type": "SelectionBlock"
+                  }
+                ],
+                "repetitiveElem": {
+                  "symbol": {
+                    "symbol": {
+                      "name": "var_decl",
+                      "isTerminal": false
+                    }
+                  },
+                  "alternateSymbols": [
+                    {
+                      "symbol": {
+                        "name": "var_def",
+                        "isTerminal": false
+                      },
+                      "tooltip": "Variable declaration with type and name"
+                    },
+                    {
+                      "symbol": {
+                        "name": "array_def",
+                        "isTerminal": false
+                      },
+                      "tooltip": "Array declaration with type, name and size"
+                    }
+                  ],
+                  "type": "SelectionBlock"
+                },
+                "type": "RepetitionGroup"
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "}",
+                    "isTerminal": true
+                  }
+                },
+                "type": "SimpleBlock"
+              }
+            ],
+            "type": "Group",
+            "generatedBy": {
+              "symbol": {
+                "symbol": {
+                  "name": "def",
+                  "isTerminal": false
+                }
+              },
+              "alternateSymbols": [
+                {
+                  "symbol": {
+                    "name": "stmt",
+                    "isTerminal": false
+                  }
+                },
+                {
+                  "symbol": {
+                    "name": "var_decl",
+                    "isTerminal": false
+                  },
+                  "tooltip": "Variable or Array declaration with type and name"
+                },
+                {
+                  "symbol": {
+                    "name": "struct_decl",
+                    "isTerminal": false
+                  },
+                  "tooltip": "Struct declaration with name and fields"
+                },
+                {
+                  "symbol": {
+                    "name": "func_def",
+                    "isTerminal": false
+                  },
+                  "tooltip": "Define reusable code as a function"
+                }
+              ],
+              "selectedSymbol": 2,
+              "type": "SelectionBlock"
+            }
+          },
+          {
+            "symbol": {
+              "symbol": {
+                "name": "assign_expr",
+                "isTerminal": false
+              },
+              "tooltip": "Set a variable's value"
+            },
+            "elems": [
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "struct_field",
+                    "isTerminal": false
+                  },
+                  "tooltip": "Struct Field"
+                },
+                "elems": [
+                  {
+                    "symbol": {
+                      "symbol": {
+                        "name": "IDENT",
+                        "isTerminal": true
+                      },
+                      "alias": "struct_name"
+                    },
+                    "type": "InputBlock"
+                  },
+                  {
+                    "symbol": {
+                      "symbol": {
+                        "name": ".",
+                        "isTerminal": true
+                      }
+                    },
+                    "type": "SimpleBlock"
+                  },
+                  {
+                    "symbol": {
+                      "symbol": {
+                        "name": "IDENT",
+                        "isTerminal": true
+                      },
+                      "alias": "struct_field"
+                    },
+                    "type": "InputBlock"
+                  }
+                ],
+                "type": "Group",
+                "generatedBy": {
+                  "symbol": {
+                    "symbol": {
+                      "name": "primary_expr",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Assign values in primary expr"
+                  },
+                  "alternateSymbols": [
+                    {
+                      "symbol": {
+                        "name": "IDENT",
+                        "isTerminal": true
+                      },
+                      "tooltip": "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
+                    },
+                    {
+                      "symbol": {
+                        "name": "array_index",
+                        "isTerminal": false
+                      },
+                      "tooltip": "Array Index"
+                    },
+                    {
+                      "symbol": {
+                        "name": "struct_field",
+                        "isTerminal": false
+                      },
+                      "tooltip": "Struct Field"
+                    },
+                    {
+                      "symbol": {
+                        "name": "const_values",
+                        "isTerminal": false
+                      },
+                      "tooltip": "Constant Values"
+                    }
+                  ],
+                  "selectedSymbol": 2,
+                  "type": "SelectionBlock"
+                }
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "EQUALS",
+                    "isTerminal": true
+                  },
+                  "alias": "=",
+                  "tooltip": "Assigns values from right side operands to left side operand"
+                },
+                "type": "SimpleBlock",
+                "generatedBy": {
+                  "symbol": {
+                    "symbol": {
+                      "name": "assign_op",
+                      "isTerminal": false
+                    }
+                  },
+                  "alternateSymbols": [
+                    {
+                      "symbol": {
+                        "name": "EQUALS",
+                        "isTerminal": true
+                      },
+                      "alias": "=",
+                      "tooltip": "Assigns values from right side operands to left side operand"
+                    },
+                    {
+                      "symbol": {
+                        "name": "PLUS_EQUALS",
+                        "isTerminal": true
+                      },
+                      "alias": "+=",
+                      "tooltip": "Adds the right operand to the left operand and assign the result to the left operand"
+                    },
+                    {
+                      "symbol": {
+                        "name": "MINUS_EQUALS",
+                        "isTerminal": true
+                      },
+                      "alias": "-=",
+                      "tooltip": "Subtracts the right operand from the left operand and assigns the result to the left operand"
+                    },
+                    {
+                      "symbol": {
+                        "name": "TIMES_EQUALS",
+                        "isTerminal": true
+                      },
+                      "alias": "*=",
+                      "tooltip": "Multiplies the right operand with the left operand and assigns the result to the left operand"
+                    },
+                    {
+                      "symbol": {
+                        "name": "BY_EQUALS",
+                        "isTerminal": true
+                      },
+                      "alias": "/=",
+                      "tooltip": "Divides the left operand with the right operand and assigns the result to the left operand"
+                    },
+                    {
+                      "symbol": {
+                        "name": "MOD_EQUALS",
+                        "isTerminal": true
+                      },
+                      "alias": "%=",
+                      "tooltip": "Returns true if the first operand is less than or equal to the second operand, else returns false"
+                    }
+                  ],
+                  "selectedSymbol": 0,
+                  "type": "SelectionBlock"
+                }
+              },
+              {
+                "symbol": {
+                  "symbol": {
+                    "name": "expr",
+                    "isTerminal": false
+                  }
+                },
+                "alternateSymbols": [
+                  {
+                    "symbol": {
+                      "name": "arith_expr",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Perform a mathematic operation"
+                  },
+                  {
+                    "symbol": {
+                      "name": "rel_expr",
+                      "isTerminal": false
+                    },
+                    "tooltip": "An operator that compares the two operands and returns true or false"
+                  },
+                  {
+                    "symbol": {
+                      "name": "logical_expr",
+                      "isTerminal": false
+                    },
+                    "tooltip": "An expression that evaluates to true or false"
+                  },
+                  {
+                    "symbol": {
+                      "name": "assign_expr",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Set a variable's value"
+                  },
+                  {
+                    "symbol": {
+                      "name": "call_expr",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Call a user-defined or built-in function/method"
+                  },
+                  {
+                    "symbol": {
+                      "name": "primary_expr",
+                      "isTerminal": false
+                    },
+                    "tooltip": "An identifier or a constant"
+                  }
+                ],
+                "type": "SelectionBlock"
+              }
+            ],
+            "type": "Group",
+            "generatedBy": {
+              "symbol": {
+                "symbol": {
+                  "name": "expr",
+                  "isTerminal": false
+                },
+                "alias": "expr_stmt",
+                "tooltip": "A single expression as a statement"
+              },
+              "alternateSymbols": [
+                {
+                  "symbol": {
+                    "name": "arith_expr",
+                    "isTerminal": false
+                  },
+                  "tooltip": "Perform a mathematic operation"
+                },
+                {
+                  "symbol": {
+                    "name": "rel_expr",
+                    "isTerminal": false
+                  },
+                  "tooltip": "An operator that compares the two operands and returns true or false"
+                },
+                {
+                  "symbol": {
+                    "name": "logical_expr",
+                    "isTerminal": false
+                  },
+                  "tooltip": "An expression that evaluates to true or false"
+                },
+                {
+                  "symbol": {
+                    "name": "assign_expr",
+                    "isTerminal": false
+                  },
+                  "tooltip": "Set a variable's value"
+                },
+                {
+                  "symbol": {
+                    "name": "call_expr",
+                    "isTerminal": false
+                  },
+                  "tooltip": "Call a user-defined or built-in function/method"
+                },
+                {
+                  "symbol": {
+                    "name": "primary_expr",
+                    "isTerminal": false
+                  },
+                  "tooltip": "An identifier or a constant"
+                }
+              ],
+              "selectedSymbol": 3,
+              "type": "SelectionBlock",
+              "generatedBy": {
+                "symbol": {
+                  "symbol": {
+                    "name": "stmt",
+                    "isTerminal": false
+                  }
+                },
+                "alternateSymbols": [
+                  {
+                    "symbol": {
+                      "name": "if_stmt",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Do something if a condition is true"
+                  },
+                  {
+                    "symbol": {
+                      "name": "if_else_stmt",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Do something if a condition is true, else do something else"
+                  },
+                  {
+                    "symbol": {
+                      "name": "while_stmt",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Do something while a condition is true"
+                  },
+                  {
+                    "symbol": {
+                      "name": "for_stmt",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Do something while a condition is true. Commonly used with a known number of iterations."
+                  },
+                  {
+                    "symbol": {
+                      "name": "expr",
+                      "isTerminal": false
+                    },
+                    "alias": "expr_stmt",
+                    "tooltip": "A single expression as a statement"
+                  },
+                  {
+                    "symbol": {
+                      "name": "break_stmt",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Exit from the current loop"
+                  },
+                  {
+                    "symbol": {
+                      "name": "continue_stmt",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Continue to the next iteration of the current loop"
+                  },
+                  {
+                    "symbol": {
+                      "name": "return_stmt",
+                      "isTerminal": false
+                    },
+                    "tooltip": "Return an expression as the result of the current function"
+                  }
+                ],
+                "selectedSymbol": 4,
+                "type": "SelectionBlock",
+                "generatedBy": {
+                  "symbol": {
+                    "symbol": {
+                      "name": "def",
+                      "isTerminal": false
+                    }
+                  },
+                  "alternateSymbols": [
+                    {
+                      "symbol": {
+                        "name": "stmt",
+                        "isTerminal": false
+                      }
+                    },
+                    {
+                      "symbol": {
+                        "name": "var_decl",
+                        "isTerminal": false
+                      },
+                      "tooltip": "Variable or Array declaration with type and name"
+                    },
+                    {
+                      "symbol": {
+                        "name": "struct_decl",
+                        "isTerminal": false
+                      },
+                      "tooltip": "Struct declaration with name and fields"
+                    },
+                    {
+                      "symbol": {
+                        "name": "func_def",
+                        "isTerminal": false
+                      },
+                      "tooltip": "Define reusable code as a function"
+                    }
+                  ],
+                  "selectedSymbol": 0,
+                  "type": "SelectionBlock"
+                }
               }
             }
           }
@@ -7062,543 +7490,6 @@ export let config = {
                         "isTerminal": false
                       },
                       "tooltip": "Struct declaration with name and fields"
-                    }
-                  ],
-                  "selectedSymbol": 0,
-                  "type": "SelectionBlock"
-                }
-              }
-            }
-          }
-        ]
-      },
-      {
-        "name": "Struct",
-        "icon": "./Images/Toolbox/struct.svg",
-        "blocks": [
-          {
-            "symbol": {
-              "symbol": {
-                "name": "struct_decl",
-                "isTerminal": false
-              },
-              "tooltip": "Struct declaration with name and fields"
-            },
-            "elems": [
-              {
-                "symbol": {
-                  "symbol": {
-                    "name": "struct",
-                    "isTerminal": true
-                  }
-                },
-                "type": "SimpleBlock"
-              },
-              {
-                "symbol": {
-                  "symbol": {
-                    "name": "IDENT",
-                    "isTerminal": true
-                  },
-                  "alias": "struct_name"
-                },
-                "type": "InputBlock"
-              },
-              {
-                "symbol": {
-                  "symbol": {
-                    "name": "{",
-                    "isTerminal": true
-                  }
-                },
-                "type": "SimpleBlock"
-              },
-              {
-                "symbol": {
-                  "symbol": {
-                    "name": "ident_list",
-                    "isTerminal": false
-                  }
-                },
-                "elems": [
-                  {
-                    "symbol": {
-                      "symbol": {
-                        "name": "var_decl",
-                        "isTerminal": false
-                      }
-                    },
-                    "alternateSymbols": [
-                      {
-                        "symbol": {
-                          "name": "var_def",
-                          "isTerminal": false
-                        },
-                        "tooltip": "Variable declaration with type and name"
-                      },
-                      {
-                        "symbol": {
-                          "name": "array_def",
-                          "isTerminal": false
-                        },
-                        "tooltip": "Array declaration with type, name and size"
-                      }
-                    ],
-                    "type": "SelectionBlock"
-                  }
-                ],
-                "repetitiveElem": {
-                  "symbol": {
-                    "symbol": {
-                      "name": "var_decl",
-                      "isTerminal": false
-                    }
-                  },
-                  "alternateSymbols": [
-                    {
-                      "symbol": {
-                        "name": "var_def",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Variable declaration with type and name"
-                    },
-                    {
-                      "symbol": {
-                        "name": "array_def",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Array declaration with type, name and size"
-                    }
-                  ],
-                  "type": "SelectionBlock"
-                },
-                "type": "RepetitionGroup"
-              },
-              {
-                "symbol": {
-                  "symbol": {
-                    "name": "}",
-                    "isTerminal": true
-                  }
-                },
-                "type": "SimpleBlock"
-              }
-            ],
-            "type": "Group",
-            "generatedBy": {
-              "symbol": {
-                "symbol": {
-                  "name": "def",
-                  "isTerminal": false
-                }
-              },
-              "alternateSymbols": [
-                {
-                  "symbol": {
-                    "name": "stmt",
-                    "isTerminal": false
-                  }
-                },
-                {
-                  "symbol": {
-                    "name": "var_decl",
-                    "isTerminal": false
-                  },
-                  "tooltip": "Variable or Array declaration with type and name"
-                },
-                {
-                  "symbol": {
-                    "name": "struct_decl",
-                    "isTerminal": false
-                  },
-                  "tooltip": "Struct declaration with name and fields"
-                },
-                {
-                  "symbol": {
-                    "name": "func_def",
-                    "isTerminal": false
-                  },
-                  "tooltip": "Define reusable code as a function"
-                }
-              ],
-              "selectedSymbol": 2,
-              "type": "SelectionBlock"
-            }
-          },
-          {
-            "symbol": {
-              "symbol": {
-                "name": "assign_expr",
-                "isTerminal": false
-              },
-              "tooltip": "Set a variable's value"
-            },
-            "elems": [
-              {
-                "symbol": {
-                  "symbol": {
-                    "name": "struct_field",
-                    "isTerminal": false
-                  },
-                  "tooltip": "Struct Field"
-                },
-                "elems": [
-                  {
-                    "symbol": {
-                      "symbol": {
-                        "name": "IDENT",
-                        "isTerminal": true
-                      },
-                      "alias": "struct_name"
-                    },
-                    "type": "InputBlock"
-                  },
-                  {
-                    "symbol": {
-                      "symbol": {
-                        "name": ".",
-                        "isTerminal": true
-                      }
-                    },
-                    "type": "SimpleBlock"
-                  },
-                  {
-                    "symbol": {
-                      "symbol": {
-                        "name": "IDENT",
-                        "isTerminal": true
-                      },
-                      "alias": "struct_field"
-                    },
-                    "type": "InputBlock"
-                  }
-                ],
-                "type": "Group",
-                "generatedBy": {
-                  "symbol": {
-                    "symbol": {
-                      "name": "primary_expr",
-                      "isTerminal": false
-                    },
-                    "tooltip": "Assign values in primary expr"
-                  },
-                  "alternateSymbols": [
-                    {
-                      "symbol": {
-                        "name": "IDENT",
-                        "isTerminal": true
-                      },
-                      "tooltip": "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
-                    },
-                    {
-                      "symbol": {
-                        "name": "array_index",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Array Index"
-                    },
-                    {
-                      "symbol": {
-                        "name": "struct_field",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Struct Field"
-                    },
-                    {
-                      "symbol": {
-                        "name": "const_values",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Constant Values"
-                    }
-                  ],
-                  "selectedSymbol": 2,
-                  "type": "SelectionBlock"
-                }
-              },
-              {
-                "symbol": {
-                  "symbol": {
-                    "name": "EQUALS",
-                    "isTerminal": true
-                  },
-                  "alias": "=",
-                  "tooltip": "Assigns values from right side operands to left side operand"
-                },
-                "type": "SimpleBlock",
-                "generatedBy": {
-                  "symbol": {
-                    "symbol": {
-                      "name": "assign_op",
-                      "isTerminal": false
-                    }
-                  },
-                  "alternateSymbols": [
-                    {
-                      "symbol": {
-                        "name": "EQUALS",
-                        "isTerminal": true
-                      },
-                      "alias": "=",
-                      "tooltip": "Assigns values from right side operands to left side operand"
-                    },
-                    {
-                      "symbol": {
-                        "name": "PLUS_EQUALS",
-                        "isTerminal": true
-                      },
-                      "alias": "+=",
-                      "tooltip": "Adds the right operand to the left operand and assign the result to the left operand"
-                    },
-                    {
-                      "symbol": {
-                        "name": "MINUS_EQUALS",
-                        "isTerminal": true
-                      },
-                      "alias": "-=",
-                      "tooltip": "Subtracts the right operand from the left operand and assigns the result to the left operand"
-                    },
-                    {
-                      "symbol": {
-                        "name": "TIMES_EQUALS",
-                        "isTerminal": true
-                      },
-                      "alias": "*=",
-                      "tooltip": "Multiplies the right operand with the left operand and assigns the result to the left operand"
-                    },
-                    {
-                      "symbol": {
-                        "name": "BY_EQUALS",
-                        "isTerminal": true
-                      },
-                      "alias": "/=",
-                      "tooltip": "Divides the left operand with the right operand and assigns the result to the left operand"
-                    },
-                    {
-                      "symbol": {
-                        "name": "MOD_EQUALS",
-                        "isTerminal": true
-                      },
-                      "alias": "%=",
-                      "tooltip": "Returns true if the first operand is less than or equal to the second operand, else returns false"
-                    }
-                  ],
-                  "selectedSymbol": 0,
-                  "type": "SelectionBlock"
-                }
-              },
-              {
-                "symbol": {
-                  "symbol": {
-                    "name": "expr",
-                    "isTerminal": false
-                  }
-                },
-                "alternateSymbols": [
-                  {
-                    "symbol": {
-                      "name": "arith_expr",
-                      "isTerminal": false
-                    },
-                    "tooltip": "Perform a mathematic operation"
-                  },
-                  {
-                    "symbol": {
-                      "name": "rel_expr",
-                      "isTerminal": false
-                    },
-                    "tooltip": "An operator that compares the two operands and returns true or false"
-                  },
-                  {
-                    "symbol": {
-                      "name": "logical_expr",
-                      "isTerminal": false
-                    },
-                    "tooltip": "An expression that evaluates to true or false"
-                  },
-                  {
-                    "symbol": {
-                      "name": "assign_expr",
-                      "isTerminal": false
-                    },
-                    "tooltip": "Set a variable's value"
-                  },
-                  {
-                    "symbol": {
-                      "name": "call_expr",
-                      "isTerminal": false
-                    },
-                    "tooltip": "Call a user-defined or built-in function/method"
-                  },
-                  {
-                    "symbol": {
-                      "name": "primary_expr",
-                      "isTerminal": false
-                    },
-                    "tooltip": "An identifier or a constant"
-                  }
-                ],
-                "type": "SelectionBlock"
-              }
-            ],
-            "type": "Group",
-            "generatedBy": {
-              "symbol": {
-                "symbol": {
-                  "name": "expr",
-                  "isTerminal": false
-                },
-                "alias": "expr_stmt",
-                "tooltip": "A single expression as a statement"
-              },
-              "alternateSymbols": [
-                {
-                  "symbol": {
-                    "name": "arith_expr",
-                    "isTerminal": false
-                  },
-                  "tooltip": "Perform a mathematic operation"
-                },
-                {
-                  "symbol": {
-                    "name": "rel_expr",
-                    "isTerminal": false
-                  },
-                  "tooltip": "An operator that compares the two operands and returns true or false"
-                },
-                {
-                  "symbol": {
-                    "name": "logical_expr",
-                    "isTerminal": false
-                  },
-                  "tooltip": "An expression that evaluates to true or false"
-                },
-                {
-                  "symbol": {
-                    "name": "assign_expr",
-                    "isTerminal": false
-                  },
-                  "tooltip": "Set a variable's value"
-                },
-                {
-                  "symbol": {
-                    "name": "call_expr",
-                    "isTerminal": false
-                  },
-                  "tooltip": "Call a user-defined or built-in function/method"
-                },
-                {
-                  "symbol": {
-                    "name": "primary_expr",
-                    "isTerminal": false
-                  },
-                  "tooltip": "An identifier or a constant"
-                }
-              ],
-              "selectedSymbol": 3,
-              "type": "SelectionBlock",
-              "generatedBy": {
-                "symbol": {
-                  "symbol": {
-                    "name": "stmt",
-                    "isTerminal": false
-                  }
-                },
-                "alternateSymbols": [
-                  {
-                    "symbol": {
-                      "name": "if_stmt",
-                      "isTerminal": false
-                    },
-                    "tooltip": "Do something if a condition is true"
-                  },
-                  {
-                    "symbol": {
-                      "name": "if_else_stmt",
-                      "isTerminal": false
-                    },
-                    "tooltip": "Do something if a condition is true, else do something else"
-                  },
-                  {
-                    "symbol": {
-                      "name": "while_stmt",
-                      "isTerminal": false
-                    },
-                    "tooltip": "Do something while a condition is true"
-                  },
-                  {
-                    "symbol": {
-                      "name": "for_stmt",
-                      "isTerminal": false
-                    },
-                    "tooltip": "Do something while a condition is true. Commonly used with a known number of iterations."
-                  },
-                  {
-                    "symbol": {
-                      "name": "expr",
-                      "isTerminal": false
-                    },
-                    "alias": "expr_stmt",
-                    "tooltip": "A single expression as a statement"
-                  },
-                  {
-                    "symbol": {
-                      "name": "break_stmt",
-                      "isTerminal": false
-                    },
-                    "tooltip": "Exit from the current loop"
-                  },
-                  {
-                    "symbol": {
-                      "name": "continue_stmt",
-                      "isTerminal": false
-                    },
-                    "tooltip": "Continue to the next iteration of the current loop"
-                  },
-                  {
-                    "symbol": {
-                      "name": "return_stmt",
-                      "isTerminal": false
-                    },
-                    "tooltip": "Return an expression as the result of the current function"
-                  }
-                ],
-                "selectedSymbol": 4,
-                "type": "SelectionBlock",
-                "generatedBy": {
-                  "symbol": {
-                    "symbol": {
-                      "name": "def",
-                      "isTerminal": false
-                    }
-                  },
-                  "alternateSymbols": [
-                    {
-                      "symbol": {
-                        "name": "stmt",
-                        "isTerminal": false
-                      }
-                    },
-                    {
-                      "symbol": {
-                        "name": "var_decl",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Variable or Array declaration with type and name"
-                    },
-                    {
-                      "symbol": {
-                        "name": "struct_decl",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Struct declaration with name and fields"
-                    },
-                    {
-                      "symbol": {
-                        "name": "func_def",
-                        "isTerminal": false
-                      },
-                      "tooltip": "Define reusable code as a function"
                     }
                   ],
                   "selectedSymbol": 0,
@@ -20123,6 +20014,9 @@ export let config = {
                 "type": "SimpleBlock"
               },
               {
+                "type": "NewLine"
+              },
+              {
                 "symbol": {
                   "symbol": {
                     "name": "{",
@@ -20130,15 +20024,6 @@ export let config = {
                   }
                 },
                 "type": "SimpleBlock"
-              },
-              {
-                "type": "NewLine"
-              },
-              {
-                "type": "TabBlock"
-              },
-              {
-                "type": "TabBlock"
               },
               {
                 "symbol": {
@@ -20191,13 +20076,6 @@ export let config = {
                         },
                         "alias": "expr_stmt",
                         "tooltip": "A single expression as a statement"
-                      },
-                      {
-                        "symbol": {
-                          "name": "user_type_decl",
-                          "isTerminal": false
-                        },
-                        "tooltip": "User Type Declaration"
                       },
                       {
                         "symbol": {
@@ -20270,13 +20148,6 @@ export let config = {
                     },
                     {
                       "symbol": {
-                        "name": "user_type_decl",
-                        "isTerminal": false
-                      },
-                      "tooltip": "User Type Declaration"
-                    },
-                    {
-                      "symbol": {
                         "name": "break_stmt",
                         "isTerminal": false
                       },
@@ -20300,9 +20171,6 @@ export let config = {
                   "type": "SelectionBlock"
                 },
                 "type": "RepetitionGroup"
-              },
-              {
-                "type": "NewLine"
               },
               {
                 "symbol": {
@@ -20343,13 +20211,6 @@ export let config = {
                     "isTerminal": false
                   },
                   "tooltip": "Variable or Array declaration with type and name"
-                },
-                {
-                  "symbol": {
-                    "name": "struct_decl",
-                    "isTerminal": false
-                  },
-                  "tooltip": "Struct declaration with name and fields"
                 },
                 {
                   "symbol": {
@@ -29077,7 +28938,7 @@ config.darkColorfulTheme = {
                                 ],
         "while_stmt":           [ "WHILE", "condition_expr", "$$_newline", "$$_tab", "while_part" ],
         "for_stmt":             [ "FOR", "initialization", "condition_expr", "step", "$$_newline", "$$_tab", "for_part" ],
-        "func_def":             [ "TYPE", "NAME", "(", "ident_list",")", "{", "$$_newline" , "$$_tab", "$$_tab", "stmts", "$$_newline" , "}"],
+        "func_def":             [ "TYPE", "NAME", "(", "ident_list",")", "$$_newline" , "{", "stmts", "}"],
         "ident_list":           { "NewLine Between Blocks": false  },
         "expr_list":            { "NewLine Between Blocks": false },
         "element_list":         { "NewLine Between Blocks": false },
@@ -29132,9 +28993,9 @@ config.darkColorfulTheme = {
                                             "FOR", "$$_(", "initialization_expr", "$$_;", "condition_expr", "$$_;", 
                                             "step_expr", "$$_)", "$$_{", "$$_newline", "$$_tab", "for_part", "$$_newline", "$$_}"
                                         ],
-        "func_def":                [
+        "func_def":                     [
                                             "FUNCTION", "NAME", "OF", "$$_(", "ident_list", "$$_)","$$_newline" ,"$$_{"
-                                            , "$$_tab", "stmts", "$$_newline", "$$_}"
+                                            , "$$_tab", "stmts", "$$_}"
                                         ],
         "rel_expr":                     [ "$$_(", "expr", "rel_op", "expr", "$$_)" ],
         "assign_expr":                  [ "IDENT", "=", "expr" ],

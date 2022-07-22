@@ -64,7 +64,6 @@ define stmt {
         while_stmt              : "Do something while a condition is true"
         for_stmt                : "Do something while a condition is true. Commonly used with a known number of iterations."
         expr(expr_stmt)         : "A single expression as a statement"
-        user_type_decl          : "User Type Declaration"
         break_stmt              : "Exit from the current loop"
         continue_stmt           : "Continue to the next iteration of the current loop"
         return_stmt             : "Return an expression as the result of the current function"
@@ -110,6 +109,7 @@ define user_type_decl {
     any_of{
         typedef_type            : "Create an additional name (alias) for another data type"
         enumeration_type        : "User defined data type with assigning names to integral constants"
+        struct_decl             : "Struct declaration with name and fields"
     }
 }
 
@@ -139,6 +139,7 @@ define existing_type {
     }
 }
 
+
 define struct_name {
     struct IDENT("struct_name")
 }
@@ -148,7 +149,6 @@ define global_def {
         main_def                : "Main is the starting point for program execution"
         func_def                : "Define reusable code as a function"
         var_decl                : "Variable or Array declaration with type and name"
-        struct_decl             : "Struct declaration with name and fields"
         user_type_decl          : "User Type Declaration"
     }
 }
@@ -164,8 +164,8 @@ define main_block {
 define local_def {
     any_of{
         stmt
-        var_decl                 : "Variable or Array declaration with type and name"
-        struct_decl              : "Struct declaration with name and fields"
+        var_decl                : "Variable or Array declaration with type and name"
+        user_type_decl          : "User Type Declaration"
     }
 }
 

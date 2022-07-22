@@ -58,11 +58,6 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "user_type_decl",
-                    "tooltip": "User Type Declaration"
-                },
-                {
-                    "type": "non_terminal",
                     "name": "break_stmt",
                     "tooltip": "Exit from the current loop"
                 },
@@ -195,6 +190,11 @@
                     "type": "non_terminal",
                     "name": "enumeration_type",
                     "tooltip": "User defined data type with assigning names to integral constants"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "struct_decl",
+                    "tooltip": "Struct declaration with name and fields"
                 }
             ]
         },
@@ -335,11 +335,6 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "struct_decl",
-                    "tooltip": "Struct declaration with name and fields"
-                },
-                {
-                    "type": "non_terminal",
                     "name": "user_type_decl",
                     "tooltip": "User Type Declaration"
                 }
@@ -385,8 +380,8 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "struct_decl",
-                    "tooltip": "Struct declaration with name and fields"
+                    "name": "user_type_decl",
+                    "tooltip": "User Type Declaration"
                 }
             ]
         },
