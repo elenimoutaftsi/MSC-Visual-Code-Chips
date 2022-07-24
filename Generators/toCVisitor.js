@@ -97,6 +97,9 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'if_else_stmt',            elem => this.Visit_IfElseStmt(elem) );
         this.SetVisitor( 'while_stmt',              elem => this.Visit_WhileStmt(elem) );
         this.SetVisitor( 'for_stmt',                elem => this.Visit_ForStmt(elem) );
+        this.SetVisitor( 'switch_stmt',             elem => this.Visit_SwitchStmt(elem) );
+        this.SetVisitor( 'switch_cases',            elem => this.Visit_SwitchCases(elem) );
+        this.SetVisitor( 'switch_case',             elem => this.Visit_SwitchCase(elem) );
         this.SetVisitor( 'expr',                    elem => this.Visit_Expr(elem) );
         this.SetVisitor( 'break_stmt',              elem => this.Visit_BreakStmt(elem) );
         this.SetVisitor( 'continue_stmt',           elem => this.Visit_ContinueStmt(elem) );
@@ -233,6 +236,9 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'int main( ) {',           elem => this.Visit_Main(elem) );
         this.SetVisitor( 'typedef',                 elem => this.Visit_Typedef(elem) );
         this.SetVisitor( 'enum',                    elem => this.Visit_Enum(elem) );
+        this.SetVisitor( 'switch',                  elem => this.Visit_Switch(elem) );
+        this.SetVisitor( 'case',                    elem => this.Visit_Case(elem) );
+        this.SetVisitor( 'default',                 elem => this.Visit_Default(elem) );
     }
 
     HandleVarDeclaration(id){
@@ -592,6 +598,15 @@ export class toCVisitor extends AstVisitor {
         this.stack.push( 'int' );
     }
 
+    Visit_WhileStmt(elem){
+        let code = this.PopChildrenFromStack(elem, ['while', 'expr', 'stmts']);
+
+        this.DecreaseTabs();
+        let rBrace = this.TabIn('}');
+
+        this.stack.push( `while (${code.expr}) {\n${code.stmts}\n${rBrace}` );
+    }
+
     Visit_IfStmt(elem) {
         let code = this.PopChildrenFromStack(elem, ['if', 'expr', 'stmts']);
         
@@ -613,13 +628,31 @@ export class toCVisitor extends AstVisitor {
         this.stack.push( `if (${code.expr}) {\n${code.stmts1}\n${rBrace}\n${else_} {\n${code.stmts2}\n${rBrace}` );
     }
 
-    Visit_WhileStmt(elem){
-        let code = this.PopChildrenFromStack(elem, ['while', 'expr', 'stmts']);
+    Visit_SwitchStmt(elem){
+        let code = this.PopChildrenFromStack(elem, ['switch', 'expr', 'switch_cases', 'default', 'stmts']);
 
         this.DecreaseTabs();
+
         let rBrace = this.TabIn('}');
 
-        this.stack.push( `while (${code.expr}) {\n${code.stmts}\n${rBrace}` );
+        this.stack.push( `switch (${code.expr}) {\n ${code.switch_cases}\n${code.default} :\n ${code.stmts} \n${rBrace}` );
+    }
+
+    Visit_SwitchCases(elem){
+        let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
+
+        this.stack.push( childrenCode );
+    }
+
+    Visit_SwitchCase(elem){
+        let code = this.PopChildrenFromStack(elem, ['case', 'const_values', 'stmts', 'break']);
+
+        this.DecreaseTabs();
+
+        let rBrace = this.TabIn('}');
+
+        this.stack.push( `case '${code.const_values}' : {\n ${code.stmts} \n${code.break}\n${rBrace}` );
+
     }
 
     Visit_ForStmt(elem){
@@ -1062,7 +1095,7 @@ export class toCVisitor extends AstVisitor {
     Visit_Times_Equals(elem)        { this.stack.push('*='); }
     Visit_By_Equals(elem)           { this.stack.push('/='); }
     Visit_Mod_Equals(elem)          { this.stack.push('%='); }
-    Visit_Int(elem)                 { this.stack.push('int'); console.log("erxomai apo int")}
+    Visit_Int(elem)                 { this.stack.push('int'); }
     Visit_Char(elem)                { this.stack.push('char'); }
     Visit_Float(elem)               { this.stack.push('float'); }
     Visit_Double(elem)              { this.stack.push('double'); }
@@ -1073,7 +1106,7 @@ export class toCVisitor extends AstVisitor {
     Visit_Equals(elem)              { this.stack.push('='); }
     Visit_True(elem)                { this.stack.push( this.HandleSemicolon(elem, 'true') ); }
     Visit_False(elem)               { this.stack.push( this.HandleSemicolon(elem, 'false') ); }
-    Visit_Break(elem)               { this.stack.push('break;'); }
+    Visit_Break(elem)               { this.stack.push('break;'); let parent = elem.GetParent()?.GetSymbol().symbol.name;}
     Visit_Continue(elem)            { this.stack.push('continue;'); }
     Visit_Return(elem)              { this.stack.push('return'); }
 
@@ -1114,7 +1147,10 @@ export class toCVisitor extends AstVisitor {
     Visit_Bracket2(elem)            { this.stack.push('}'); }
     Visit_Dot(elem)                 { this.stack.push('.'); }
     Visit_Comma(elem)               { this.stack.push(','); }
-    Visit_Main(elem)                { this.stack.push('int main( ) {\n'); this.IncreaseTabs();}
+    Visit_Main(elem)                { this.IncreaseTabs(); this.stack.push('int main( ) {\n'); }
     Visit_Typedef(elem)             { this.stack.push('typedef'); }
     Visit_Enum(elem)                { this.stack.push('enum'); }
+    Visit_Switch(elem)              { this.IncreaseTabs(); this.stack.push('switch'); }
+    Visit_Case(elem)                { this.IncreaseTabs(); this.stack.push('case'); }
+    Visit_Default(elem)             { this.IncreaseTabs(); this.stack.push('default'); }
 }
