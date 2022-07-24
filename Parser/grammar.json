@@ -1552,6 +1552,11 @@
                 {
                     "type": "terminal",
                     "name": "default"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "stmts",
+                    "alias": "default_statements"
                 }
             ]
         },
@@ -1578,7 +1583,8 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "stmts"
+                    "name": "stmts",
+                    "alias": "case_statements"
                 },
                 {
                     "type": "terminal",

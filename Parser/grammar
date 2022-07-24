@@ -37,7 +37,7 @@ terminal {
     main
     typedef
     true false
-    if else while for break continue return switch case default
+    if else while for break continue return switch case default 
     "(" ")" "{" "}" "[" "]" "." "," ":"
     strlen strcat strcpy strcmp
     struct "int main( ) {" enum
@@ -511,7 +511,7 @@ define if_else_stmt {
 }
 
 define switch_stmt {
-    switch expr switch_cases default
+    switch expr switch_cases default stmts(default_statements)
 }
 
 define switch_cases {
@@ -519,7 +519,7 @@ define switch_cases {
 }
 
 define switch_case {
-    case const_values(const_value) stmts break
+    case const_values(const_value) stmts(case_statements) break
 }
 
 define while_stmt {
