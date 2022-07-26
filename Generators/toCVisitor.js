@@ -140,6 +140,7 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'string_compare_strings',  elem => this.Visit_StringCompareStrings(elem) ); 
         this.SetVisitor( 'string_size',             elem => this.Visit_StringSize(elem) );
         this.SetVisitor( 'input_output_printf',     elem => this.Visit_InputOutputPrintf(elem) ); 
+        this.SetVisitor( 'input_output_printf_string',     elem => this.Visit_InputOutputPrintfString(elem) ); 
         this.SetVisitor( 'input_output_scanf',      elem => this.Visit_InputOutputScanf(elem) ); 
         this.SetVisitor( 'printf_type',             elem => this.Visit_PrintfType(elem) ); 
         this.SetVisitor( 'types',                   elem => this.Visit_Types(elem) ); 
@@ -865,6 +866,14 @@ export class toCVisitor extends AstVisitor {
 
         this.stack.push(
             this.HandleSemicolon(elem, `printf ( ${code.listargs} )`)
+        );
+    }
+
+    Visit_InputOutputPrintfString(elem){
+        let code = this.PopChildrenFromStack(elem, ['printf', 'str_const']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `printf ( ${code.str_const} )`)
         );
     }
 

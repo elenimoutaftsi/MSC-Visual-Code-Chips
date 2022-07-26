@@ -1196,14 +1196,33 @@
                 {
                     "type": "non_terminal",
                     "name": "input_output_printf",
-                    "alias": "printf",
+                    "alias": "printf_variable",
                     "tooltip": "Print the value of the given expression (text, number etc.)"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "input_output_printf_string",
+                    "alias": "printf_string",
+                    "tooltip": "Print string"
                 },
                 {
                     "type": "non_terminal",
                     "name": "input_output_scanf",
                     "alias": "scanf",
                     "tooltip": "Prompt the user with a text message and get user-input"
+                }
+            ]
+        },
+        {
+            "name": "input_output_printf_string",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "printf"
+                },
+                {
+                    "type": "terminal",
+                    "name": "STRING_CONST"
                 }
             ]
         },

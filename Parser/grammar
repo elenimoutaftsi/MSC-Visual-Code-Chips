@@ -21,8 +21,8 @@ non_terminal {
     ident_list expr_list element_list
     array_def array_type array_index array_size
     string_append string_copy_string string_compare_strings string_size 
-    input_output_printf input_output_scanf 
-    printf_type types variables scanf_type stypes printf_variable scanf_arg
+    input_output_printf input_output_scanf input_output_printf_string
+    printf_type types variables scanf_type stypes printf_variable scanf_arg 
     math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos 
 }
 
@@ -411,9 +411,14 @@ define string_size {
 
 define input_output_call {
     any_of {
-        input_output_printf(printf)       : "Print the value of the given expression (text, number etc.)"
-        input_output_scanf(scanf)         : "Prompt the user with a text message and get user-input"
+        input_output_printf(printf_variable)       : "Print the value of the given expression (text, number etc.)"
+        input_output_printf_string(printf_string)  : "Print string"
+        input_output_scanf(scanf)                  : "Prompt the user with a text message and get user-input"
     }
+}
+
+define input_output_printf_string {
+    printf STRING_CONST
 }
 
 define input_output_printf {
