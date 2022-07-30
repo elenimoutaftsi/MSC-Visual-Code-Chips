@@ -184,19 +184,6 @@
             ]
         },
         {
-            "name": "snippet1",
-            "all_of": [
-                {
-                    "type": "non_terminal",
-                    "name": "if_stmt"
-                },
-                {
-                    "type": "non_terminal",
-                    "name": "while_stmt"
-                }
-            ]
-        },
-        {
             "name": "user_type_decl",
             "any_of": [
                 {
@@ -730,7 +717,7 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "array_index",
+                    "name": "array_get",
                     "tooltip": "Array Index"
                 },
                 {
@@ -893,14 +880,51 @@
                     "name": "["
                 },
                 {
+                    "type": "non_terminal",
+                    "name": "array_index"
+                },
+                {
+                    "type": "terminal",
+                    "name": "]",
+                    "tooltip": "Array declaration with type, name and size"
+                }
+            ]
+        },
+        {
+            "name": "array_get",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "IDENT",
+                    "alias": "array_name"
+                },
+                {
+                    "type": "terminal",
+                    "name": "["
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "array_index"
+                },
+                {
+                    "type": "terminal",
+                    "name": "]",
+                    "tooltip": "Array declaration with type, name and size"
+                }
+            ]
+        },
+        {
+            "name": "array_index",
+            "any_of": [
+                {
                     "type": "terminal",
                     "name": "INT_CONST",
                     "alias": "array_size"
                 },
                 {
                     "type": "terminal",
-                    "name": "]",
-                    "tooltip": "Array declaration with type, name and size"
+                    "name": "IDENT",
+                    "alias": "variable_name"
                 }
             ]
         },
@@ -928,28 +952,6 @@
                 {
                     "type": "non_terminal",
                     "name": "expr"
-                }
-            ]
-        },
-        {
-            "name": "array_index",
-            "all_of": [
-                {
-                    "type": "terminal",
-                    "name": "IDENT",
-                    "alias": "array_name"
-                },
-                {
-                    "type": "terminal",
-                    "name": "["
-                },
-                {
-                    "type": "terminal",
-                    "name": "INT_CONST"
-                },
-                {
-                    "type": "terminal",
-                    "name": "]"
                 }
             ]
         },

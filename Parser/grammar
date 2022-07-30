@@ -19,11 +19,12 @@ non_terminal {
     BOOL_CONST_ const_values
     input_output_call math_call string_method_call user_function_call
     ident_list expr_list element_list
-    array_def array_type array_index array_size
+    array_def array_type array_index array_size array_get
     string_append string_copy_string string_compare_strings string_size 
     input_output_printf input_output_scanf input_output_printf_string
     printf_type types variables scanf_type stypes printf_variable scanf_arg 
     math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos 
+    snippets print_array
 }
 
 terminal {
@@ -105,11 +106,6 @@ define array_type {
 
 define user_type {
     IDENT(user_defined_type)
-}
-
-define snippet1 {
-    if_stmt
-    while_stmt
 }
 
 define user_type_decl {
@@ -285,7 +281,7 @@ define not_expr {
 define primary_expr {
     any_of {
         IDENT                   : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
-        array_index             : "Array Index"
+        array_get               : "Array Index"
         struct_field            : "Struct Field"
         enum_var                : "Enum Variable"
         const_values            : "Constant Values"
@@ -338,7 +334,18 @@ define call_expr {
 }
 
 define array_def {
-    array_type IDENT(array_name) "[" INT_CONST(array_size) "]"    : "Array declaration with type, name and size"
+    array_type IDENT(array_name) "[" array_index "]"    : "Array declaration with type, name and size"
+}
+
+define array_get {
+    IDENT(array_name) "[" array_index "]"    : "Array declaration with type, name and size"
+}
+
+define array_index {
+    any_of {
+        INT_CONST(array_size)
+        IDENT(variable_name)
+    }
 }
 
 define element_list {
@@ -347,10 +354,6 @@ define element_list {
 
 define assign_expr {
     primary_expr assign_op expr            
-}
-
-define array_index{
-    IDENT(array_name) "[" INT_CONST "]"
 }
 
 define assign_op {
