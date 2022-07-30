@@ -185,6 +185,19 @@ export let config = {
               ]
           },
           {
+              "name": "snippet1",
+              "all_of": [
+                  {
+                      "type": "non_terminal",
+                      "name": "if_stmt"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "while_stmt"
+                  }
+              ]
+          },
+          {
               "name": "user_type_decl",
               "any_of": [
                   {
@@ -22395,6 +22408,12 @@ export let config = {
               }
             }
           }
+        ]
+      },
+      {
+        "name": "Snippets",
+        "icon": "./Images/Toolbox/snipets.svg",
+        "blocks": [
         ]
       }
     ],

@@ -184,6 +184,19 @@
             ]
         },
         {
+            "name": "snippet1",
+            "all_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "if_stmt"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "while_stmt"
+                }
+            ]
+        },
+        {
             "name": "user_type_decl",
             "any_of": [
                 {

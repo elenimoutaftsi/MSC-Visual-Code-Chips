@@ -107,6 +107,11 @@ define user_type {
     IDENT(user_defined_type)
 }
 
+define snippet1 {
+    if_stmt
+    while_stmt
+}
+
 define user_type_decl {
     any_of{
         typedef_type            : "Create an additional name (alias) for another data type"
