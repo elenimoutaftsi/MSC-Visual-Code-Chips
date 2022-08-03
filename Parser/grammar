@@ -56,7 +56,7 @@ define defs {
 }
 
 define stmts {
-    list_of stmt
+    list_of local_def(local_def)
 }
 
 define stmt {
@@ -446,7 +446,7 @@ define types {
 }
 
 define variables {
-    list_of IDENT(variable_name)
+    list_of primary_expr
 }
 
 define printf_type {

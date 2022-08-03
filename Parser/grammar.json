@@ -23,7 +23,8 @@
             "list_of": [
                 {
                     "type": "non_terminal",
-                    "name": "stmt"
+                    "name": "local_def",
+                    "alias": "local_def"
                 }
             ]
         },
@@ -1293,9 +1294,8 @@
             "name": "variables",
             "list_of": [
                 {
-                    "type": "terminal",
-                    "name": "IDENT",
-                    "alias": "variable_name"
+                    "type": "non_terminal",
+                    "name": "primary_expr"
                 }
             ]
         },

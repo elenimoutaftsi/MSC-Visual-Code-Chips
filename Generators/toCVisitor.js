@@ -135,6 +135,7 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'array_type',              elem => this.Visit_ArrayType(elem) );
         this.SetVisitor( 'array_index',             elem => this.Visit_ArrayIndex(elem) ); 
         this.SetVisitor( 'array_size',              elem => this.Visit_ArraySize(elem) );
+        this.SetVisitor( 'array_get',               elem => this.Visit_ArrayGet(elem) );
         this.SetVisitor( 'string_append',           elem => this.Visit_StringAppend(elem) );
         this.SetVisitor( 'string_copy_string',      elem => this.Visit_StringCopyString(elem) ); 
         this.SetVisitor( 'string_compare_strings',  elem => this.Visit_StringCompareStrings(elem) ); 
@@ -551,13 +552,19 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_ArrayIndex(elem){ 
-        let code = this.PopChildrenFromStack(elem, [ 'id' , '[', 'size', ']']);
-
-        this.stack.push( `${code.id} [ ${code.size} ] ` );
+        let code = this.PopChildrenFromStack(elem).join('');
+        
+        this.stack.push(`${code}`);
     }
 
     Visit_ArraySize(elem){
         this.stack.push(``);
+    }
+
+    Visit_ArrayGet(elem){
+        let code = this.PopChildrenFromStack(elem, [ 'id' , '[', 'array_index', ']']);
+
+        this.stack.push( `${code.id} [${code.array_index}] ` );
     }
 
     Visit_StructDef(elem) { 
@@ -922,7 +929,7 @@ export class toCVisitor extends AstVisitor {
     Visit_Variables(elem){ 
         let parent = elem.GetParent()?.GetSymbol().symbol.name;
 
-        if (parent === 'scanf_arg'){
+        if (parent === 'scanf_arg') {
             let code = this.PopChildrenFromStack(elem).join(',&');
             this.stack.push(` &${code}`);
         }
