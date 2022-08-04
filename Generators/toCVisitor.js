@@ -90,6 +90,7 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'var_def',                 elem => this.Visit_VarDef(elem) ); 
         this.SetVisitor( 'var_type',                elem => this.Visit_VarType(elem) ); 
         this.SetVisitor( 'struct_decl',             elem => this.Visit_StructDef(elem) ); 
+        this.SetVisitor( 'struct_get',              elem => this.Visit_Struct_Get(elem) ); 
         this.SetVisitor( 'struct_field',            elem => this.Visit_Struct_Field(elem) ); 
         this.SetVisitor( 'func_def',                elem => this.Visit_FuncDefStmt(elem) );
         this.SetVisitor( 'func_type',               elem => this.Visit_FuncType(elem) ); 
@@ -578,10 +579,16 @@ export class toCVisitor extends AstVisitor {
         this.stack.push( `struct ${code.id}  { \n${code.ident_list} \n${rBrace} ; ` );
     }
 
-    Visit_Struct_Field(elem) { 
-        let code = this.PopChildrenFromStack(elem, [ 'id1' , '.', 'id2']);
+    Visit_Struct_Get(elem) { 
+        let code = this.PopChildrenFromStack(elem, [ 'id1' , '.', 'struct_field']);
 
-        this.stack.push( `${code.id1}.${code.id2} ` );
+        this.stack.push( `${code.id1}.${code.struct_field} ` );
+    }
+
+    Visit_Struct_Field(elem) { 
+        let code = this.PopChildrenFromStack(elem).join('');
+        
+        this.stack.push(`${code}`);
     }
     
     Visit_FuncDefStmt(elem){ 

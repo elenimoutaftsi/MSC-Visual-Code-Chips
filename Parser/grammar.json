@@ -723,7 +723,7 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "struct_field",
+                    "name": "struct_get",
                     "tooltip": "Struct Field"
                 },
                 {
@@ -808,7 +808,7 @@
             ]
         },
         {
-            "name": "struct_field",
+            "name": "struct_get",
             "all_of": [
                 {
                     "type": "terminal",
@@ -820,9 +820,22 @@
                     "name": "."
                 },
                 {
+                    "type": "non_terminal",
+                    "name": "struct_field"
+                }
+            ]
+        },
+        {
+            "name": "struct_field",
+            "any_of": [
+                {
                     "type": "terminal",
                     "name": "IDENT",
-                    "alias": "struct_field"
+                    "alias": "field_name"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "struct_get"
                 }
             ]
         },

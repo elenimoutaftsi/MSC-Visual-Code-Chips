@@ -6,7 +6,7 @@ non_terminal {
     global_def
     main_def local_def main_block
     var_decl var_def var_type
-    struct_decl struct_field
+    struct_decl struct_field struct_get
     user_type_decl typedef_type existing_type struct_name user_type
     enumeration_type enum_assigns enum_assign enum_var
     func_type func_def
@@ -282,7 +282,7 @@ define primary_expr {
     any_of {
         IDENT                   : "An identifier starting with _ or a uppercase/lowercase letter following by 0 or more characters that can be _ numbers lowercase/uppercase letters with type"
         array_get               : "Array Index"
-        struct_field            : "Struct Field"
+        struct_get              : "Struct Field"
         enum_var                : "Enum Variable"
         const_values            : "Constant Values"
     }
@@ -313,8 +313,15 @@ define enum_var {
     IDENT(enum_var_name)          
 }
 
+define struct_get {
+    IDENT(struct_name)"."struct_field
+}
+
 define struct_field {
-    IDENT(struct_name)"."IDENT(struct_field)
+    any_of {
+        IDENT(field_name)
+        struct_get
+    }
 }
 
 define BOOL_CONST_ {
