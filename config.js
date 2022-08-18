@@ -389,6 +389,39 @@ export let config = {
                       "type": "non_terminal",
                       "name": "user_type_decl",
                       "tooltip": "User Type Declaration"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "turtle_graphics",
+                      "tooltip": "Provides C implementation of turtle which used to create graphics"
+                  }
+              ]
+          },
+          {
+              "name": "turtle_graphics",
+              "any_of": [
+                  {
+                      "type": "non_terminal",
+                      "name": "turtle_reset",
+                      "tooltip": "Reset the turtle's location, orientation, color, and pen status to the default values"
+                  },
+                  {
+                      "type": "non_terminal",
+                      "name": "turtle_forward"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "("
+                  },
+                  {
+                      "type": "terminal",
+                      "name": "INT_CONST",
+                      "alias": "pixels"
+                  },
+                  {
+                      "type": "terminal",
+                      "name": ")",
+                      "tooltip": "Move the turtle forward, drawing a straight line if the pen is down."
                   }
               ]
           },

@@ -25,6 +25,7 @@ non_terminal {
     printf_type types variables scanf_type stypes printf_variable scanf_arg 
     math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos 
     snippets print_array
+    turtle_graphics turtle_reset turtle_forward
 }
 
 terminal {
@@ -142,7 +143,6 @@ define existing_type {
     }
 }
 
-
 define struct_name {
     struct IDENT("struct_name")
 }
@@ -152,7 +152,7 @@ define global_def {
         main_def                : "Main is the starting point for program execution"
         func_def                : "Define reusable code as a function"
         var_decl                : "Variable or Array declaration with type and name"
-        user_type_decl          : "User Type Declaration"
+        user_type_decl          : "User Type Declaration"   
     }
 }
 
@@ -169,6 +169,31 @@ define local_def {
         stmt
         var_decl                : "Variable or Array declaration with type and name"
         user_type_decl          : "User Type Declaration"
+        turtle_graphics         : "Provides C implementation of turtle which used to create graphics"
+    }
+}
+
+define turtle_graphics {
+    any_of{
+        turtle_reset            : "Reset the turtle's location, orientation, color, and pen status to the default values"
+        turtle_forward          : "Move the turtle forward, drawing a straight line if the pen is down"
+        turtle_backward         : "Move the turtle forward, drawing a straight line if the pen is down"
+        turtle_turn_left        : "Turn the turtle to the left by the specified number of degrees"
+        turtle_turn_right       : "Turn the turtle to the right by the specified number of degrees"
+        turtle_pen_up           : "Set the pen status to up (do not draw)"
+        turtle_pen_down         : "Set the pen status to down (draw)"
+        turtle_goto             : "Move the turtle to the specified location, drawing a straight line if the pen is down"
+        turtle_set_heading      : "Rotate the turtle to the given heading (in degrees). 0 degrees meansfacing to the right; 90 degrees means facing straight up"
+        turtle_set_pen_color    : "Set the current drawing color"
+        turtle_set_fill_color   : "Set the current filling color"
+        turtle_dot              : "Draw a 1-pixel dot at the current location, regardless of pen status."
+        turtle_draw_pixel       : "Draw a 1-pixel dot at the given location using the current draw color,regardless of current turtle location or pen status."
+        turtle_draw_line        : "Draw a straight line between the given coordinates, regardless of currentturtle location or pen status."
+        turtle_draw_circle      : "Draw a circle at the given coordinates with the given radius, regardless of current turtle location or pen status."
+        turtle_fill_circle      : "Fill a circle at the given coordinates with the given radius, regardless of current turtle location or pen status."
+        turtle_draw_int         : "Draw an integer at the current location"
+        turtle_save_frame       : "Emit a single video frame containing the current field image"
+        
     }
 }
 
