@@ -398,14 +398,130 @@
         },
         {
             "name": "turtle_graphics",
+            "list_of": [
+                {
+                    "type": "non_terminal",
+                    "name": "turtle_graphic"
+                }
+            ]
+        },
+        {
+            "name": "turtle_graphic",
             "any_of": [
                 {
                     "type": "non_terminal",
-                    "name": "turtle_reset",
+                    "name": "reset",
                     "tooltip": "Reset the turtle's location, orientation, color, and pen status to the default values"
                 },
                 {
                     "type": "non_terminal",
+                    "name": "forward",
+                    "tooltip": "Move the turtle forward, drawing a straight line if the pen is down"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "backward",
+                    "tooltip": "Move the turtle forward, drawing a straight line if the pen is down"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "turn_left",
+                    "tooltip": "Turn the turtle to the left by the specified number of degrees"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "turn_right",
+                    "tooltip": "Turn the turtle to the right by the specified number of degrees"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "pen_up",
+                    "tooltip": "Set the pen status to up (do not draw)"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "pen_down",
+                    "tooltip": "Set the pen status to down (draw)"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "goto",
+                    "tooltip": "Move the turtle to the specified location, drawing a straight line if the pen is down"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "set_heading",
+                    "tooltip": "Rotate the turtle to the given heading (in degrees). 0 degrees meansfacing to the right; 90 degrees means facing straight up"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "set_pen_color",
+                    "tooltip": "Set the current drawing color"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "set_fill_color",
+                    "tooltip": "Set the current filling color"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "dot",
+                    "tooltip": "Draw a 1-pixel dot at the current location, regardless of pen status."
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "draw_pixel",
+                    "tooltip": "Draw a 1-pixel dot at the given location using the current draw color,regardless of current turtle location or pen status."
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "draw_line",
+                    "tooltip": "Draw a straight line between the given coordinates, regardless of currentturtle location or pen status."
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "draw_circle",
+                    "tooltip": "Draw a circle at the given coordinates with the given radius, regardless of current turtle location or pen status."
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "draw_int",
+                    "tooltip": "Draw an integer at the current location"
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "fill_circle",
+                    "tooltip": "Fill a circle at the given coordinates with the given radius, regardless of current turtle location or pen status."
+                },
+                {
+                    "type": "non_terminal",
+                    "name": "save_frame",
+                    "tooltip": "Emit a single video frame containing the current field image"
+                }
+            ]
+        },
+        {
+            "name": "reset",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_reset"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "forward",
+            "all_of": [
+                {
+                    "type": "terminal",
                     "name": "turtle_forward"
                 },
                 {
@@ -419,8 +535,456 @@
                 },
                 {
                     "type": "terminal",
-                    "name": ")",
-                    "tooltip": "Move the turtle forward, drawing a straight line if the pen is down."
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "backward",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_backward"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "pixels"
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "turn_left",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_turn_left"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": "FLOAT_CONST",
+                    "alias": "angle"
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "turn_right",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_turn_right"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": "FLOAT_CONST",
+                    "alias": "angle"
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "pen_up",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_pen_up"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "pen_down",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_pen_down"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "goto",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_goto"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "x"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "y"
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "set_heading",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_set_heading"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": "FLOAT_CONST",
+                    "alias": "angle"
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "set_pen_color",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_set_pen_color"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "r"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "g"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "b"
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "set_fill_color",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_set_fill_color"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "r"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "g"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "b"
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "dot",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_dot"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "draw_pixel",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_draw_pixel"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "x"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "y"
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "draw_line",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_draw_line"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "x0"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "y0"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "x1"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "y1"
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "draw_circle",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_draw_circle"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "x"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "y"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "radius"
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "draw_int",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_draw_int"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "x"
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "fill_circle",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_fill_circle"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "x"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "y"
+                },
+                {
+                    "type": "terminal",
+                    "name": ","
+                },
+                {
+                    "type": "terminal",
+                    "name": "INT_CONST",
+                    "alias": "radius"
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
+                }
+            ]
+        },
+        {
+            "name": "save_frame",
+            "all_of": [
+                {
+                    "type": "terminal",
+                    "name": "turtle_save_frame"
+                },
+                {
+                    "type": "terminal",
+                    "name": "("
+                },
+                {
+                    "type": "terminal",
+                    "name": ")"
                 }
             ]
         },

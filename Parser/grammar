@@ -25,7 +25,7 @@ non_terminal {
     printf_type types variables scanf_type stypes printf_variable scanf_arg 
     math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos 
     snippets print_array
-    turtle_graphics turtle_reset turtle_forward
+    turtle_graphics turtle_graphic reset forward backward left turn_left turn_right pen_up pen_down goto set_heading set_pen_color set_fill_color dot draw_pixel draw_line draw_circle draw_int fill_circle save_frame         
 }
 
 terminal {
@@ -45,6 +45,7 @@ terminal {
     struct "int main( ) {" enum
     printf scanf
     pow sqrt round floor ceiling sin cos
+    turtle_reset turtle_forward turtle_backward turtle_turn_left turtle_turn_right turtle_pen_up turtle_pen_down turtle_goto turtle_set_heading turtle_set_pen_color turtle_set_fill_color turtle_dot turtle_draw_pixel turtle_draw_line turtle_draw_circle turtle_draw_int turtle_fill_circle turtle_save_frame         
     "%c" "%d" "%f" "%s"
 }
 
@@ -110,7 +111,7 @@ define user_type {
 }
 
 define user_type_decl {
-    any_of{
+    any_of {
         typedef_type            : "Create an additional name (alias) for another data type"
         enumeration_type        : "User defined data type with assigning names to integral constants"
         struct_decl             : "Struct declaration with name and fields"
@@ -134,7 +135,7 @@ define typedef_type {
 }
 
 define existing_type {
-    any_of{
+    any_of {
         int
         char
         float
@@ -165,7 +166,7 @@ define main_block {
 }
 
 define local_def {
-    any_of{
+    any_of {
         stmt
         var_decl                : "Variable or Array declaration with type and name"
         user_type_decl          : "User Type Declaration"
@@ -174,27 +175,102 @@ define local_def {
 }
 
 define turtle_graphics {
+    list_of turtle_graphic
+}
+
+define turtle_graphic {
     any_of{
-        turtle_reset            : "Reset the turtle's location, orientation, color, and pen status to the default values"
-        turtle_forward          : "Move the turtle forward, drawing a straight line if the pen is down"
-        turtle_backward         : "Move the turtle forward, drawing a straight line if the pen is down"
-        turtle_turn_left        : "Turn the turtle to the left by the specified number of degrees"
-        turtle_turn_right       : "Turn the turtle to the right by the specified number of degrees"
-        turtle_pen_up           : "Set the pen status to up (do not draw)"
-        turtle_pen_down         : "Set the pen status to down (draw)"
-        turtle_goto             : "Move the turtle to the specified location, drawing a straight line if the pen is down"
-        turtle_set_heading      : "Rotate the turtle to the given heading (in degrees). 0 degrees meansfacing to the right; 90 degrees means facing straight up"
-        turtle_set_pen_color    : "Set the current drawing color"
-        turtle_set_fill_color   : "Set the current filling color"
-        turtle_dot              : "Draw a 1-pixel dot at the current location, regardless of pen status."
-        turtle_draw_pixel       : "Draw a 1-pixel dot at the given location using the current draw color,regardless of current turtle location or pen status."
-        turtle_draw_line        : "Draw a straight line between the given coordinates, regardless of currentturtle location or pen status."
-        turtle_draw_circle      : "Draw a circle at the given coordinates with the given radius, regardless of current turtle location or pen status."
-        turtle_fill_circle      : "Fill a circle at the given coordinates with the given radius, regardless of current turtle location or pen status."
-        turtle_draw_int         : "Draw an integer at the current location"
-        turtle_save_frame       : "Emit a single video frame containing the current field image"
-        
+        reset            : "Reset the turtle's location, orientation, color, and pen status to the default values"
+        forward          : "Move the turtle forward, drawing a straight line if the pen is down"
+        backward         : "Move the turtle forward, drawing a straight line if the pen is down"
+        turn_left        : "Turn the turtle to the left by the specified number of degrees"
+        turn_right       : "Turn the turtle to the right by the specified number of degrees"
+        pen_up           : "Set the pen status to up (do not draw)"
+        pen_down         : "Set the pen status to down (draw)"
+        goto             : "Move the turtle to the specified location, drawing a straight line if the pen is down"
+        set_heading      : "Rotate the turtle to the given heading (in degrees). 0 degrees meansfacing to the right; 90 degrees means facing straight up"
+        set_pen_color    : "Set the current drawing color"
+        set_fill_color   : "Set the current filling color"
+        dot              : "Draw a 1-pixel dot at the current location, regardless of pen status."
+        draw_pixel       : "Draw a 1-pixel dot at the given location using the current draw color,regardless of current turtle location or pen status."
+        draw_line        : "Draw a straight line between the given coordinates, regardless of currentturtle location or pen status."
+        draw_circle      : "Draw a circle at the given coordinates with the given radius, regardless of current turtle location or pen status."
+        draw_int         : "Draw an integer at the current location"
+        fill_circle      : "Fill a circle at the given coordinates with the given radius, regardless of current turtle location or pen status."
+        save_frame       : "Emit a single video frame containing the current field image"
     }
+}
+
+define reset {
+    turtle_reset"("")"
+}
+
+define forward {
+    turtle_forward"("INT_CONST(pixels)")"
+}
+
+define backward {
+    turtle_backward"("INT_CONST(pixels)")"
+}
+
+define turn_left {
+    turtle_turn_left"("FLOAT_CONST(angle)")"
+}
+
+define turn_right {
+    turtle_turn_right"("FLOAT_CONST(angle)")"
+}
+
+define pen_up {
+    turtle_pen_up"("")"
+}
+
+define pen_down {
+    turtle_pen_down"("")"
+}
+
+define goto {
+    turtle_goto"("INT_CONST(x)","INT_CONST(y)")"
+}
+
+define set_heading {
+    turtle_set_heading"("FLOAT_CONST(angle)")"
+}
+
+define set_pen_color {
+    turtle_set_pen_color"("INT_CONST(r)","INT_CONST(g)","INT_CONST(b)")"
+}
+
+define set_fill_color {
+    turtle_set_fill_color"("INT_CONST(r)","INT_CONST(g)","INT_CONST(b)")"
+}
+
+define dot {
+    turtle_dot"("")"
+}
+
+define draw_pixel {
+    turtle_draw_pixel"("INT_CONST(x)","INT_CONST(y)")"
+}
+
+define draw_line {
+    turtle_draw_line"("INT_CONST(x0)","INT_CONST(y0)","INT_CONST(x1)","INT_CONST(y1)")"
+}
+
+define draw_circle {
+    turtle_draw_circle"("INT_CONST(x)","INT_CONST(y)","INT_CONST(radius)")"
+}
+
+define draw_int {
+    turtle_draw_int"("INT_CONST(x)")"
+}
+
+define fill_circle {
+    turtle_fill_circle"("INT_CONST(x)","INT_CONST(y)","INT_CONST(radius)")"
+}
+
+define save_frame {
+    turtle_save_frame"("")"
 }
 
 define expr {
