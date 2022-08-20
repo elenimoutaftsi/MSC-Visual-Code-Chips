@@ -242,6 +242,25 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'switch',                  elem => this.Visit_Switch(elem) );
         this.SetVisitor( 'case',                    elem => this.Visit_Case(elem) );
         this.SetVisitor( 'default',                 elem => this.Visit_Default(elem) );
+
+        this.SetVisitor( 'turtle_reset',            elem => this.Visit_Reset(elem) );
+        this.SetVisitor( 'turtle_forward',          elem => this.Visit_Forward(elem) );
+        this.SetVisitor( 'turtle_backward',         elem => this.Visit_Backward(elem) );
+        this.SetVisitor( 'turtle_turn_left',        elem => this.Visit_Turn_Left(elem) );
+        this.SetVisitor( 'turtle_turn_right',       elem => this.Visit_Turn_Right(elem) );
+        this.SetVisitor( 'turtle_pen_up',           elem => this.Visit_Pen_Up(elem) );
+        this.SetVisitor( 'turtle_pen_down',         elem => this.Visit_Pen_Down(elem) );
+        this.SetVisitor( 'turtle_goto',             elem => this.Visit_Goto(elem) );
+        this.SetVisitor( 'turtle_set_heading',      elem => this.Visit_Set_heading(elem) );
+        this.SetVisitor( 'turtle_set_pen_color',    elem => this.Visit_Set_pen_color(elem) );
+        this.SetVisitor( 'turtle_set_fill_color',   elem => this.Visit_Set_fill_color(elem) );
+        this.SetVisitor( 'turtle_dot',              elem => this.Visit_DotT(elem) );
+        this.SetVisitor( 'turtle_draw_pixel',       elem => this.Visit_Draw_Pixel(elem) );
+        this.SetVisitor( 'turtle_draw_line',        elem => this.Visit_Draw_Line(elem) ) ; 
+        this.SetVisitor( 'turtle_draw_circle',      elem => this.Visit_Draw_Circle(elem) );
+        this.SetVisitor( 'turtle_draw_int',         elem => this.Visit_Draw_Int(elem) ) ; 
+        this.SetVisitor( 'turtle_fill_circle',      elem => this.Visit_Fill_Circle(elem) );
+        this.SetVisitor( 'turtle_save_frame',       elem => this.Visit_Save_Frame(elem) ) ; 
     }
 
     HandleVarDeclaration(id){
@@ -1177,4 +1196,23 @@ export class toCVisitor extends AstVisitor {
     Visit_Switch(elem)              { this.IncreaseTabs(); this.stack.push('switch'); }
     Visit_Case(elem)                { this.IncreaseTabs(); this.stack.push('case'); }
     Visit_Default(elem)             { this.IncreaseTabs(); this.stack.push('default'); }
-}
+
+    Visit_Reset(elem)               { this.stack.push('turtle_reset'); }  
+    Visit_Forward(elem)             { this.stack.push('turtle_forward'); }
+    Visit_Backward(elem)            { this.stack.push('turtle_backward'); }
+    Visit_Turn_Left(elem)           { this.stack.push('turtle_turn_left'); }
+    Visit_Turn_Right(elem)          { this.stack.push('turtle_turn_right'); }
+    Visit_Pen_Up(elem)              { this.stack.push('turtle_pen_up'); }
+    Visit_Pen_Down(elem)            { this.stack.push('turtle_pen_down'); }
+    Visit_Goto(elem)                { this.stack.push('turtle_goto'); }
+    Visit_Set_heading(elem)         { this.stack.push('turtle_set_heading'); }
+    Visit_Set_pen_color(elem)       { this.stack.push('turtle_set_pen_color'); }
+    Visit_Set_fill_color(elem)      { this.stack.push('turtle_set_fill_color'); }
+    Visit_DotT(elem)                { this.stack.push('turtle_dot'); }  
+    Visit_Draw_Pixel(elem)          { this.stack.push('turtle_draw_pixel'); }    
+    Visit_Draw_Line(elem)           { this.stack.push('turtle_draw_line'); }
+    Visit_Draw_Circle(elem)         { this.stack.push('turtle_draw_circle'); }
+    Visit_Draw_Int(elem)            { this.stack.push('turtle_draw_int'); }    
+    Visit_Fill_Circle(elem)         { this.stack.push('turtle_fill_circle'); }
+    Visit_Save_Frame(elem)          { this.stack.push('turtle_save_frame'); }
+}       
