@@ -166,6 +166,26 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'typedef_type',            elem => this.Visit_TypedefType(elem) );
         this.SetVisitor( 'existing_type',           elem => this.Visit_ExistingType(elem) );
         this.SetVisitor( 'struct_name',             elem => this.Visit_StructName(elem) );
+        this.SetVisitor( 'turtle_graphics',         elem => this.Visit_TurtleGraphics(elem) );
+        this.SetVisitor( 'turtle_graphic',          elem => this.Visit_TurtleGraphic(elem) );
+        this.SetVisitor( 'reset',                   elem => this.Visit_Reset(elem) );
+        this.SetVisitor( 'forward',                 elem => this.Visit_Forward(elem) );
+        this.SetVisitor( 'backward',                elem => this.Visit_Backward(elem) );
+        this.SetVisitor( 'turn_left',               elem => this.Visit_TurnLeft(elem) );
+        this.SetVisitor( 'turn_right',              elem => this.Visit_TurnRight(elem) );
+        this.SetVisitor( 'pen_up',                  elem => this.Visit_PenUp(elem) );
+        this.SetVisitor( 'pen_down',                elem => this.Visit_PenDown(elem) );
+        this.SetVisitor( 'goto',                    elem => this.Visit_GoTo(elem) );
+        this.SetVisitor( 'set_heading',             elem => this.Visit_SetHeading(elem) );
+        this.SetVisitor( 'set_pen_color',           elem => this.Visit_SetPenColor(elem) );
+        this.SetVisitor( 'set_fill_color',          elem => this.Visit_SetFillColor(elem) );
+        this.SetVisitor( 'dot',                     elem => this.Visit_DotT(elem) );
+        this.SetVisitor( 'draw_pixel',              elem => this.Visit_DrawPixel(elem) );
+        this.SetVisitor( 'draw_line',               elem => this.Visit_DrawLine(elem) );
+        this.SetVisitor( 'draw_circle',             elem => this.Visit_DrawCircle(elem) );
+        this.SetVisitor( 'draw_int',                elem => this.Visit_DrawInt(elem) );
+        this.SetVisitor( 'fill_circle',             elem => this.Visit_FillCircle(elem) );
+        this.SetVisitor( 'save_frame',              elem => this.Visit_SaveFrame(elem) );
 
         this.SetVisitor( 'IDENT',                   elem => this.Visit_Ident(elem) );
         this.SetVisitor( 'INT_CONST',               elem => this.Visit_IntConst(elem) );
@@ -243,24 +263,24 @@ export class toCVisitor extends AstVisitor {
         this.SetVisitor( 'case',                    elem => this.Visit_Case(elem) );
         this.SetVisitor( 'default',                 elem => this.Visit_Default(elem) );
 
-        this.SetVisitor( 'turtle_reset',            elem => this.Visit_Reset(elem) );
-        this.SetVisitor( 'turtle_forward',          elem => this.Visit_Forward(elem) );
-        this.SetVisitor( 'turtle_backward',         elem => this.Visit_Backward(elem) );
-        this.SetVisitor( 'turtle_turn_left',        elem => this.Visit_Turn_Left(elem) );
-        this.SetVisitor( 'turtle_turn_right',       elem => this.Visit_Turn_Right(elem) );
-        this.SetVisitor( 'turtle_pen_up',           elem => this.Visit_Pen_Up(elem) );
-        this.SetVisitor( 'turtle_pen_down',         elem => this.Visit_Pen_Down(elem) );
-        this.SetVisitor( 'turtle_goto',             elem => this.Visit_Goto(elem) );
-        this.SetVisitor( 'turtle_set_heading',      elem => this.Visit_Set_heading(elem) );
-        this.SetVisitor( 'turtle_set_pen_color',    elem => this.Visit_Set_pen_color(elem) );
-        this.SetVisitor( 'turtle_set_fill_color',   elem => this.Visit_Set_fill_color(elem) );
-        this.SetVisitor( 'turtle_dot',              elem => this.Visit_DotT(elem) );
-        this.SetVisitor( 'turtle_draw_pixel',       elem => this.Visit_Draw_Pixel(elem) );
-        this.SetVisitor( 'turtle_draw_line',        elem => this.Visit_Draw_Line(elem) ) ; 
-        this.SetVisitor( 'turtle_draw_circle',      elem => this.Visit_Draw_Circle(elem) );
-        this.SetVisitor( 'turtle_draw_int',         elem => this.Visit_Draw_Int(elem) ) ; 
-        this.SetVisitor( 'turtle_fill_circle',      elem => this.Visit_Fill_Circle(elem) );
-        this.SetVisitor( 'turtle_save_frame',       elem => this.Visit_Save_Frame(elem) ) ; 
+        this.SetVisitor( 'turtle_reset',            elem => this.Visit_Turtle_Reset(elem) );
+        this.SetVisitor( 'turtle_forward',          elem => this.Visit_Turtle_Forward(elem) );
+        this.SetVisitor( 'turtle_backward',         elem => this.Visit_Turtle_Backward(elem) );
+        this.SetVisitor( 'turtle_turn_left',        elem => this.Visit_Turtle_Turn_Left(elem) );
+        this.SetVisitor( 'turtle_turn_right',       elem => this.Visit_Turtle_Turn_Right(elem) );
+        this.SetVisitor( 'turtle_pen_up',           elem => this.Visit_Turtle_Pen_Up(elem) );
+        this.SetVisitor( 'turtle_pen_down',         elem => this.Visit_Turtle_Pen_Down(elem) );
+        this.SetVisitor( 'turtle_goto',             elem => this.Visit_Turtle_Goto(elem) );
+        this.SetVisitor( 'turtle_set_heading',      elem => this.Visit_Turtle_Set_heading(elem) );
+        this.SetVisitor( 'turtle_set_pen_color',    elem => this.Visit_Turtle_Set_pen_color(elem) );
+        this.SetVisitor( 'turtle_set_fill_color',   elem => this.Visit_Turtle_Set_fill_color(elem) );
+        this.SetVisitor( 'turtle_dot',              elem => this.Visit_Turtle_Dot(elem) );
+        this.SetVisitor( 'turtle_draw_pixel',       elem => this.Visit_Turtle_Draw_Pixel(elem) );
+        this.SetVisitor( 'turtle_draw_line',        elem => this.Visit_Turtle_Draw_Line(elem) ) ; 
+        this.SetVisitor( 'turtle_draw_circle',      elem => this.Visit_Turtle_Draw_Circle(elem) );
+        this.SetVisitor( 'turtle_draw_int',         elem => this.Visit_Turtle_Draw_Int(elem) ) ; 
+        this.SetVisitor( 'turtle_fill_circle',      elem => this.Visit_Turtle_Fill_Circle(elem) );
+        this.SetVisitor( 'turtle_save_frame',       elem => this.Visit_Turtle_Save_Frame(elem) ) ; 
     }
 
     HandleVarDeclaration(id){
@@ -608,8 +628,162 @@ export class toCVisitor extends AstVisitor {
         let code = this.PopChildrenFromStack(elem).join('');
         
         this.stack.push(`${code}`);
+    } 
+
+    Visit_TurtleGraphics(elem) { 
+        let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
+
+        this.stack.push(childrenCode);
+    } 
+
+    Visit_TurtleGraphic(elem) { 
+        this.stack.push(';');
+    } 
+
+    Visit_Reset(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_reset', '(', ')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_reset( )`)
+        );
     }
-    
+
+    Visit_Forward(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_forward', '(','int_const', ')' ]);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_forward( ${code.int_const} )`)
+        );
+    }
+
+    Visit_Backward(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_backward', '(','int_const', ')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_backward( ${code.int_const} )`)
+        );
+    }
+
+    Visit_TurnLeft(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_turn_left', '(','float_const', ')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_turn_left( ${code.float_const} )`)
+        );
+    }
+
+    Visit_TurnRight(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_turn_left', '(','float_const', ')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_turn_right( ${code.float_const} )`)
+        );
+    }
+
+    Visit_PenUp(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_pen_up', '(', ')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_pen_up( )`)
+        );
+    }
+
+    Visit_PenDown(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_pen_down', '(', ')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_pen_down( )`)
+        );
+    }
+
+    Visit_GoTo(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_goto', '(', 'int_const1', 'int_const2', ')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_goto( ${code.int_const1} , ${code.int_const2} )`)
+        );
+    }
+
+    Visit_SetHeading(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_set_heading', '(', 'float_const', ')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_set_heading( ${code.float_const} )`)
+        );
+    }
+
+    Visit_SetPenColor(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_set_pen_color','(','int_const1','int_const2','int_const3',')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_set_pen_color( ${code.int_const1} , ${code.int_const2} , ${code.int_const3} )`)
+        );
+    }
+
+    Visit_SetFillColor(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_set_fill_color','(','int_const1','int_const2','int_const3',')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_set_fill_color( ${code.int_const1} , ${code.int_const2} , ${code.int_const3} )`)
+        );
+    }
+
+    Visit_DotT(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_dot','(',')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_dot( )`)
+        );
+    }
+
+    Visit_DrawPixel(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_draw_pixel', '(','int_const1','int_const2',')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_draw_pixel( ${code.int_const1} , ${code.int_const2} )`)
+        );
+    }
+
+    Visit_DrawLine(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_draw_line', '(','int_const1','int_const2','int_const3','int_const4',')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_draw_line( ${code.int_const1} , ${code.int_const2} , ${code.int_const3} , ${code.int_const4} )`)
+        );
+    }
+
+    Visit_DrawCircle(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_draw_circle', '(','int_const1','int_const2','int_const3',')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_draw_circle( ${code.int_const1} , ${code.int_const2} , ${code.int_const3} )`)
+        );
+    }
+
+    Visit_DrawInt(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_draw_int', '(','int_const',')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_draw_int( ${code.int_const} )`)
+        );
+    }
+
+    Visit_FillCircle(elem){
+        let code = this.PopChildrenFromStack(elem, ['fill_circle', '(','int_const1','int_const2','int_const3',')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `fill_circle( ${code.int_const1} , ${code.int_const2} , ${code.int_const3}  )`)
+        );
+    }
+
+    Visit_SaveFrame(elem){
+        let code = this.PopChildrenFromStack(elem, ['turtle_save_frame', '(', ')']);
+
+        this.stack.push(
+            this.HandleSemicolon(elem, `turtle_save_frame( )`)
+        );
+    }
+
     Visit_FuncDefStmt(elem){ 
 
         this.scopeStack.push({
@@ -1197,22 +1371,22 @@ export class toCVisitor extends AstVisitor {
     Visit_Case(elem)                { this.IncreaseTabs(); this.stack.push('case'); }
     Visit_Default(elem)             { this.IncreaseTabs(); this.stack.push('default'); }
 
-    Visit_Reset(elem)               { this.stack.push('turtle_reset'); }  
-    Visit_Forward(elem)             { this.stack.push('turtle_forward'); }
-    Visit_Backward(elem)            { this.stack.push('turtle_backward'); }
-    Visit_Turn_Left(elem)           { this.stack.push('turtle_turn_left'); }
-    Visit_Turn_Right(elem)          { this.stack.push('turtle_turn_right'); }
-    Visit_Pen_Up(elem)              { this.stack.push('turtle_pen_up'); }
-    Visit_Pen_Down(elem)            { this.stack.push('turtle_pen_down'); }
-    Visit_Goto(elem)                { this.stack.push('turtle_goto'); }
-    Visit_Set_heading(elem)         { this.stack.push('turtle_set_heading'); }
-    Visit_Set_pen_color(elem)       { this.stack.push('turtle_set_pen_color'); }
-    Visit_Set_fill_color(elem)      { this.stack.push('turtle_set_fill_color'); }
-    Visit_DotT(elem)                { this.stack.push('turtle_dot'); }  
-    Visit_Draw_Pixel(elem)          { this.stack.push('turtle_draw_pixel'); }    
-    Visit_Draw_Line(elem)           { this.stack.push('turtle_draw_line'); }
-    Visit_Draw_Circle(elem)         { this.stack.push('turtle_draw_circle'); }
-    Visit_Draw_Int(elem)            { this.stack.push('turtle_draw_int'); }    
-    Visit_Fill_Circle(elem)         { this.stack.push('turtle_fill_circle'); }
-    Visit_Save_Frame(elem)          { this.stack.push('turtle_save_frame'); }
+    Visit_Turtle_Reset(elem)               { this.stack.push('turtle_reset'); }  
+    Visit_Turtle_Forward(elem)             { this.stack.push('turtle_forward'); }
+    Visit_Turtle_Backward(elem)            { this.stack.push('turtle_backward'); }
+    Visit_Turtle_Turn_Left(elem)           { this.stack.push('turtle_turn_left'); }
+    Visit_Turtle_Turn_Right(elem)          { this.stack.push('turtle_turn_right'); }
+    Visit_Turtle_Pen_Up(elem)              { this.stack.push('turtle_pen_up'); }
+    Visit_Turtle_Pen_Down(elem)            { this.stack.push('turtle_pen_down'); }
+    Visit_Turtle_Goto(elem)                { this.stack.push('turtle_goto'); }
+    Visit_Turtle_Set_heading(elem)         { this.stack.push('turtle_set_heading'); }
+    Visit_Turtle_Set_pen_color(elem)       { this.stack.push('turtle_set_pen_color'); }
+    Visit_Turtle_Set_fill_color(elem)      { this.stack.push('turtle_set_fill_color'); }
+    Visit_Turtle_Dot(elem)                { this.stack.push('turtle_dot'); }  
+    Visit_Turtle_Draw_Pixel(elem)          { this.stack.push('turtle_draw_pixel'); }    
+    Visit_Turtle_Draw_Line(elem)           { this.stack.push('turtle_draw_line'); }
+    Visit_Turtle_Draw_Circle(elem)         { this.stack.push('turtle_draw_circle'); }
+    Visit_Turtle_Draw_Int(elem)            { this.stack.push('turtle_draw_int'); }    
+    Visit_Turtle_Fill_Circle(elem)         { this.stack.push('turtle_fill_circle'); }
+    Visit_Turtle_Save_Frame(elem)          { this.stack.push('turtle_save_frame'); }
 }       
