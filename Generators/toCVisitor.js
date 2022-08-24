@@ -3,6 +3,8 @@ import { assert } from '../Utils/Assert.js';
 import { EditorElementTypes } from '../Editor/EditorElements/EditorElement.js';
 import { ReservedWords } from '../Utils/ReservedWords.js';
 
+var turtle_flag = 0;
+
 export class toCVisitor extends AstVisitor {
 
     stack = [];
@@ -333,7 +335,7 @@ export class toCVisitor extends AstVisitor {
 
     HandleSemicolon(elem, code){
         let parent = elem.GetParent()?.GetSymbol().symbol.name;
-        if (parent === 'stmts' || parent === 'defs' || parent === 'main_block')
+        if (parent === 'stmts' || parent === 'defs' || parent === 'main_block' || parent === 'turtle_graphics')
             return code + ';'
         else
             return code;
@@ -474,12 +476,12 @@ export class toCVisitor extends AstVisitor {
         this.DecreaseTabs();
         let rBrace = this.TabIn('}');
 
-        this.stack.push( `${code.main}\n ${code.main_block} \n${rBrace}` );
+        if(turtle_flag > 0 ) this.stack.push( `${code.main}\n        turtle_init(300,300); // initialize turtle canvas\n\n${code.main_block} \n\n        turtle_save_bmp("output.bmp"); // save turtle canvas\n\n        return 0;\n${rBrace}` );
+        else this.stack.push( `${code.main}\n${code.main_block}\n        return 0;\n${rBrace}` );
     }
 
     Visit_MainBlock(elem){
         let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
-        //let vars = this.TabIn( this.PopScopeVars() );
 
         this.stack.push(childrenCode);
     }   
@@ -630,17 +632,13 @@ export class toCVisitor extends AstVisitor {
         this.stack.push(`${code}`);
     } 
 
-    Visit_TurtleGraphics(elem) { 
-        let childrenCode = this.PopChildrenFromStack(elem).map( stmt => this.TabIn(stmt) ).join('\n');
-
-        this.stack.push(childrenCode);
-    } 
-
     Visit_TurtleGraphic(elem) { 
+        if (turtle_flag ===0 ) turtle_flag++;
         this.stack.push(';');
     } 
 
     Visit_Reset(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_reset', '(', ')']);
 
         this.stack.push(
@@ -649,6 +647,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_Forward(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_forward', '(','int_const', ')' ]);
 
         this.stack.push(
@@ -657,6 +656,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_Backward(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_backward', '(','int_const', ')']);
 
         this.stack.push(
@@ -665,6 +665,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_TurnLeft(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_turn_left', '(','float_const', ')']);
 
         this.stack.push(
@@ -673,6 +674,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_TurnRight(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_turn_left', '(','float_const', ')']);
 
         this.stack.push(
@@ -681,6 +683,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_PenUp(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_pen_up', '(', ')']);
 
         this.stack.push(
@@ -689,6 +692,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_PenDown(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_pen_down', '(', ')']);
 
         this.stack.push(
@@ -697,6 +701,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_GoTo(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_goto', '(', 'int_const1', 'int_const2', ')']);
 
         this.stack.push(
@@ -705,6 +710,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_SetHeading(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_set_heading', '(', 'float_const', ')']);
 
         this.stack.push(
@@ -713,6 +719,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_SetPenColor(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_set_pen_color','(','int_const1','int_const2','int_const3',')']);
 
         this.stack.push(
@@ -721,14 +728,16 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_SetFillColor(elem){
-        let code = this.PopChildrenFromStack(elem, ['turtle_set_fill_color','(','int_const1','int_const2','int_const3',')']);
+        if (turtle_flag ===0 ) turtle_flag++;
+        let code = this.PopChildrenFromStack(elem, ['turtle_set_fill_color','par1','int_const1','int_const2','int_const3','par2']);
 
         this.stack.push(
-            this.HandleSemicolon(elem, `turtle_set_fill_color( ${code.int_const1} , ${code.int_const2} , ${code.int_const3} )`)
+            this.HandleSemicolon(elem, `turtle_set_fill_color${code.par1} ${code.int_const1} , ${code.int_const2} , ${code.int_const3} ${code.par2}`)
         );
     }
 
     Visit_DotT(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_dot','(',')']);
 
         this.stack.push(
@@ -737,6 +746,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_DrawPixel(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_draw_pixel', '(','int_const1','int_const2',')']);
 
         this.stack.push(
@@ -745,6 +755,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_DrawLine(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_draw_line', '(','int_const1','int_const2','int_const3','int_const4',')']);
 
         this.stack.push(
@@ -753,6 +764,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_DrawCircle(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_draw_circle', '(','int_const1','int_const2','int_const3',')']);
 
         this.stack.push(
@@ -761,6 +773,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_DrawInt(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_draw_int', '(','int_const',')']);
 
         this.stack.push(
@@ -769,6 +782,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_FillCircle(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['fill_circle', '(','int_const1','int_const2','int_const3',')']);
 
         this.stack.push(
@@ -777,6 +791,7 @@ export class toCVisitor extends AstVisitor {
     }
 
     Visit_SaveFrame(elem){
+        if (turtle_flag ===0 ) turtle_flag++;
         let code = this.PopChildrenFromStack(elem, ['turtle_save_frame', '(', ')']);
 
         this.stack.push(
@@ -1382,7 +1397,7 @@ export class toCVisitor extends AstVisitor {
     Visit_Turtle_Set_heading(elem)         { this.stack.push('turtle_set_heading'); }
     Visit_Turtle_Set_pen_color(elem)       { this.stack.push('turtle_set_pen_color'); }
     Visit_Turtle_Set_fill_color(elem)      { this.stack.push('turtle_set_fill_color'); }
-    Visit_Turtle_Dot(elem)                { this.stack.push('turtle_dot'); }  
+    Visit_Turtle_Dot(elem)                 { this.stack.push('turtle_dot'); }  
     Visit_Turtle_Draw_Pixel(elem)          { this.stack.push('turtle_draw_pixel'); }    
     Visit_Turtle_Draw_Line(elem)           { this.stack.push('turtle_draw_line'); }
     Visit_Turtle_Draw_Circle(elem)         { this.stack.push('turtle_draw_circle'); }

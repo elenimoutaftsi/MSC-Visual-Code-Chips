@@ -391,17 +391,8 @@
                 },
                 {
                     "type": "non_terminal",
-                    "name": "turtle_graphics",
+                    "name": "turtle_graphic",
                     "tooltip": "Provides C implementation of turtle which used to create graphics"
-                }
-            ]
-        },
-        {
-            "name": "turtle_graphics",
-            "list_of": [
-                {
-                    "type": "non_terminal",
-                    "name": "turtle_graphic"
                 }
             ]
         },
@@ -657,10 +648,6 @@
                 },
                 {
                     "type": "terminal",
-                    "name": ","
-                },
-                {
-                    "type": "terminal",
                     "name": "INT_CONST",
                     "alias": "y"
                 },
@@ -710,16 +697,8 @@
                 },
                 {
                     "type": "terminal",
-                    "name": ","
-                },
-                {
-                    "type": "terminal",
                     "name": "INT_CONST",
                     "alias": "g"
-                },
-                {
-                    "type": "terminal",
-                    "name": ","
                 },
                 {
                     "type": "terminal",
@@ -750,16 +729,8 @@
                 },
                 {
                     "type": "terminal",
-                    "name": ","
-                },
-                {
-                    "type": "terminal",
                     "name": "INT_CONST",
                     "alias": "g"
-                },
-                {
-                    "type": "terminal",
-                    "name": ","
                 },
                 {
                     "type": "terminal",
@@ -807,10 +778,6 @@
                 },
                 {
                     "type": "terminal",
-                    "name": ","
-                },
-                {
-                    "type": "terminal",
                     "name": "INT_CONST",
                     "alias": "y"
                 },
@@ -838,25 +805,13 @@
                 },
                 {
                     "type": "terminal",
-                    "name": ","
-                },
-                {
-                    "type": "terminal",
                     "name": "INT_CONST",
                     "alias": "y0"
                 },
                 {
                     "type": "terminal",
-                    "name": ","
-                },
-                {
-                    "type": "terminal",
                     "name": "INT_CONST",
                     "alias": "x1"
-                },
-                {
-                    "type": "terminal",
-                    "name": ","
                 },
                 {
                     "type": "terminal",
@@ -887,16 +842,8 @@
                 },
                 {
                     "type": "terminal",
-                    "name": ","
-                },
-                {
-                    "type": "terminal",
                     "name": "INT_CONST",
                     "alias": "y"
-                },
-                {
-                    "type": "terminal",
-                    "name": ","
                 },
                 {
                     "type": "terminal",
@@ -949,16 +896,8 @@
                 },
                 {
                     "type": "terminal",
-                    "name": ","
-                },
-                {
-                    "type": "terminal",
                     "name": "INT_CONST",
                     "alias": "y"
-                },
-                {
-                    "type": "terminal",
-                    "name": ","
                 },
                 {
                     "type": "terminal",

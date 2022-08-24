@@ -25,7 +25,7 @@ non_terminal {
     printf_type types variables scanf_type stypes printf_variable scanf_arg 
     math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos 
     snippets print_array
-    turtle_graphics turtle_graphic reset forward backward left turn_left turn_right pen_up pen_down goto set_heading set_pen_color set_fill_color dot draw_pixel draw_line draw_circle draw_int fill_circle save_frame         
+    turtle_graphic reset forward backward left turn_left turn_right pen_up pen_down goto set_heading set_pen_color set_fill_color dot draw_pixel draw_line draw_circle draw_int fill_circle save_frame         
 }
 
 terminal {
@@ -170,12 +170,8 @@ define local_def {
         stmt
         var_decl                : "Variable or Array declaration with type and name"
         user_type_decl          : "User Type Declaration"
-        turtle_graphics         : "Provides C implementation of turtle which used to create graphics"
+        turtle_graphic         : "Provides C implementation of turtle which used to create graphics"
     }
-}
-
-define turtle_graphics {
-    list_of turtle_graphic
 }
 
 define turtle_graphic {
@@ -230,7 +226,7 @@ define pen_down {
 }
 
 define goto {
-    turtle_goto"("INT_CONST(x)","INT_CONST(y)")"
+    turtle_goto"("INT_CONST(x) INT_CONST(y)")"
 }
 
 define set_heading {
@@ -238,11 +234,11 @@ define set_heading {
 }
 
 define set_pen_color {
-    turtle_set_pen_color"("INT_CONST(r)","INT_CONST(g)","INT_CONST(b)")"
+    turtle_set_pen_color"("INT_CONST(r) INT_CONST(g) INT_CONST(b)")"
 }
 
 define set_fill_color {
-    turtle_set_fill_color"("INT_CONST(r)","INT_CONST(g)","INT_CONST(b)")"
+    turtle_set_fill_color"("INT_CONST(r) INT_CONST(g) INT_CONST(b)")"
 }
 
 define dot {
@@ -250,15 +246,15 @@ define dot {
 }
 
 define draw_pixel {
-    turtle_draw_pixel"("INT_CONST(x)","INT_CONST(y)")"
+    turtle_draw_pixel"("INT_CONST(x) INT_CONST(y)")"
 }
 
 define draw_line {
-    turtle_draw_line"("INT_CONST(x0)","INT_CONST(y0)","INT_CONST(x1)","INT_CONST(y1)")"
+    turtle_draw_line"("INT_CONST(x0) INT_CONST(y0) INT_CONST(x1) INT_CONST(y1)")"
 }
 
 define draw_circle {
-    turtle_draw_circle"("INT_CONST(x)","INT_CONST(y)","INT_CONST(radius)")"
+    turtle_draw_circle"("INT_CONST(x) INT_CONST(y) INT_CONST(radius)")"
 }
 
 define draw_int {
@@ -266,7 +262,7 @@ define draw_int {
 }
 
 define fill_circle {
-    turtle_fill_circle"("INT_CONST(x)","INT_CONST(y)","INT_CONST(radius)")"
+    turtle_fill_circle"("INT_CONST(x) INT_CONST(y) INT_CONST(radius)")"
 }
 
 define save_frame {
