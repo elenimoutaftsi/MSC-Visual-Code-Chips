@@ -476,8 +476,8 @@ export class toCVisitor extends AstVisitor {
         this.DecreaseTabs();
         let rBrace = this.TabIn('}');
 
-        if(turtle_flag > 0 ) this.stack.push( `${code.main}\n        turtle_init(300,300); // initialize turtle canvas\n\n${code.main_block} \n\n        turtle_save_bmp("output.bmp"); // save turtle canvas\n\n        return 0;\n${rBrace}` );
-        else this.stack.push( `${code.main}\n${code.main_block}\n        return 0;\n${rBrace}` );
+        if(turtle_flag > 0 ) this.stack.push( `${code.main}\n\tturtle_init(300,300); // initialize turtle canvas\n\n${code.main_block} \n\n\tturtle_save_bmp("output.bmp"); // save turtle canvas\n\n\treturn 0;\n${rBrace}` );
+        else this.stack.push( `${code.main}\n${code.main_block}\n\treturn 0;\n${rBrace}` );
     }
 
     Visit_MainBlock(elem){
@@ -858,7 +858,7 @@ export class toCVisitor extends AstVisitor {
         let rBrace = this.TabIn('}');
         let defaultt = this.TabIn('default');
 
-        this.stack.push( `switch (${code.expr}) {\n ${code.switch_cases}\n\n${defaultt} :\n ${code.stmts} \n${rBrace}` );
+        this.stack.push( `switch (${code.expr}) {\n ${code.switch_cases}\n\n\t${defaultt} :\n \t${code.stmts} \n${rBrace}` );
     }
 
     Visit_SwitchCases(elem){
@@ -1296,7 +1296,7 @@ export class toCVisitor extends AstVisitor {
             let parent = elem.GetParent()?.GetSymbol().symbol.name;
 
             if (parent === 'types')
-                this.stack.push(text);
+                this.stack.push(elem.GetText());
             else{
                 text = '"' + elem.GetText().replace(backslashes, '\\\\').replace(quotes, '\\"') + '"'
                 this.stack.push(text);
