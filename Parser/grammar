@@ -24,7 +24,6 @@ non_terminal {
     input_output_printf input_output_scanf input_output_printf_string
     printf_type types variables scanf_type stypes printf_variable scanf_arg 
     math_pow math_sqrt math_round math_floor math_ceiling math_sin math_cos 
-    snippets print_array
     turtle_graphic reset forward backward left turn_left turn_right pen_up pen_down goto set_heading set_pen_color set_fill_color dot draw_pixel draw_line draw_circle draw_int fill_circle save_frame         
 }
 
